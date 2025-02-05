@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:21:23 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/05 13:26:15 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/05 16:40:21 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 static void	add_rules(long int value, t_rules *dinning_rules)
 {
-	static int i;
-	
+	static int	i;
+
 	if (i == 0)
 		dinning_rules->nb_philo = value;
 	else if (i == 1)
@@ -29,7 +29,7 @@ static void	add_rules(long int value, t_rules *dinning_rules)
 	i++;
 }
 
-static void *build_list(char **result, t_rules *dinning_rules)
+static void	build_list(char **result, t_rules *dinning_rules)
 {
 	int			i;
 	long int	value;
@@ -41,14 +41,16 @@ static void *build_list(char **result, t_rules *dinning_rules)
 	{
 		value = 0;
 		res = atoi_valid(result[i], &value, res);
-		if (!res || ((value > 2417483647) || (value < -2147483648)))
+		if (!res || ((value > 2417483647) || (value < 0)))
 		{
-			std_error(result, dinning_rules);
-			return (NULL);
+			free_2d(result);
+			dinning_rules->error = TRUE;
+			return ;
 		}
 		add_rules(value, dinning_rules);
 		i++;
 	}
+	free_2d(result);
 }
 
 t_rules	parsing(int argc, char *argv[])
@@ -58,24 +60,27 @@ t_rules	parsing(int argc, char *argv[])
 	t_rules		dinning_rules;
 
 	i = 1;
-	dinning_rules = NULL;
+	dinning_rules.error = FALSE;
+	dinning_rules.meals_per_philo = 0;
 	while (i < argc)
 	{
 		if (is_empty(argv[i]))
 		{
-			write(STDERR_FILENO, "empty argument\n", 15);
-			std_error(NULL, dinning_rules);
-			return (NULL);
+			dinning_rules.error = TRUE;
+			break ;
 		}
 		result = split(argv[i], ' ');
 		if (result == NULL)
-			return (NULL);
+		{
+			dinning_rules.error = TRUE;
+			break ;
+		}
 		else
 		{
-			dinning_rules = build_list(result, dinning_rules);
-			if (dinning_rules == NULL)
-				return (NULL);
-		{
+			build_list(result, &dinning_rules);
+			if (dinning_rules.error == TRUE)
+				break ;
+		}
 		i++;
 	}
 	return (dinning_rules);

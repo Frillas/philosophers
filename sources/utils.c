@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 12:24:35 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/05 12:32:15 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/05 16:01:51 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,4 +39,20 @@ t_bool	atoi_valid(const char *s, long int *value, t_bool res)
 	if ((res == TRUE) && (s[i] == '\0'))
 		return (TRUE);
 	return (FALSE);
+}
+
+void	free_2d(char **result)
+{
+	int		i;
+
+	i = 0;
+	if (result != NULL)
+	{
+		while (result[i])
+		{
+			free(result[i]);
+			i++;
+		}
+		free(result);
+	}
 }
