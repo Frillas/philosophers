@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:21:23 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/05 16:40:21 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/05 19:02:34 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,11 @@
 static void	add_rules(long int value, t_rules *dinning_rules)
 {
 	static int	i;
+	int			test;
 
+	test = value * 100;
+	if ((i > 0 && i < 4) && (test < 0))
+		error_msg("Invalid number\n", dinning_rules);
 	if (i == 0)
 		dinning_rules->nb_philo = value;
 	else if (i == 1)
@@ -26,6 +30,8 @@ static void	add_rules(long int value, t_rules *dinning_rules)
 		dinning_rules->time_to_sleep = value * 100;
 	else if (i == 4)
 		dinning_rules->meals_per_philo = value;
+	else if (i > 4)
+		error_msg("Too much arguments\n", dinning_rules);
 	i++;
 }
 
@@ -37,15 +43,14 @@ static void	build_list(char **result, t_rules *dinning_rules)
 
 	i = 0;
 	res = FALSE;
-	while (result[i] != NULL)
+	while ((result[i] != NULL) && (dinning_rules->error == FALSE))
 	{
 		value = 0;
 		res = atoi_valid(result[i], &value, res);
 		if (!res || ((value > 2417483647) || (value < 0)))
 		{
-			free_2d(result);
-			dinning_rules->error = TRUE;
-			return ;
+			error_msg("Invalid number\n", dinning_rules);
+			break ;
 		}
 		add_rules(value, dinning_rules);
 		i++;
@@ -53,35 +58,27 @@ static void	build_list(char **result, t_rules *dinning_rules)
 	free_2d(result);
 }
 
-t_rules	parsing(int argc, char *argv[])
+void	parsing(int argc, char *argv[], t_rules *dinning_rules)
 {
 	int			i;
 	char		**result;
-	t_rules		dinning_rules;
 
 	i = 1;
-	dinning_rules.error = FALSE;
-	dinning_rules.meals_per_philo = 0;
-	while (i < argc)
+	while ((i < argc) && (dinning_rules->error == FALSE))
 	{
 		if (is_empty(argv[i]))
 		{
-			dinning_rules.error = TRUE;
-			break ;
+			dinning_rules->error = TRUE;
+			return ;
 		}
 		result = split(argv[i], ' ');
 		if (result == NULL)
 		{
-			dinning_rules.error = TRUE;
-			break ;
+			error_msg("Memory allocation failed\n", dinning_rules);
+			return ;
 		}
 		else
-		{
-			build_list(result, &dinning_rules);
-			if (dinning_rules.error == TRUE)
-				break ;
-		}
+			build_list(result, dinning_rules);
 		i++;
 	}
-	return (dinning_rules);
 }

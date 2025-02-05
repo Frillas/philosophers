@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:46:42 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/05 16:41:13 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/05 18:48:28 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,16 @@ typedef struct s_rules
 	t_bool	error;
 }	t_rules;
 //parsing.c
-t_rules	parsing(int argc, char *argv[]);
+void	parsing(int argc, char *argv[], t_rules *dinning_rules);
 //utils
 t_bool	atoi_valid(const char *s, long int *value, t_bool res);
 void	free_2d(char **result);
+size_t	ft_strlen(const char *s);
 //split.c
 char	**split(char const *s, char c);
 //error.c
 t_bool	is_empty(char *str);
+t_bool	check_arg(t_rules *dinning_rules);
+void	error_msg(char str[], t_rules *dinning_rules);
 
 #endif
