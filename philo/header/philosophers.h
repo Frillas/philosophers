@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:46:42 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/06 06:51:54 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/06 11:27:24 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,14 @@ typedef enum s_bool
 	TRUE
 }	t_bool;
 
+typedef struct s_philo
+{
+	int		fork;
+	int		status;
+	t_philo	next;
+	t_philo	prev;
+}	t_philo;
+
 typedef struct s_rules
 {
 	int		nb_philo;
@@ -37,8 +45,9 @@ typedef struct s_rules
 void	parsing(int argc, char *argv[], t_rules *dinning_rules);
 //utils
 t_bool	atoi_valid(const char *s, long int *value, t_bool res);
-void	free_2d(char **result);
 size_t	ft_strlen(const char *s);
+void	free_2d(char **result);
+void	free_struct(t_philo *philo);
 //split.c
 char	**split(char const *s, char c);
 //error.c
