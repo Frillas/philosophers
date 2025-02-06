@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 12:24:35 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/06 11:32:17 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/06 17:55:21 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,10 +75,10 @@ void	free_struct(t_philo *philo)
 
 	if (philo != NULL)
 	{
-		current = philo
+		current = philo;
 		while (current != NULL)
 		{
-			philo = philo->next;
+			philo = philo->right;
 			free(current);
 			current = philo;
 		}

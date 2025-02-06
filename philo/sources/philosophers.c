@@ -6,13 +6,13 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:49:16 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/06 11:48:00 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/06 17:57:46 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/philosophers.h"
 
-static t_philo	create_philo(t_philo *philo, t_rules *dinning_rules)
+static t_philo	*initialize_philo(t_philo *philo)
 {
 	t_philo	*new;
 
@@ -23,38 +23,49 @@ static t_philo	create_philo(t_philo *philo, t_rules *dinning_rules)
 		return (NULL);
 	}	
 	new->fork = 1;
-	new->status = 0;
-	new->next = NULL;
-	new->prev = NULL;
+	new->status = 1;
+	new->right = NULL;
+	new->left = NULL;
 	return (new);
 }
 
-void	start_philo(t_rules *dinning_rules)
+static t_philo	*create_philo(t_rules *dinning_rules, t_philo **end)
 {
 	int		i;
 	t_philo	*philo;
 	t_philo *new;
-	t_philo	*end;
 
 	i = 0;
 	philo = NULL;
-	end = NULL;
-	while(i < dinning_rules->nb_philo)
+	while (i < dinning_rules->nb_philo)
 	{
-		new = create_philo(philo, dinning_rules);
+		new = initialize_philo(philo);
 		if (new == NULL)
-			return ;
+			return (NULL);
 		else if (philo == NULL)
 		{	
 			philo = new;
-			end = new;
+			*end = new;
 		}
 		else
 		{
-			end->next = new;
-			new->prev = end;
-			end = new;
+			(*end)->right = new;
+			new->left = (*end);
+			(*end) = new;
 		}
 		i++;
 	}
+	return (philo);
+}
+
+void	start_philo(t_rules *dinning_rules)
+{
+	t_philo	*philo;
+	t_philo	*end;
+
+	end = NULL;
+	philo = create_philo(dinning_rules, &end);
+	if (philo == NULL)
+		return ;
+	start_dinner(dinning_rules, philo);
 }

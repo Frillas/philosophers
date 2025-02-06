@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:46:42 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/06 11:27:24 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/06 17:54:26 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,19 @@ typedef enum s_bool
 	TRUE
 }	t_bool;
 
+typedef enum s_status
+{
+	SLEEP = 1,
+	THINK,
+	EAT
+}	t_status;
+
 typedef struct s_philo
 {
-	int		fork;
-	int		status;
-	t_philo	next;
-	t_philo	prev;
+	int					fork;
+	t_status			status;
+	struct s_philo		*right;
+	struct s_philo		*left;
 }	t_philo;
 
 typedef struct s_rules
@@ -54,5 +61,8 @@ char	**split(char const *s, char c);
 t_bool	is_empty(char *str);
 t_bool	check_arg(t_rules *dinning_rules);
 void	error_msg(char str[], t_rules *dinning_rules);
-
+//philosophers.c
+void	start_philo(t_rules *dinning_rules);
+//dinner.c
+void	start_dinner(t_rules *dinning_rules, t_philo *philo);
 #endif
