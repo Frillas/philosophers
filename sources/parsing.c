@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:21:23 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/05 19:02:34 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/06 07:12:30 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,10 @@ static void	add_rules(long int value, t_rules *dinning_rules)
 
 	test = value * 100;
 	if ((i > 0 && i < 4) && (test < 0))
-		error_msg("Invalid number\n", dinning_rules);
+	{
+		error_msg("Invalid argument\n", dinning_rules);
+		return ;
+	}
 	if (i == 0)
 		dinning_rules->nb_philo = value;
 	else if (i == 1)
@@ -49,7 +52,7 @@ static void	build_list(char **result, t_rules *dinning_rules)
 		res = atoi_valid(result[i], &value, res);
 		if (!res || ((value > 2417483647) || (value < 0)))
 		{
-			error_msg("Invalid number\n", dinning_rules);
+			error_msg("Invalid argument\n", dinning_rules);
 			break ;
 		}
 		add_rules(value, dinning_rules);

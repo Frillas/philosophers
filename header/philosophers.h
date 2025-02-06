@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:46:42 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/05 18:48:28 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/06 06:51:54 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,12 @@
 # include <stdio.h>
 # include <pthread.h>
 
-# define TRUE 1
-# define FALSE 0
+typedef enum s_bool
+{
+	FALSE,
+	TRUE
+}	t_bool;
 
-typedef int	t_bool;
 typedef struct s_rules
 {
 	int		nb_philo;
