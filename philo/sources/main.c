@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:19:57 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/06 15:24:05 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/07 11:15:02 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ int	main(int argc, char *argv[])
 	if (dinning_rules.error == TRUE || !(check_arg(&dinning_rules)))
 		return (EXIT_FAILURE);
 	print_rules(&dinning_rules);
-	start_philo(&dinning_rules);
+	if (start_philo(&dinning_rules) != 0)
+		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }

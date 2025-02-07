@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:49:16 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/06 17:57:46 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/07 11:56:21 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ static t_philo	*initialize_philo(t_philo *philo)
 	{
 		free_struct(philo);
 		return (NULL);
-	}	
-	new->fork = 1;
+	}
+	new->r_fork = 1;
 	new->status = 1;
 	new->right = NULL;
 	new->left = NULL;
@@ -33,7 +33,7 @@ static t_philo	*create_philo(t_rules *dinning_rules, t_philo **end)
 {
 	int		i;
 	t_philo	*philo;
-	t_philo *new;
+	t_philo	*new;
 
 	i = 0;
 	philo = NULL;
@@ -43,7 +43,7 @@ static t_philo	*create_philo(t_rules *dinning_rules, t_philo **end)
 		if (new == NULL)
 			return (NULL);
 		else if (philo == NULL)
-		{	
+		{
 			philo = new;
 			*end = new;
 		}
@@ -55,17 +55,45 @@ static t_philo	*create_philo(t_rules *dinning_rules, t_philo **end)
 		}
 		i++;
 	}
+	philo->left = (*end);
+	(*end)->right = philo;
 	return (philo);
 }
 
-void	start_philo(t_rules *dinning_rules)
+static int	create_thread_id(t_rules *dinning_rules, pthread_t **tid)
 {
-	t_philo	*philo;
-	t_philo	*end;
+	int	nb;
+
+	nb = dinning_rules->nb_philo;
+	*tid = (pthread_t *)malloc(sizeof(pthread_t) * nb);
+	if (*tid == NULL)
+	{
+		write(STDERR_FILENO, "Memory allocation failed for threads\n", 37);
+		return (EXIT_FAILURE);
+	}
+	return (EXIT_SUCCESS);
+}
+
+int	start_philo(t_rules *dinning_rules)
+{
+	t_philo		*philo;
+	t_philo		*end;
+	pthread_t	*thread_id;
 
 	end = NULL;
 	philo = create_philo(dinning_rules, &end);
 	if (philo == NULL)
-		return ;
-	start_dinner(dinning_rules, philo);
+		return (EXIT_FAILURE);
+	if (create_thread_id(dinning_rules, &thread_id) != EXIT_SUCCESS)
+	{
+		free_struct(philo);
+		return (EXIT_FAILURE);
+	}
+	if (start_dinner(dinning_rules, philo, thread_id) != EXIT_SUCCESS)
+	{
+		free_struct(philo);
+		free(thread_id);
+		return (EXIT_FAILURE);
+	}
+	return (EXIT_SUCCESS);
 }

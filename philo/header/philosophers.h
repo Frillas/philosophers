@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:46:42 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/06 17:54:26 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/07 12:05:22 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ typedef enum s_status
 
 typedef struct s_philo
 {
-	int					fork;
+	int					r_fork;
 	t_status			status;
 	struct s_philo		*right;
 	struct s_philo		*left;
@@ -54,7 +54,7 @@ void	parsing(int argc, char *argv[], t_rules *dinning_rules);
 t_bool	atoi_valid(const char *s, long int *value, t_bool res);
 size_t	ft_strlen(const char *s);
 void	free_2d(char **result);
-void	free_struct(t_philo *philo);
+void	free_struct(t_philo *philo, int nb_philo);
 //split.c
 char	**split(char const *s, char c);
 //error.c
@@ -62,7 +62,7 @@ t_bool	is_empty(char *str);
 t_bool	check_arg(t_rules *dinning_rules);
 void	error_msg(char str[], t_rules *dinning_rules);
 //philosophers.c
-void	start_philo(t_rules *dinning_rules);
+int		start_philo(t_rules *dinning_rules);
 //dinner.c
-void	start_dinner(t_rules *dinning_rules, t_philo *philo);
+int		start_dinner(t_rules *dinning_rules, t_philo *philo, pthread_t *thread_id);
 #endif

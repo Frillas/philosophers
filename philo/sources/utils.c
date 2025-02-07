@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 12:24:35 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/06 17:55:21 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/07 12:06:44 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,18 +69,21 @@ void	free_2d(char **result)
 	}
 }
 
-void	free_struct(t_philo *philo)
+void	free_struct(t_philo *philo, int nb_philo)
 {
-	t_philo *current;
+	t_philo	*current;
+	int	i;
 
+	i = 0;
 	if (philo != NULL)
 	{
 		current = philo;
-		while (current != NULL)
+		while (i < nb_philo)
 		{
 			philo = philo->right;
 			free(current);
 			current = philo;
+			i++;
 		}
 	}
 }
