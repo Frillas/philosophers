@@ -6,21 +6,21 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:08:37 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/07 12:04:18 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/07 12:45:32 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/philosophers.h"
 
-pthread_mutex_t mutex;
+pthread_mutex_t	g_mutex;
 
 static void	*eating(void *arg)
 {
 	t_philo	*philo;
-	
+
 	philo = (t_philo *)arg;
 	if (philo->left->status == EAT)
-	pthread_mutex_lock(&mutex);
+		pthread_mutex_lock(&mutex);
 	philo->status = EAT;
 	philo->r_fork = 0;
 	printf("philo is eating\n");

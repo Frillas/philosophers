@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:46:42 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/07 12:05:22 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/07 12:46:32 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,5 +64,5 @@ void	error_msg(char str[], t_rules *dinning_rules);
 //philosophers.c
 int		start_philo(t_rules *dinning_rules);
 //dinner.c
-int		start_dinner(t_rules *dinning_rules, t_philo *philo, pthread_t *thread_id);
+int		start_dinner(t_rules *rules, t_philo *philo, pthread_t *thread_id);
 #endif
