@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:49:16 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/07 12:49:44 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/07 15:20:54 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 static t_philo	*initialize_philo(t_philo *philo, t_rules *dinning_rules)
 {
 	t_philo	*new;
+	static int	i;
 
 	new = (t_philo *)malloc(sizeof(t_philo));
 	if (new == NULL)
@@ -22,10 +23,12 @@ static t_philo	*initialize_philo(t_philo *philo, t_rules *dinning_rules)
 		free_struct(philo, dinning_rules->nb_philo);
 		return (NULL);
 	}
+	new->index = (i + 1);
 	new->r_fork = 1;
 	new->status = 1;
 	new->right = NULL;
 	new->left = NULL;
+	i++;
 	return (new);
 }
 

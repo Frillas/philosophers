@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:46:42 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/07 12:46:32 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/07 17:35:55 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ typedef enum s_status
 
 typedef struct s_philo
 {
+	int					index;
 	int					r_fork;
 	t_status			status;
 	struct s_philo		*right;

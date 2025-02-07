@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:08:37 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/07 12:51:58 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/07 17:35:35 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,10 @@ pthread_mutex_t	g_mutex;
 static void	*eating(void *arg)
 {
 	t_philo	*philo;
-
+	
 	philo = (t_philo *)arg;
-	if (philo->left->status == EAT)
-		pthread_mutex_lock(&g_mutex);
-	philo->status = EAT;
-	philo->r_fork = 0;
-	printf("philo is eating\n");
-	philo->status = SLEEP;
-	printf("philo is sleeping\n");
+	pthread_mutex_lock(&g_mutex);
+	printf("philo num = %d\n", philo->index);
 	pthread_mutex_unlock(&g_mutex);
 	return (NULL);
 }
@@ -41,7 +36,7 @@ int	start_dinner(t_rules *dinning_rules, t_philo *philo, pthread_t *thread_id)
 	pthread_mutex_init(&g_mutex, NULL);
 	while (i < dinning_rules->nb_philo)
 	{
-		if (pthread_create(&thread_id[i], NULL, eating, philo) != 0)
+		if (pthread_create(&thread_id[i], NULL, eating, (void *)current) != 0)
 			return (EXIT_FAILURE);
 		current = current->right;
 		i++;
