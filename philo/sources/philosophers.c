@@ -6,20 +6,20 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:49:16 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/07 11:56:21 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/07 12:49:44 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/philosophers.h"
 
-static t_philo	*initialize_philo(t_philo *philo)
+static t_philo	*initialize_philo(t_philo *philo, t_rules *dinning_rules)
 {
 	t_philo	*new;
 
 	new = (t_philo *)malloc(sizeof(t_philo));
 	if (new == NULL)
 	{
-		free_struct(philo);
+		free_struct(philo, dinning_rules->nb_philo);
 		return (NULL);
 	}
 	new->r_fork = 1;
@@ -39,7 +39,7 @@ static t_philo	*create_philo(t_rules *dinning_rules, t_philo **end)
 	philo = NULL;
 	while (i < dinning_rules->nb_philo)
 	{
-		new = initialize_philo(philo);
+		new = initialize_philo(philo, dinning_rules);
 		if (new == NULL)
 			return (NULL);
 		else if (philo == NULL)
@@ -86,12 +86,12 @@ int	start_philo(t_rules *dinning_rules)
 		return (EXIT_FAILURE);
 	if (create_thread_id(dinning_rules, &thread_id) != EXIT_SUCCESS)
 	{
-		free_struct(philo);
+		free_struct(philo, dinning_rules->nb_philo);
 		return (EXIT_FAILURE);
 	}
 	if (start_dinner(dinning_rules, philo, thread_id) != EXIT_SUCCESS)
 	{
-		free_struct(philo);
+		free_struct(philo, dinning_rules->nb_philo);
 		free(thread_id);
 		return (EXIT_FAILURE);
 	}
