@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:08:37 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/10 14:09:01 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/11 11:58:50 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,28 +23,33 @@ static void test(t_philo *philo)
 static void	*eating(void *arg)
 {
 	t_philo	*philo;
-	
+
 	philo = (t_philo *)arg;
-	pthread_mutex_lock(&philo->mutex);
+	pthread_mutex_lock(philo->mutex);
 	test(philo);
-	pthread_mutex_unlock(&philo->mutex);
+	pthread_mutex_unlock(philo->mutex);
 	return (NULL);
 }
 
 int	start_dinner(t_rules *dinning_rules, t_philo *philo, pthread_t *thread_id)
 {
-	int		i;
-	t_philo	*current;
-	
+	int				i;
+	t_philo			*current;
+	pthread_mutex_t	g_mutex;
+
 	i = 0;
 	(void)dinning_rules;
+	philo->mutex = &g_mutex;
 	current = philo;
+	pthread_mutex_init(philo->mutex, NULL);
 	while (i < dinning_rules->nb_philo)
 	{
-		pthread_mutex_init(&current->mutex, NULL);
 		if (pthread_create(&thread_id[i], NULL, eating, (void *)current) != 0)
 			return (EXIT_FAILURE);
+		pthread_mutex_lock(philo->mutex);
+		current->right->mutex = philo->mutex;
 		current = current->right;
+		pthread_mutex_unlock(philo->mutex);
 		i++;
 	}
 	i = 0;
@@ -53,10 +58,10 @@ int	start_dinner(t_rules *dinning_rules, t_philo *philo, pthread_t *thread_id)
 	{
 		if (pthread_join(thread_id[i], NULL) != 0)
 			return (EXIT_FAILURE);
-		pthread_mutex_destroy(&current->mutex);
 		current = current->right;
 		i++;
 	}
+	pthread_mutex_destroy(philo->mutex);
 	free_struct(philo, dinning_rules->nb_philo);
 	free(thread_id);
 	return (EXIT_SUCCESS);
