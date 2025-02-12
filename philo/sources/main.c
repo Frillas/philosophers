@@ -6,49 +6,47 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:19:57 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/12 16:46:35 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/12 17:23:15 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/philosophers.h"
 
-static void	initialize_rules(t_rules *dinning_rules)
+static void	initialize_rules(t_rules *dining_rules)
 {
-	pthread_mutex_init(&dinning_rules->print_lock, NULL);
-	pthread_mutex_init(&dinning_rules->fork1_lock, NULL);
-	pthread_mutex_init(&dinning_rules->fork2_lock, NULL);
-	dinning_rules->nb_philo = -1;
-	dinning_rules->time_to_die = -1;
-	dinning_rules->time_to_eat = -1;
-	dinning_rules->time_to_sleep = -1;
-	dinning_rules->meals_per_philo = -1;
-	dinning_rules->error = FALSE;
+	pthread_mutex_init(&dining_rules->print_lock, NULL);
+	dining_rules->nb_philo = -1;
+	dining_rules->time_to_die = -1;
+	dining_rules->time_to_eat = -1;
+	dining_rules->time_to_sleep = -1;
+	dining_rules->meals_per_philo = -1;
+	dining_rules->error = FALSE;
 }
 
-/*static void	print_rules(t_rules *dinning_rules)
+/*static void	print_rules(t_rules *dining_rules)
 {
-	printf("nb philo : %d\n", dinning_rules->nb_philo);
-	printf("time to die : %d\n", dinning_rules->time_to_die);
-	printf("time to eat : %d\n", dinning_rules->time_to_eat);
-	printf("time to sleep : %d\n", dinning_rules->time_to_sleep);
-	if (dinning_rules->meals_per_philo != -1)
-		printf("meals per philo : %d\n", dinning_rules->meals_per_philo);
+	printf("nb philo : %d\n", dining_rules->nb_philo);
+	printf("time to die : %d\n", dining_rules->time_to_die);
+	printf("time to eat : %d\n", dining_rules->time_to_eat);
+	printf("time to sleep : %d\n", dining_rules->time_to_sleep);
+	if (dining_rules->meals_per_philo != -1)
+		printf("meals per philo : %d\n", dining_rules->meals_per_philo);
 }*/
 
 int	main(int argc, char *argv[])
 {
-	t_rules	dinning_rules;
+	t_rules	dining_rules;
 
 	if (argc > 6)
 	{
-		error_msg("Too much arguments\n", &dinning_rules);
+		error_msg("Too much arguments\n", &dining_rules);
 		return (EXIT_FAILURE);
 	}
-	initialize_rules(&dinning_rules);
-	parsing(argc, argv, &dinning_rules);
-	if (dinning_rules.error == TRUE || !(check_arg(&dinning_rules)))
+	initialize_rules(&dining_rules);
+	parsing(argc, argv, &dining_rules);
+	if (dining_rules.error == TRUE || !(check_arg(&dining_rules)))
 		return (EXIT_FAILURE);
-	if (start_philo(&dinning_rules) != 0)
+	if (start_philo(&dining_rules) != 0)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }

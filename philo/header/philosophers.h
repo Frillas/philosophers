@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:46:42 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/12 16:47:02 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/12 17:45:04 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,6 @@ typedef struct s_rules
 	struct timeval		start;
 	struct timeval		end;
 	pthread_mutex_t		print_lock;
-	pthread_mutex_t		fork1_lock;
-	pthread_mutex_t		fork2_lock;
 	t_bool				error;	
 }	t_rules;
 
@@ -64,7 +62,7 @@ typedef struct s_philo_data
 	pthread_mutex_t	*lock;
 }	t_philo_data;
 //parsing.c
-void	parsing(int argc, char *argv[], t_rules *dinning_rules);
+void	parsing(int argc, char *argv[], t_rules *dining_rules);
 //utils
 t_bool	atoi_valid(const char *s, long int *value, t_bool res);
 size_t	ft_strlen(const char *s);
@@ -74,10 +72,10 @@ void	free_struct(t_philo *philo, int nb_philo);
 char	**split(char const *s, char c);
 //error.c
 t_bool	is_empty(char *str);
-t_bool	check_arg(t_rules *dinning_rules);
-void	error_msg(char str[], t_rules *dinning_rules);
+t_bool	check_arg(t_rules *dining_rules);
+void	error_msg(char str[], t_rules *dining_rules);
 //philosophers.c
-int		start_philo(t_rules *dinning_rules);
+int		start_philo(t_rules *dining_rules);
 //dinner.c
 int		start_dinner(t_rules *rules, t_philo *philo, pthread_t *thread_id);
 #endif

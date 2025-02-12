@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 12:42:44 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/07 10:31:04 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/12 17:45:36 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,27 +24,27 @@ t_bool	is_empty(char *str)
 	return (TRUE);
 }
 
-t_bool	check_arg(t_rules *dinning_rules)
+t_bool	check_arg(t_rules *dining_rules)
 {
 	t_bool		check;
 
 	check = TRUE;
-	if (dinning_rules->nb_philo == -1)
+	if (dining_rules->nb_philo == -1)
 	{
 		write(STDERR_FILENO, "no entry for the number of philo\n", 33);
 		check = FALSE;
 	}
-	if (dinning_rules->time_to_die == -1)
+	if (dining_rules->time_to_die == -1)
 	{
 		write(STDERR_FILENO, "no entry for time to die\n", 25);
 		check = FALSE;
 	}
-	if (dinning_rules->time_to_eat == -1)
+	if (dining_rules->time_to_eat == -1)
 	{
 		write(STDERR_FILENO, "ne entry for time to eat\n", 25);
 		check = FALSE;
 	}
-	if (dinning_rules->time_to_sleep == -1)
+	if (dining_rules->time_to_sleep == -1)
 	{
 		write(STDERR_FILENO, "no entry for time to sleep\n", 27);
 		check = FALSE;
@@ -52,8 +52,8 @@ t_bool	check_arg(t_rules *dinning_rules)
 	return (check);
 }
 
-void	error_msg(char str[], t_rules *dinning_rules)
+void	error_msg(char str[], t_rules *dining_rules)
 {
 	write(STDERR_FILENO, str, ft_strlen(str) + 1);
-	dinning_rules->error = TRUE;
+	dining_rules->error = TRUE;
 }

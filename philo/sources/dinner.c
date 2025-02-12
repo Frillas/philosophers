@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:08:37 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/12 16:52:13 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/12 17:33:29 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,13 +61,17 @@ static void	*serve_food(void *arg)
 	{
 		if (philo->index % 2 == 0)
 		{
-			pthread_mutex_lock(&philo->mutex);
-			pthread_mutex_lock(&philo->left->mutex);
+			if (pthread_mutex_lock(&philo->mutex) == 0)
+				printf("%d %d has taken a fork\n", get_time(philo->lst_rules), philo->index);
+			if (pthread_mutex_lock(&philo->left->mutex) == 0)
+				printf("%d %d has taken a fork\n", get_time(philo->lst_rules), philo->index);
 		}
 		else
 		{
-			pthread_mutex_lock(&philo->left->mutex);
-			pthread_mutex_lock(&philo->mutex);
+			if (pthread_mutex_lock(&philo->left->mutex) == 0)
+				printf("%d %d has taken a fork\n", get_time(philo->lst_rules), philo->index);
+			if (pthread_mutex_lock(&philo->mutex) == 0)
+				printf("%d %d has taken a fork\n", get_time(philo->lst_rules), philo->index);
 		}
 		update_status(philo);
 		break ;
@@ -75,16 +79,16 @@ static void	*serve_food(void *arg)
 	return (NULL);
 }
 
-int	start_dinner(t_rules *dinning_rules, t_philo *philo, pthread_t *thread_id)
+int	start_dinner(t_rules *dining_rules, t_philo *philo, pthread_t *thread_id)
 {
 	int				i;
 	t_philo			*current;
 
 	i = 0;
-	(void)dinning_rules;
+	(void)dining_rules;
 	current = philo;
-	gettimeofday(&dinning_rules->start, NULL);
-	while (i < dinning_rules->nb_philo)
+	gettimeofday(&dining_rules->start, NULL);
+	while (i < dining_rules->nb_philo)
 	{
 		if (pthread_create(&thread_id[i], NULL, serve_food,
 				(void *)current) != 0)
@@ -94,7 +98,7 @@ int	start_dinner(t_rules *dinning_rules, t_philo *philo, pthread_t *thread_id)
 	}
 	i = 0;
 	current = philo;
-	while (i < dinning_rules->nb_philo)
+	while (i < dining_rules->nb_philo)
 	{
 		if (pthread_join(thread_id[i], NULL) != 0)
 			return (EXIT_FAILURE);
@@ -103,14 +107,14 @@ int	start_dinner(t_rules *dinning_rules, t_philo *philo, pthread_t *thread_id)
 	}
 	i = 0;
 	current = philo;
-	while (i < dinning_rules->nb_philo)
+	while (i < dining_rules->nb_philo)
 	{
 		pthread_mutex_destroy(&current->mutex);
 		current = current->right;
 		i++;
 	}
-	pthread_mutex_destroy(&dinning_rules->print_lock);
-	free_struct(philo, dinning_rules->nb_philo);
+	pthread_mutex_destroy(&dining_rules->print_lock);
+	free_struct(philo, dining_rules->nb_philo);
 	free(thread_id);
 	return (EXIT_SUCCESS);
 }
