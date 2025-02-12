@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:08:37 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/12 17:33:29 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/12 19:12:35 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,16 +62,32 @@ static void	*serve_food(void *arg)
 		if (philo->index % 2 == 0)
 		{
 			if (pthread_mutex_lock(&philo->mutex) == 0)
+			{
+				pthread_mutex_lock(&philo->lst_rules->print_lock);
 				printf("%d %d has taken a fork\n", get_time(philo->lst_rules), philo->index);
+				pthread_mutex_unlock(&philo->lst_rules->print_lock);
+			}
 			if (pthread_mutex_lock(&philo->left->mutex) == 0)
+			{
+				pthread_mutex_lock(&philo->lst_rules->print_lock);
 				printf("%d %d has taken a fork\n", get_time(philo->lst_rules), philo->index);
+				pthread_mutex_unlock(&philo->lst_rules->print_lock);
+			}
 		}
 		else
 		{
 			if (pthread_mutex_lock(&philo->left->mutex) == 0)
+			{
+				pthread_mutex_lock(&philo->lst_rules->print_lock);
 				printf("%d %d has taken a fork\n", get_time(philo->lst_rules), philo->index);
+				pthread_mutex_unlock(&philo->lst_rules->print_lock);
+			}
 			if (pthread_mutex_lock(&philo->mutex) == 0)
+			{
+				pthread_mutex_lock(&philo->lst_rules->print_lock);
 				printf("%d %d has taken a fork\n", get_time(philo->lst_rules), philo->index);
+				pthread_mutex_unlock(&philo->lst_rules->print_lock);
+			}
 		}
 		update_status(philo);
 		break ;
