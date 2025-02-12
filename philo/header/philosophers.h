@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:46:42 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/11 11:28:40 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/11 16:16:58 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,16 +31,6 @@ typedef enum s_status
 	EAT
 }	t_status;
 
-typedef struct s_philo
-{
-	int					index;
-	int					r_fork;
-	t_status			status;
-	pthread_mutex_t		*mutex;
-	struct s_philo		*right;
-	struct s_philo		*left;
-}	t_philo;
-
 typedef struct s_rules
 {
 	int		nb_philo;
@@ -50,6 +40,17 @@ typedef struct s_rules
 	int		meals_per_philo;
 	t_bool	error;
 }	t_rules;
+
+typedef struct s_philo
+{
+	int					index;
+	int					r_fork;
+	t_status			status;
+	pthread_mutex_t		mutex;
+	struct s_rules		*lst_rules;
+	struct s_philo		*right;
+	struct s_philo		*left;
+}	t_philo;
 
 typedef struct s_philo_data
 {
