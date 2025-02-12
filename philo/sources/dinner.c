@@ -6,21 +6,35 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:08:37 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/12 13:51:50 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/12 16:52:13 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/philosophers.h"
 
+static int	get_time(t_rules *rules)
+{
+	struct timeval	end;
+	int				time;
+
+	gettimeofday(&end, NULL);
+	time = (end.tv_sec - rules->start.tv_sec) * 100
+		+ (end.tv_usec - rules->start.tv_usec) / 100;
+	return (time);
+}
+
 static void	print_status(t_philo *philo)
 {
+	t_rules	*rules;
+
+	rules = philo->lst_rules;
 	pthread_mutex_lock(&philo->lst_rules->print_lock);
 	if (philo->status == EAT)
-		printf("%d is eating\n", philo->index);
+		printf("%d %d is eating\n", get_time(rules), philo->index);
 	else if (philo->status == SLEEP)
-		printf("%d is sleeping\n", philo->index);
+		printf("%d %d is sleeping\n", get_time(rules), philo->index);
 	else if (philo->status == THINK)
-		printf("%d is thinking\n", philo->index);
+		printf("%d %d is thinking\n", get_time(rules), philo->index);
 	pthread_mutex_unlock(&philo->lst_rules->print_lock);
 }
 
@@ -38,7 +52,7 @@ static void	update_status(t_philo *philo)
 	print_status(philo);
 }
 
-static void	*serve(void *arg)
+static void	*serve_food(void *arg)
 {
 	t_philo	*philo;
 
@@ -56,7 +70,7 @@ static void	*serve(void *arg)
 			pthread_mutex_lock(&philo->mutex);
 		}
 		update_status(philo);
-		break;
+		break ;
 	}
 	return (NULL);
 }
@@ -69,9 +83,11 @@ int	start_dinner(t_rules *dinning_rules, t_philo *philo, pthread_t *thread_id)
 	i = 0;
 	(void)dinning_rules;
 	current = philo;
+	gettimeofday(&dinning_rules->start, NULL);
 	while (i < dinning_rules->nb_philo)
 	{
-		if (pthread_create(&thread_id[i], NULL, serve, (void *)current) != 0)
+		if (pthread_create(&thread_id[i], NULL, serve_food,
+				(void *)current) != 0)
 			return (EXIT_FAILURE);
 		current = current->right;
 		i++;

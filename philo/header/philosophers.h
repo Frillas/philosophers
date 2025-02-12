@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:46:42 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/12 11:12:28 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/12 16:47:02 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <stdlib.h>
 # include <stdio.h>
 # include <pthread.h>
+# include <sys/time.h>
 
 typedef enum s_bool
 {
@@ -38,8 +39,12 @@ typedef struct s_rules
 	int					time_to_eat;
 	int					time_to_sleep;
 	int					meals_per_philo;
+	struct timeval		start;
+	struct timeval		end;
 	pthread_mutex_t		print_lock;
-	t_bool				error;
+	pthread_mutex_t		fork1_lock;
+	pthread_mutex_t		fork2_lock;
+	t_bool				error;	
 }	t_rules;
 
 typedef struct s_philo
@@ -47,6 +52,7 @@ typedef struct s_philo
 	int					index;
 	t_status			status;
 	pthread_mutex_t		mutex;
+	double				time_of_death;
 	struct s_rules		*lst_rules;
 	struct s_philo		*right;
 	struct s_philo		*left;

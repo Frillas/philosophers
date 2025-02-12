@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:19:57 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/12 12:01:29 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/12 16:46:35 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 static void	initialize_rules(t_rules *dinning_rules)
 {
 	pthread_mutex_init(&dinning_rules->print_lock, NULL);
+	pthread_mutex_init(&dinning_rules->fork1_lock, NULL);
+	pthread_mutex_init(&dinning_rules->fork2_lock, NULL);
 	dinning_rules->nb_philo = -1;
 	dinning_rules->time_to_die = -1;
 	dinning_rules->time_to_eat = -1;
