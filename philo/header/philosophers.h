@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:46:42 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/11 16:16:58 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/12 11:12:28 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,18 +33,18 @@ typedef enum s_status
 
 typedef struct s_rules
 {
-	int		nb_philo;
-	int		time_to_die;
-	int		time_to_eat;
-	int		time_to_sleep;
-	int		meals_per_philo;
-	t_bool	error;
+	int					nb_philo;
+	int					time_to_die;
+	int					time_to_eat;
+	int					time_to_sleep;
+	int					meals_per_philo;
+	pthread_mutex_t		print_lock;
+	t_bool				error;
 }	t_rules;
 
 typedef struct s_philo
 {
 	int					index;
-	int					r_fork;
 	t_status			status;
 	pthread_mutex_t		mutex;
 	struct s_rules		*lst_rules;

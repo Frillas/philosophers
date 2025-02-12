@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:49:16 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/11 17:01:47 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/12 12:02:30 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static t_philo	*initialize_philo(t_philo *philo, t_rules *dinning_rules)
 {
-	t_philo	*new;
+	t_philo		*new;
 	static int	i;
 
 	new = (t_philo *)malloc(sizeof(t_philo));
