@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:08:37 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/13 11:53:40 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/13 14:37:44 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,26 +46,27 @@ static void	*serve_food(void *arg)
 {
 	t_philo	*philo;
 	t_rules	*rules;
+	pthread_mutex_t	*first_mutex;
+	pthread_mutex_t	*second_mutex;
 
 	philo = (t_philo *)arg;
 	rules = philo->lst_rules;
+	first_mutex = &philo->mutex;
+	second_mutex = &philo->left->mutex;
 	while (1)
 	{
-		if ((current_time() - philo->last_meal_time) > rules->time_to_die)
+		if (current_time() - philo->last_meal_time > rules->time_to_die)
 		{
-			printf("%ld %ld died\n", (current_time() - philo->last_meal_time), rules->time_to_die);
+			printf("%ld %d died\n", step_timer(rules), philo->index);
 			return (NULL);
 		}
-		if (philo->index % 2 == 0)
+		if (philo->index > philo->left->index)
 		{
-			pthread_mutex_lock(&philo->mutex);
-			pthread_mutex_lock(&philo->left->mutex);
+			first_mutex = &philo->left->mutex;
+			second_mutex = &philo->mutex;
 		}
-		else
-		{
-			pthread_mutex_lock(&philo->left->mutex);
-			pthread_mutex_lock(&philo->mutex);
-		}
+		pthread_mutex_lock(first_mutex);
+		pthread_mutex_lock(second_mutex);
 		update_status(philo);
 	}
 	return (NULL);
