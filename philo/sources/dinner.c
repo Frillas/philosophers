@@ -6,11 +6,13 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:08:37 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/13 14:37:44 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/13 14:52:19 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/philosophers.h"
+
+pthread_mutex_t	g_mutexator = PTHREAD_MUTEX_INITIALIZER;
 
 static void	print_status(t_philo *philo)
 {
@@ -65,8 +67,12 @@ static void	*serve_food(void *arg)
 			first_mutex = &philo->left->mutex;
 			second_mutex = &philo->mutex;
 		}
+		pthread_mutex_lock(&g_mutexator);
 		pthread_mutex_lock(first_mutex);
+		printf("%ld %d has taken a fork\n", step_timer(rules), philo->index);
 		pthread_mutex_lock(second_mutex);
+		printf("%ld %d has taken a fork\n", step_timer(rules), philo->index);
+		pthread_mutex_unlock(&g_mutexator);
 		update_status(philo);
 	}
 	return (NULL);
