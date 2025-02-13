@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:08:37 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/13 16:52:54 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/13 17:41:35 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,9 @@ static void	*serve_food(void *arg)
 	{
 		if (current_time() - philo->last_meal_time > rules->time_to_die)
 		{
+			pthread_mutex_lock(&philo->lst_rules->print_lock);
 			printf("%ld %d died\n", step_timer(rules), philo->index);
+			pthread_mutex_unlock(&philo->lst_rules->print_lock);
 			return (NULL);
 		}
 		if (philo->index > philo->left->index)
@@ -71,8 +73,10 @@ static void	*serve_food(void *arg)
 		}
 		pthread_mutex_lock(first_mutex);
 		philo->status = TAKES_FORK;
+		print_status(philo);
 		pthread_mutex_lock(second_mutex);
 		philo->status = TAKES_FORK;
+		print_status(philo);
 		update_status(philo);
 	}
 	return (NULL);
