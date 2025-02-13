@@ -6,13 +6,13 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:08:37 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/13 14:52:19 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/13 16:52:54 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/philosophers.h"
 
-pthread_mutex_t	g_mutexator = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t	mutexator = PTHREAD_MUTEX_INITIALIZER;
 
 static void	print_status(t_philo *philo)
 {
@@ -20,7 +20,9 @@ static void	print_status(t_philo *philo)
 
 	rules = philo->lst_rules;
 	pthread_mutex_lock(&philo->lst_rules->print_lock);
-	if (philo->status == EAT)
+	if (philo->status == TAKES_FORK)
+		printf("%ld %d has taken a fork\n", step_timer(rules), philo->index);
+	else if (philo->status == EAT)
 		printf("%ld %d is eating\n", step_timer(rules), philo->index);
 	else if (philo->status == SLEEP)
 		printf("%ld %d is sleeping\n", step_timer(rules), philo->index);
@@ -46,8 +48,8 @@ static void	update_status(t_philo *philo)
 
 static void	*serve_food(void *arg)
 {
-	t_philo	*philo;
-	t_rules	*rules;
+	t_philo			*philo;
+	t_rules			*rules;
 	pthread_mutex_t	*first_mutex;
 	pthread_mutex_t	*second_mutex;
 
@@ -67,12 +69,10 @@ static void	*serve_food(void *arg)
 			first_mutex = &philo->left->mutex;
 			second_mutex = &philo->mutex;
 		}
-		pthread_mutex_lock(&g_mutexator);
 		pthread_mutex_lock(first_mutex);
-		printf("%ld %d has taken a fork\n", step_timer(rules), philo->index);
+		philo->status = TAKES_FORK;
 		pthread_mutex_lock(second_mutex);
-		printf("%ld %d has taken a fork\n", step_timer(rules), philo->index);
-		pthread_mutex_unlock(&g_mutexator);
+		philo->status = TAKES_FORK;
 		update_status(philo);
 	}
 	return (NULL);

@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:46:42 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/13 14:46:34 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/13 15:55:10 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ typedef enum s_bool
 
 typedef enum s_status
 {
-	SLEEP = 1,
+	TAKES_FORK = 1,
+	SLEEP ,
 	THINK,
 	EAT
 }	t_status;

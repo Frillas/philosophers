@@ -1,0 +1,125 @@
+==95308== ---Thread-Announcement------------------------------------------
+==95308== 
+==95308== Thread #4 was created
+==95308==    at 0x49A29F3: clone (clone.S:76)
+==95308==    by 0x49A38EE: __clone_internal (clone-internal.c:83)
+==95308==    by 0x49116D8: create_thread (pthread_create.c:295)
+==95308==    by 0x49121FF: pthread_create@@GLIBC_2.34 (pthread_create.c:828)
+==95308==    by 0x4853767: ??? (in /usr/libexec/valgrind/vgpreload_helgrind-amd64-linux.so)
+==95308==    by 0x4021A8: start_dinner (dinner.c:92)
+==95308==    by 0x401EAD: start_philo (philosophers.c:98)
+==95308==    by 0x40127A: main (main.c:49)
+==95308== 
+==95308== ---Thread-Announcement------------------------------------------
+==95308== 
+==95308== Thread #2 was created
+==95308==    at 0x49A29F3: clone (clone.S:76)
+==95308==    by 0x49A38EE: __clone_internal (clone-internal.c:83)
+==95308==    by 0x49116D8: create_thread (pthread_create.c:295)
+==95308==    by 0x49121FF: pthread_create@@GLIBC_2.34 (pthread_create.c:828)
+==95308==    by 0x4853767: ??? (in /usr/libexec/valgrind/vgpreload_helgrind-amd64-linux.so)
+==95308==    by 0x4021A8: start_dinner (dinner.c:92)
+==95308==    by 0x401EAD: start_philo (philosophers.c:98)
+==95308==    by 0x40127A: main (main.c:49)
+==95308== 
+==95308== ----------------------------------------------------------------
+==95308== 
+==95308==  Lock at 0x1FFEFFFAF0 was first observed
+==95308==    at 0x4854BFE: pthread_mutex_init (in /usr/libexec/valgrind/vgpreload_helgrind-amd64-linux.so)
+==95308==    by 0x4012CC: initialize_rules (main.c:17)
+==95308==    by 0x401230: main (main.c:45)
+==95308==  Address 0x1ffefffaf0 is on thread #1's stack
+==95308==  in frame #5, created by main (main.c:37)
+==95308== 
+==95308== Possible data race during write of size 1 at 0x4AA94D0 by thread #4
+==95308== Locks held: 1, at address 0x1FFEFFFAF0
+==95308==    at 0x48597B4: mempcpy (in /usr/libexec/valgrind/vgpreload_helgrind-amd64-linux.so)
+==95308==    by 0x4908664: _IO_new_file_xsputn (fileops.c:1235)
+==95308==    by 0x4908664: _IO_file_xsputn@@GLIBC_2.2.5 (fileops.c:1196)
+==95308==    by 0x48F2CA8: outstring_func (vfprintf-internal.c:239)
+==95308==    by 0x48F2CA8: __vfprintf_internal (vfprintf-internal.c:1516)
+==95308==    by 0x48DD79E: printf (printf.c:33)
+==95308==    by 0x40255B: print_status (dinner.c:30)
+==95308==    by 0x40244B: update_status (dinner.c:46)
+==95308==    by 0x4023A4: serve_food (dinner.c:76)
+==95308==    by 0x485396A: ??? (in /usr/libexec/valgrind/vgpreload_helgrind-amd64-linux.so)
+==95308==    by 0x4911AC2: start_thread (pthread_create.c:442)
+==95308==    by 0x49A2A03: clone (clone.S:100)
+==95308==  This conflicts with a previous access by thread #2, after
+==95308==    at 0x48511E6: ??? (in /usr/libexec/valgrind/vgpreload_helgrind-amd64-linux.so)
+==95308==    by 0x40257B: print_status (dinner.c:31)
+==95308==    by 0x40244B: update_status (dinner.c:46)
+==95308==    by 0x4023A4: serve_food (dinner.c:76)
+==95308==    by 0x485396A: ??? (in /usr/libexec/valgrind/vgpreload_helgrind-amd64-linux.so)
+==95308==    by 0x4911AC2: start_thread (pthread_create.c:442)
+==95308==    by 0x49A2A03: clone (clone.S:100)
+==95308==  but before
+==95308==    (the end of the thread)
+==95308==  Address 0x4aa94d0 is 0 bytes inside a block of size 1,024 alloc'd
+==95308==    at 0x484A919: malloc (in /usr/libexec/valgrind/vgpreload_helgrind-amd64-linux.so)
+==95308==    by 0x48FBBA3: _IO_file_doallocate (filedoalloc.c:101)
+==95308==    by 0x490ACDF: _IO_doallocbuf (genops.c:347)
+==95308==    by 0x4909F5F: _IO_file_overflow@@GLIBC_2.2.5 (fileops.c:744)
+==95308==    by 0x49086D4: _IO_new_file_xsputn (fileops.c:1243)
+==95308==    by 0x49086D4: _IO_file_xsputn@@GLIBC_2.2.5 (fileops.c:1196)
+==95308==    by 0x48F2CA8: outstring_func (vfprintf-internal.c:239)
+==95308==    by 0x48F2CA8: __vfprintf_internal (vfprintf-internal.c:1516)
+==95308==    by 0x48DD79E: printf (printf.c:33)
+==95308==    by 0x4024EF: print_status (dinner.c:26)
+==95308==    by 0x4023CF: update_status (dinner.c:37)
+==95308==    by 0x4023A4: serve_food (dinner.c:76)
+==95308==    by 0x485396A: ??? (in /usr/libexec/valgrind/vgpreload_helgrind-amd64-linux.so)
+==95308==    by 0x4911AC2: start_thread (pthread_create.c:442)
+==95308==  Block was alloc'd by thread #2
+==95308== 
+==95308== ----------------------------------------------------------------
+==95308== 
+==95308==  Lock at 0x1FFEFFFAF0 was first observed
+==95308==    at 0x4854BFE: pthread_mutex_init (in /usr/libexec/valgrind/vgpreload_helgrind-amd64-linux.so)
+==95308==    by 0x4012CC: initialize_rules (main.c:17)
+==95308==    by 0x401230: main (main.c:45)
+==95308==  Address 0x1ffefffaf0 is on thread #1's stack
+==95308==  in frame #5, created by main (main.c:37)
+==95308== 
+==95308== Possible data race during write of size 1 at 0x4AA94D3 by thread #4
+==95308== Locks held: 1, at address 0x1FFEFFFAF0
+==95308==    at 0x4859796: mempcpy (in /usr/libexec/valgrind/vgpreload_helgrind-amd64-linux.so)
+==95308==    by 0x4908664: _IO_new_file_xsputn (fileops.c:1235)
+==95308==    by 0x4908664: _IO_file_xsputn@@GLIBC_2.2.5 (fileops.c:1196)
+==95308==    by 0x48F2FC9: outstring_func (vfprintf-internal.c:239)
+==95308==    by 0x48F2FC9: __vfprintf_internal (vfprintf-internal.c:1593)
+==95308==    by 0x48DD79E: printf (printf.c:33)
+==95308==    by 0x40255B: print_status (dinner.c:30)
+==95308==    by 0x40244B: update_status (dinner.c:46)
+==95308==    by 0x4023A4: serve_food (dinner.c:76)
+==95308==    by 0x485396A: ??? (in /usr/libexec/valgrind/vgpreload_helgrind-amd64-linux.so)
+==95308==    by 0x4911AC2: start_thread (pthread_create.c:442)
+==95308==    by 0x49A2A03: clone (clone.S:100)
+==95308==  This conflicts with a previous access by thread #2, after
+==95308==    at 0x48511E6: ??? (in /usr/libexec/valgrind/vgpreload_helgrind-amd64-linux.so)
+==95308==    by 0x40257B: print_status (dinner.c:31)
+==95308==    by 0x40244B: update_status (dinner.c:46)
+==95308==    by 0x4023A4: serve_food (dinner.c:76)
+==95308==    by 0x485396A: ??? (in /usr/libexec/valgrind/vgpreload_helgrind-amd64-linux.so)
+==95308==    by 0x4911AC2: start_thread (pthread_create.c:442)
+==95308==    by 0x49A2A03: clone (clone.S:100)
+==95308==  but before
+==95308==    (the end of the thread)
+==95308==  Address 0x4aa94d3 is 3 bytes inside a block of size 1,024 alloc'd
+==95308==    at 0x484A919: malloc (in /usr/libexec/valgrind/vgpreload_helgrind-amd64-linux.so)
+==95308==    by 0x48FBBA3: _IO_file_doallocate (filedoalloc.c:101)
+==95308==    by 0x490ACDF: _IO_doallocbuf (genops.c:347)
+==95308==    by 0x4909F5F: _IO_file_overflow@@GLIBC_2.2.5 (fileops.c:744)
+==95308==    by 0x49086D4: _IO_new_file_xsputn (fileops.c:1243)
+==95308==    by 0x49086D4: _IO_file_xsputn@@GLIBC_2.2.5 (fileops.c:1196)
+==95308==    by 0x48F2CA8: outstring_func (vfprintf-internal.c:239)
+==95308==    by 0x48F2CA8: __vfprintf_internal (vfprintf-internal.c:1516)
+==95308==    by 0x48DD79E: printf (printf.c:33)
+==95308==    by 0x4024EF: print_status (dinner.c:26)
+==95308==    by 0x4023CF: update_status (dinner.c:37)
+==95308==    by 0x4023A4: serve_food (dinner.c:76)
+==95308==    by 0x485396A: ??? (in /usr/libexec/valgrind/vgpreload_helgrind-amd64-linux.so)
+==95308==    by 0x4911AC2: start_thread (pthread_create.c:442)
+==95308==  Block was alloc'd by thread #2
+==95308== 
+
