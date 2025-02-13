@@ -6,22 +6,11 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:08:37 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/12 19:12:35 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/13 11:53:40 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/philosophers.h"
-
-static int	get_time(t_rules *rules)
-{
-	struct timeval	end;
-	int				time;
-
-	gettimeofday(&end, NULL);
-	time = (end.tv_sec - rules->start.tv_sec) * 100
-		+ (end.tv_usec - rules->start.tv_usec) / 100;
-	return (time);
-}
 
 static void	print_status(t_philo *philo)
 {
@@ -30,11 +19,11 @@ static void	print_status(t_philo *philo)
 	rules = philo->lst_rules;
 	pthread_mutex_lock(&philo->lst_rules->print_lock);
 	if (philo->status == EAT)
-		printf("%d %d is eating\n", get_time(rules), philo->index);
+		printf("%ld %d is eating\n", step_timer(rules), philo->index);
 	else if (philo->status == SLEEP)
-		printf("%d %d is sleeping\n", get_time(rules), philo->index);
+		printf("%ld %d is sleeping\n", step_timer(rules), philo->index);
 	else if (philo->status == THINK)
-		printf("%d %d is thinking\n", get_time(rules), philo->index);
+		printf("%ld %d is thinking\n", step_timer(rules), philo->index);
 	pthread_mutex_unlock(&philo->lst_rules->print_lock);
 }
 
@@ -43,6 +32,7 @@ static void	update_status(t_philo *philo)
 	philo->status = EAT;
 	print_status(philo);
 	usleep(philo->lst_rules->time_to_eat);
+	philo->last_meal_time = current_time();
 	philo->status = SLEEP;
 	print_status(philo);
 	pthread_mutex_unlock(&philo->mutex);
@@ -55,42 +45,28 @@ static void	update_status(t_philo *philo)
 static void	*serve_food(void *arg)
 {
 	t_philo	*philo;
+	t_rules	*rules;
 
 	philo = (t_philo *)arg;
+	rules = philo->lst_rules;
 	while (1)
 	{
+		if ((current_time() - philo->last_meal_time) > rules->time_to_die)
+		{
+			printf("%ld %ld died\n", (current_time() - philo->last_meal_time), rules->time_to_die);
+			return (NULL);
+		}
 		if (philo->index % 2 == 0)
 		{
-			if (pthread_mutex_lock(&philo->mutex) == 0)
-			{
-				pthread_mutex_lock(&philo->lst_rules->print_lock);
-				printf("%d %d has taken a fork\n", get_time(philo->lst_rules), philo->index);
-				pthread_mutex_unlock(&philo->lst_rules->print_lock);
-			}
-			if (pthread_mutex_lock(&philo->left->mutex) == 0)
-			{
-				pthread_mutex_lock(&philo->lst_rules->print_lock);
-				printf("%d %d has taken a fork\n", get_time(philo->lst_rules), philo->index);
-				pthread_mutex_unlock(&philo->lst_rules->print_lock);
-			}
+			pthread_mutex_lock(&philo->mutex);
+			pthread_mutex_lock(&philo->left->mutex);
 		}
 		else
 		{
-			if (pthread_mutex_lock(&philo->left->mutex) == 0)
-			{
-				pthread_mutex_lock(&philo->lst_rules->print_lock);
-				printf("%d %d has taken a fork\n", get_time(philo->lst_rules), philo->index);
-				pthread_mutex_unlock(&philo->lst_rules->print_lock);
-			}
-			if (pthread_mutex_lock(&philo->mutex) == 0)
-			{
-				pthread_mutex_lock(&philo->lst_rules->print_lock);
-				printf("%d %d has taken a fork\n", get_time(philo->lst_rules), philo->index);
-				pthread_mutex_unlock(&philo->lst_rules->print_lock);
-			}
+			pthread_mutex_lock(&philo->left->mutex);
+			pthread_mutex_lock(&philo->mutex);
 		}
 		update_status(philo);
-		break ;
 	}
 	return (NULL);
 }

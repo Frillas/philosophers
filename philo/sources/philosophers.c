@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:49:16 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/12 17:32:13 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/13 10:08:36 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ static t_philo	*initialize_philo(t_philo *philo, t_rules *dining_rules)
 		return (NULL);
 	new->index = (i + 1);
 	new->status = 1;
+	new->last_meal_time = current_time();
 	new->lst_rules = dining_rules;
 	new->right = NULL;
 	new->left = NULL;

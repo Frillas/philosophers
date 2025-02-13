@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:21:23 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/12 17:24:27 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/13 11:22:09 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,11 @@ static void	add_rules(long int value, t_rules *dining_rules)
 	if (i == 0)
 		dining_rules->nb_philo = value;
 	else if (i == 1)
-		dining_rules->time_to_die = value * 100;
+		dining_rules->time_to_die = value;
 	else if (i == 2)
-		dining_rules->time_to_eat = value * 100;
+		dining_rules->time_to_eat = value * 1000;
 	else if (i == 3)
-		dining_rules->time_to_sleep = value * 100;
+		dining_rules->time_to_sleep = value * 1000;
 	else if (i == 4)
 		dining_rules->meals_per_philo = value;
 	else if (i > 4)

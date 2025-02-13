@@ -6,7 +6,7 @@ RM = rm -f
 OBJ_DIR = ./obj
 
 SRC = sources/main.c sources/parsing.c sources/error.c sources/split.c \
-	  sources/utils.c sources/philosophers.c sources/dinner.c
+	  sources/utils.c sources/philosophers.c sources/dinner.c sources/time.c
 
 OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)
 
