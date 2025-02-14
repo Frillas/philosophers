@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 10:05:18 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/14 11:10:40 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/14 17:24:40 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,10 @@
 
 int	check_last_meal(t_philo *philo, t_rules *rules)
 {
+	if (philo->last_meal_time == -1 || philo->status == DEAD)
+		return (0);
 	if (current_time() - philo->last_meal_time > rules->time_to_die)
-	{ 
+	{
 		philo->status = DEAD;
 		print_status(philo);
 		return (1);
@@ -25,7 +27,7 @@ int	check_last_meal(t_philo *philo, t_rules *rules)
 
 long	current_time(void)
 {
-	struct	timeval	start;
+	struct timeval	start;
 	long			time;
 
 	gettimeofday(&start, NULL);
