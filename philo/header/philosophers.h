@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:46:42 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/13 15:55:10 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/14 12:09:08 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,10 @@ typedef enum s_bool
 typedef enum s_status
 {
 	TAKES_FORK = 1,
-	SLEEP ,
+	SLEEP,
 	THINK,
-	EAT
+	EAT,
+	DEAD
 }	t_status;
 
 typedef struct s_rules
@@ -57,14 +58,10 @@ typedef struct s_philo
 	struct s_philo		*left;
 }	t_philo;
 
-typedef struct s_philo_data
-{
-	struct s_philo	*lst_philo;
-	pthread_mutex_t	*lock;
-}	t_philo_data;
 //parsing.c
 void	parsing(int argc, char *argv[], t_rules *dining_rules);
 //utils
+void	print_status(t_philo *philo);
 t_bool	atoi_valid(const char *s, long int *value, t_bool res);
 size_t	ft_strlen(const char *s);
 void	free_2d(char **result);
@@ -80,6 +77,7 @@ int		start_philo(t_rules *dining_rules);
 //dinner.c
 int		start_dinner(t_rules *rules, t_philo *philo, pthread_t *thread_id);
 //time.c
+int		check_last_meal(t_philo *philo, t_rules *rules);
 long	current_time(void);
 long	step_timer(t_rules *rules);
 #endif
