@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:21:23 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/13 13:55:41 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/15 18:36:42 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static void	add_rules(long int value, t_rules *dining_rules)
 	else if (i == 4)
 		dining_rules->meals_per_philo = value;
 	else if (i > 4)
-		error_msg("Too many arguments\n", dining_rules);
+		error_msg("Too much arguments\n", dining_rules);
 	i++;
 }
 

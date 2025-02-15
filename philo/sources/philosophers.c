@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:49:16 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/15 12:22:48 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/15 18:57:37 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,15 @@ static int	init_philo(t_philo *philo, t_rules *dining_rules, t_philo **new)
 	static int	i;
 
 	*new = (t_philo *)malloc(sizeof(t_philo));
-	if (new == NULL || pthread_mutex_init(&(*new)->mutex, NULL) != 0)
+	if (new == NULL || (pthread_mutex_init(&(*new)->mutex, NULL) != 0))
 	{
-		free_struct(philo, dining_rules->nb_philo);
+		free_struct(philo, i);
 		return (1);
 	}
 	(*new)->index = (i + 1);
-	(*new)->status = 1;
+	(*new)->status = THINK;
 	(*new)->last_meal_time = current_time();
+	(*new)->meals_eaten = 0;
 	(*new)->lst_rules = dining_rules;
 	(*new)->right = NULL;
 	(*new)->left = NULL;

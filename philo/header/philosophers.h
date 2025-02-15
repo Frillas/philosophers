@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:46:42 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/14 16:35:53 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/15 18:56:21 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ typedef enum s_bool
 
 typedef enum s_status
 {
-	TAKES_FORK = 1,
+	UNCHANGED,
+	TAKES_FORK,
 	SLEEP,
 	THINK,
 	EAT,
@@ -43,7 +44,6 @@ typedef struct s_rules
 	int					meals_per_philo;
 	struct timeval		start;
 	struct timeval		end;
-	pthread_mutex_t		print_lock;
 	pthread_mutex_t		status_lock;
 	t_bool				error;
 }	t_rules;
@@ -54,6 +54,7 @@ typedef struct s_philo
 	t_status			status;
 	pthread_mutex_t		mutex;
 	long				last_meal_time;
+	int					meals_eaten;
 	struct s_rules		*lst_rules;
 	struct s_philo		*right;
 	struct s_philo		*left;
