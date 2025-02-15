@@ -6,58 +6,53 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:49:16 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/14 16:21:25 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/15 12:22:48 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/philosophers.h"
 
-static t_philo	*initialize_philo(t_philo *philo, t_rules *dining_rules)
+static int	init_philo(t_philo *philo, t_rules *dining_rules, t_philo **new)
 {
-	t_philo		*new;
 	static int	i;
 
-	new = (t_philo *)malloc(sizeof(t_philo));
-	if (new == NULL)
+	*new = (t_philo *)malloc(sizeof(t_philo));
+	if (new == NULL || pthread_mutex_init(&(*new)->mutex, NULL) != 0)
 	{
 		free_struct(philo, dining_rules->nb_philo);
-		return (NULL);
+		return (1);
 	}
-	if (pthread_mutex_init(&new->mutex, NULL) != 0)
-		return (NULL);
-	new->index = (i + 1);
-	new->status = 1;
-	new->last_meal_time = -1;
-	new->lst_rules = dining_rules;
-	new->right = NULL;
-	new->left = NULL;
+	(*new)->index = (i + 1);
+	(*new)->status = 1;
+	(*new)->last_meal_time = current_time();
+	(*new)->lst_rules = dining_rules;
+	(*new)->right = NULL;
+	(*new)->left = NULL;
 	i++;
-	return (new);
+	return (0);
 }
 
-static t_philo	*create_philo(t_rules *dining_rules, t_philo **end)
+static t_philo	*create_philo(t_rules *rules, t_philo **end, t_philo **new)
 {
 	int		i;
 	t_philo	*philo;
-	t_philo	*new;
 
 	i = 0;
 	philo = NULL;
-	while (i < dining_rules->nb_philo)
+	while (i < rules->nb_philo)
 	{
-		new = initialize_philo(philo, dining_rules);
-		if (new == NULL)
+		if (init_philo(philo, rules, new) != 0)
 			return (NULL);
 		else if (philo == NULL)
 		{
-			philo = new;
-			*end = new;
+			philo = *new;
+			*end = *new;
 		}
 		else
 		{
-			(*end)->right = new;
-			new->left = (*end);
-			(*end) = new;
+			(*end)->right = *new;
+			(*new)->left = *end;
+			(*end) = *new;
 		}
 		i++;
 	}
@@ -84,10 +79,11 @@ int	start_philo(t_rules *dining_rules)
 {
 	t_philo		*philo;
 	t_philo		*end;
+	t_philo		*new;
 	pthread_t	*thread_id;
 
 	end = NULL;
-	philo = create_philo(dining_rules, &end);
+	philo = create_philo(dining_rules, &end, &new);
 	if (philo == NULL)
 		return (EXIT_FAILURE);
 	if (create_thread_id(dining_rules, &thread_id) != EXIT_SUCCESS)

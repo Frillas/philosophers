@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 10:05:18 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/14 17:24:40 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/15 10:56:09 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,20 @@
 
 int	check_last_meal(t_philo *philo, t_rules *rules)
 {
-	if (philo->last_meal_time == -1 || philo->status == DEAD)
-		return (0);
+	pthread_mutex_lock(&philo->lst_rules->status_lock);
+	if (philo->status == DEAD)
+	{
+		pthread_mutex_unlock(&philo->lst_rules->status_lock);
+		return (1);
+	}
 	if (current_time() - philo->last_meal_time > rules->time_to_die)
 	{
 		philo->status = DEAD;
 		print_status(philo);
+		pthread_mutex_unlock(&philo->lst_rules->status_lock);
 		return (1);
 	}
+	pthread_mutex_unlock(&philo->lst_rules->status_lock);
 	return (0);
 }
 

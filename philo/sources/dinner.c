@@ -6,32 +6,32 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:08:37 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/14 17:25:02 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/15 12:25:40 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/philosophers.h"
 
-static void	eating_spaghetti(t_philo *philo, long duration)
+static void	eat_or_sleep(t_philo *philo, long duration, int i)
 {
 	t_philo	*current;
-	t_rules	*rules;
-	int		i;
 	long	runtime;
 
 	current = philo;
-	rules = philo->lst_rules;
-	i = 0;
 	runtime = 0;
 	while (runtime < duration)
 	{
 		usleep(10000);
-		while (i < rules->nb_philo)
+		while (i < philo->lst_rules->nb_philo)
 		{
 			pthread_mutex_lock(&philo->lst_rules->status_lock);
 			if (current->status != EAT)
-				check_last_meal(current, rules);
-			pthread_mutex_unlock(&philo->lst_rules->status_lock);
+			{
+				pthread_mutex_unlock(&philo->lst_rules->status_lock);
+				check_last_meal(current, philo->lst_rules);
+			}
+			else
+				pthread_mutex_unlock(&philo->lst_rules->status_lock);
 			current = current->right;
 			i++;
 		}
@@ -44,17 +44,17 @@ static void	update_status(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->lst_rules->status_lock);
 	philo->status = EAT;
-	pthread_mutex_unlock(&philo->lst_rules->status_lock);
 	print_status(philo);
-	eating_spaghetti(philo, philo->lst_rules->time_to_eat);
+	pthread_mutex_unlock(&philo->lst_rules->status_lock);
+	eat_or_sleep(philo, philo->lst_rules->time_to_eat, 0);
 	philo->last_meal_time = current_time();
 	pthread_mutex_lock(&philo->lst_rules->status_lock);
 	philo->status = SLEEP;
-	pthread_mutex_unlock(&philo->lst_rules->status_lock);
 	print_status(philo);
+	pthread_mutex_unlock(&philo->lst_rules->status_lock);
 	pthread_mutex_unlock(&philo->mutex);
 	pthread_mutex_unlock(&philo->left->mutex);
-	eating_spaghetti(philo, philo->lst_rules->time_to_sleep);
+	eat_or_sleep(philo, philo->lst_rules->time_to_sleep, 0);
 	if (philo->status != DEAD)
 	{
 		pthread_mutex_lock(&philo->lst_rules->status_lock);
@@ -75,37 +75,44 @@ static void	*serve_food(void *arg)
 	rules = philo->lst_rules;
 	first_mutex = &philo->mutex;
 	second_mutex = &philo->left->mutex;
+	if (philo->index > philo->left->index)
+	{
+		first_mutex = &philo->left->mutex;
+		second_mutex = &philo->mutex;
+	}
 	while (1)
 	{
-		if (philo->status == DEAD || check_last_meal(philo, rules) != 0)
-			return (NULL);
-		if (philo->index > philo->left->index)
+		pthread_mutex_lock(&philo->lst_rules->status_lock);
+		if (philo->status == DEAD)
 		{
-			first_mutex = &philo->left->mutex;
-			second_mutex = &philo->mutex;
+			pthread_mutex_unlock(&philo->lst_rules->status_lock);
+			return (NULL);
 		}
+		pthread_mutex_unlock(&philo->lst_rules->status_lock);
 		pthread_mutex_lock(first_mutex);
 		check_last_meal(philo, rules);
+		pthread_mutex_lock(&rules->status_lock);
 		if (philo->status != DEAD)
 		{
-			pthread_mutex_lock(&rules->status_lock);
 			philo->status = TAKES_FORK;
-			pthread_mutex_unlock(&rules->status_lock);
 			print_status(philo);
 		}
+		pthread_mutex_unlock(&rules->status_lock);
 		pthread_mutex_lock(second_mutex);
-		if (philo->status == DEAD || (check_last_meal(philo, rules) != 0))
+		check_last_meal(philo, rules);
+		pthread_mutex_lock(&rules->status_lock);
+		if (philo->status == DEAD)
 		{
 			pthread_mutex_unlock(first_mutex);
 			pthread_mutex_unlock(second_mutex);
+			pthread_mutex_unlock(&rules->status_lock);
 			return (NULL);
 		}
 		else
 		{
-			pthread_mutex_lock(&rules->status_lock);
 			philo->status = TAKES_FORK;
-			pthread_mutex_unlock(&rules->status_lock);
 			print_status(philo);
+			pthread_mutex_unlock(&rules->status_lock);
 			update_status(philo);
 		}
 	}
