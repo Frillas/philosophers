@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:08:37 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/16 15:44:32 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/16 16:30:13 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ static int	check_status(t_philo *philo, t_status status)
 	{
 		philo->status = status;
 		print_status(philo);
+		if (philo->status == EAT)
+			philo->meals_eaten++;
 		pthread_mutex_unlock(&philo->lst_rules->status_lock);
 		return (0);
 	}

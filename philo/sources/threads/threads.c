@@ -6,28 +6,31 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 11:48:59 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/16 15:34:23 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/16 16:15:58 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../header/philosophers.h"
 
-static int	destroy_mutexes(t_philo *philo, t_rules *dining_rules)
+static int	launch_threads(t_philo *philo, pthread_t *thread, pthread_t *moni)
 {
 	t_philo	*current;
+	t_rules	*dining_rules;
 	int		i;
 
 	i = 0;
 	current = philo;
+	dining_rules = philo->lst_rules;
+	if (pthread_create(moni, NULL, supervise, (void *)philo) != 0)
+		return (EXIT_FAILURE);
 	while (i < dining_rules->nb_philo)
 	{
-		if (pthread_mutex_destroy(&current->mutex) != 0)
+		if (pthread_create(&thread[i], NULL, serve_food,
+				(void *)current) != 0)
 			return (EXIT_FAILURE);
 		current = current->right;
 		i++;
 	}
-	if (pthread_mutex_destroy(&dining_rules->status_lock) != 0)
-		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
 
@@ -52,25 +55,22 @@ static int	wait_threads(t_philo *philo, pthread_t *thread, pthread_t *monitor)
 	return (EXIT_SUCCESS);
 }
 
-static int	launch_threads(t_philo *philo, pthread_t *thread, pthread_t *moni)
+static int	destroy_mutexes(t_philo *philo, t_rules *dining_rules)
 {
 	t_philo	*current;
-	t_rules	*dining_rules;
 	int		i;
 
 	i = 0;
 	current = philo;
-	dining_rules = philo->lst_rules;
-	if (pthread_create(moni, NULL, supervise, (void *)philo) != 0)
-		return (EXIT_FAILURE);
 	while (i < dining_rules->nb_philo)
 	{
-		if (pthread_create(&thread[i], NULL, serve_food,
-				(void *)current) != 0)
+		if (pthread_mutex_destroy(&current->mutex) != 0)
 			return (EXIT_FAILURE);
 		current = current->right;
 		i++;
 	}
+	if (pthread_mutex_destroy(&dining_rules->status_lock) != 0)
+		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
 
