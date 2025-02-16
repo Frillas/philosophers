@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:46:42 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/15 18:56:21 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/16 11:36:28 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,4 +82,6 @@ int		start_dinner(t_rules *rules, t_philo *philo, pthread_t *thread_id);
 int		check_last_meal(t_philo *philo, t_rules *rules);
 long	current_time(void);
 long	step_timer(t_rules *rules);
+//supervise.c
+void	*supervise(void *arg);
 #endif
