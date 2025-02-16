@@ -6,11 +6,11 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 11:48:59 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/16 12:31:57 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/16 15:34:23 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../header/philosophers.h"
+#include "../../header/philosophers.h"
 
 static int	destroy_mutexes(t_philo *philo, t_rules *dining_rules)
 {

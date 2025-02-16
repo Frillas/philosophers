@@ -6,11 +6,11 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 09:18:20 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/16 15:16:19 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/16 15:44:42 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../header/philosophers.h"
+#include "../../header/philosophers.h"
 
 static void	check_state(t_philo *current, t_rules *rules)
 {

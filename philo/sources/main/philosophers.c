@@ -6,11 +6,11 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:49:16 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/16 13:53:43 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/16 15:29:20 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../header/philosophers.h"
+#include "../../header/philosophers.h"
 
 static int	init_philo(t_philo *philo, t_rules *dining_rules, t_philo **new)
 {

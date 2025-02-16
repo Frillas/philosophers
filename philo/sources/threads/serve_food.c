@@ -6,11 +6,11 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:08:37 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/16 14:07:19 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/16 15:44:32 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../header/philosophers.h"
+#include "../../header/philosophers.h"
 
 static void	eat_or_sleep(long duration)
 {
