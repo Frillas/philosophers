@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 12:42:44 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/16 14:01:43 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/16 17:45:56 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,10 @@ t_bool	check_arg(t_rules *dining_rules)
 	t_bool		check;
 
 	check = TRUE;
-	if (dining_rules->nb_philo == -1)
+	if (dining_rules->nb_philo == -1 || dining_rules->nb_philo == 0)
 	{
-		write(STDERR_FILENO, "no entry for the number of philo\n", 33);
+		if (dining_rules->nb_philo == -1)
+			write(STDERR_FILENO, "no entry for the number of philo\n", 33);
 		check = FALSE;
 	}
 	if (dining_rules->time_to_die == -1)

@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:21:23 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/16 14:01:25 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/16 17:37:13 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 static void	add_rules(long int value, t_rules *dining_rules)
 {
 	static int	i;
-	int			test;
+	long		test;
 
-	test = value * 100;
+	test = value * 1000;
 	if ((i > 0 && i < 4) && (test < 0))
 	{
 		error_msg("Invalid argument\n", dining_rules);
@@ -71,13 +71,13 @@ void	parsing(int argc, char *argv[], t_rules *dining_rules)
 	{
 		if (is_empty(argv[i]))
 		{
-			dining_rules->error = TRUE;
+			error_msg("empty argument\n", dining_rules);
 			return ;
 		}
 		result = split(argv[i], ' ');
 		if (result == NULL)
 		{
-			error_msg("Memory allocation failed\n", dining_rules);
+			error_msg("Split : memory allocation failed\n", dining_rules);
 			return ;
 		}
 		else

@@ -6,21 +6,20 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:08:37 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/16 16:30:13 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/16 17:59:05 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../header/philosophers.h"
 
-static void	eat_or_sleep(long duration)
+static void	swap(t_philo *philo, pthread_mutex_t **one, pthread_mutex_t **two)
 {
-	long	runtime;
-
-	runtime = 0;
-	while (runtime < duration)
+	*one = &philo->mutex;
+	*two = &philo->left->mutex;
+	if (philo->index > philo->left->index)
 	{
-		usleep(10000);
-		runtime += 10000;
+		*one = &philo->left->mutex;
+		*two = &philo->mutex;
 	}
 }
 
@@ -45,6 +44,18 @@ static int	check_status(t_philo *philo, t_status status)
 	return (0);
 }
 
+static void	eat_or_sleep(long duration)
+{
+	long	runtime;
+
+	runtime = 0;
+	while (runtime < duration)
+	{
+		usleep(10000);
+		runtime += 10000;
+	}
+}
+
 static void	philo_set_state(t_philo *philo)
 {
 	check_status(philo, EAT);
@@ -55,17 +66,6 @@ static void	philo_set_state(t_philo *philo)
 	pthread_mutex_unlock(&philo->left->mutex);
 	eat_or_sleep(philo->lst_rules->time_to_sleep);
 	check_status(philo, THINK);
-}
-
-static void	swap(t_philo *philo, pthread_mutex_t **one, pthread_mutex_t **two)
-{
-	*one = &philo->mutex;
-	*two = &philo->left->mutex;
-	if (philo->index > philo->left->index)
-	{
-		*one = &philo->left->mutex;
-		*two = &philo->mutex;
-	}
 }
 
 void	*serve_food(void *arg)

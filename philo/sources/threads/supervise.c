@@ -6,13 +6,13 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 09:18:20 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/16 16:34:00 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/16 16:41:03 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../header/philosophers.h"
 
-static void	is_philo_dead(t_philo *current, t_rules *rules)
+static void	verify_philo_end(t_philo *current, t_rules *rules)
 {
 	if (current->meals_eaten == rules->meals_per_philo)
 		current->status = DEAD;
@@ -36,7 +36,7 @@ static int	monitor_philo(t_philo *current, t_rules *rules)
 		if (current->status == DEAD)
 			j++;
 		if (current->status != EAT && current->status != DEAD)
-			is_philo_dead(current, rules);
+			verify_philo_end(current, rules);
 		pthread_mutex_unlock(&rules->status_lock);
 		i++;
 		current = current->right;
