@@ -6,30 +6,11 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 10:05:18 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/15 10:56:09 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/16 14:37:03 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../header/philosophers.h"
-
-int	check_last_meal(t_philo *philo, t_rules *rules)
-{
-	pthread_mutex_lock(&philo->lst_rules->status_lock);
-	if (philo->status == DEAD)
-	{
-		pthread_mutex_unlock(&philo->lst_rules->status_lock);
-		return (1);
-	}
-	if (current_time() - philo->last_meal_time > rules->time_to_die)
-	{
-		philo->status = DEAD;
-		print_status(philo);
-		pthread_mutex_unlock(&philo->lst_rules->status_lock);
-		return (1);
-	}
-	pthread_mutex_unlock(&philo->lst_rules->status_lock);
-	return (0);
-}
+#include "../../header/philosophers.h"
 
 long	current_time(void)
 {

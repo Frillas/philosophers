@@ -6,11 +6,11 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 12:24:35 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/15 10:57:51 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/16 14:01:06 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../header/philosophers.h"
+#include "../../header/philosophers.h"
 
 void	print_status(t_philo *philo)
 {

@@ -6,11 +6,20 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 09:18:20 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/16 11:43:32 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/16 15:16:19 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/philosophers.h"
+
+static void	check_state(t_philo *current, t_rules *rules)
+{
+	if ((current_time() - current->last_meal_time > rules->time_to_die))
+	{
+		current->status = DEAD;
+		print_status(current);
+	}
+}
 
 void	*supervise(void *arg)
 {
@@ -32,15 +41,9 @@ void	*supervise(void *arg)
 			pthread_mutex_lock(&rules->status_lock);
 			if (current->status == DEAD)
 				j++;
-			if (((current->status != EAT) && (current->status != DEAD))
-				&& (current_time() - current->last_meal_time > rules->time_to_die))
-			{
-				current->status = DEAD;
-				print_status(current);
-				pthread_mutex_unlock(&rules->status_lock);
-			}
-			else
-				pthread_mutex_unlock(&rules->status_lock);
+			if (current->status != EAT && current->status != DEAD)
+				check_state(current, rules);
+			pthread_mutex_unlock(&rules->status_lock);
 			i++;
 			current = current->right;
 		}

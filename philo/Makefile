@@ -5,9 +5,10 @@ CFLAGS = -Wall -Wextra -Werror -g
 RM = rm -f
 OBJ_DIR = ./obj
 
-SRC = sources/main.c sources/parsing.c sources/error.c sources/split.c \
-	  sources/utils.c sources/philosophers.c sources/serve_food.c \
-	  sources/time.c sources/supervise.c sources/threads.c
+SRC = sources/main/main.c sources/main/parsing.c sources/utils/error.c \
+	  sources/utils/split.c sources/utils/utils.c sources/philosophers.c \
+	  sources/serve_food.c sources/utils/time.c sources/supervise.c \
+	  sources/threads.c
 
 OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)
 

@@ -6,11 +6,11 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 12:42:44 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/12 17:45:36 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/16 14:01:43 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../header/philosophers.h"
+#include "../../header/philosophers.h"
 
 t_bool	is_empty(char *str)
 {

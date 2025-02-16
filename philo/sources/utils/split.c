@@ -6,11 +6,11 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 06:56:35 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/05 12:31:31 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/16 14:00:46 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../header/philosophers.h"
+#include "../../header/philosophers.h"
 
 static int	countwords(char const *s, char c)
 {

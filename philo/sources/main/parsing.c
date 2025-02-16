@@ -6,11 +6,11 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:21:23 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/15 18:36:42 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/16 14:01:25 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../header/philosophers.h"
+#include "../../header/philosophers.h"
 
 static void	add_rules(long int value, t_rules *dining_rules)
 {
