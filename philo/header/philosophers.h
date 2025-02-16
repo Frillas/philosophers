@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:46:42 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/16 11:36:28 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/16 12:37:16 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,10 @@ t_bool	check_arg(t_rules *dining_rules);
 void	error_msg(char str[], t_rules *dining_rules);
 //philosophers.c
 int		start_philo(t_rules *dining_rules);
-//dinner.c
-int		start_dinner(t_rules *rules, t_philo *philo, pthread_t *thread_id);
+//serve_food.c
+void	*serve_food(void *arg);
+//threads.c
+int		handle_threads(t_rules *rules, t_philo *philo, pthread_t *thread_id);
 //time.c
 int		check_last_meal(t_philo *philo, t_rules *rules);
 long	current_time(void);

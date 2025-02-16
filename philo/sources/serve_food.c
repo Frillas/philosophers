@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:08:37 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/16 11:36:15 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/16 11:50:11 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ static void	swap(t_philo *philo, pthread_mutex_t **one, pthread_mutex_t **two)
 	}
 }
 
-static void	*serve_food(void *arg)
+void	*serve_food(void *arg)
 {
 	t_philo			*philo;
 	pthread_mutex_t	*first_mutex;
@@ -90,48 +90,4 @@ static void	*serve_food(void *arg)
 		philo_set_state(philo);
 	}
 	return (NULL);
-}
-
-int	start_dinner(t_rules *dining_rules, t_philo *philo, pthread_t *thread_id)
-{
-	int				i;
-	t_philo			*current;
-	pthread_t		monitor;
-
-	i = 0;
-	(void)dining_rules;
-	current = philo;
-	gettimeofday(&dining_rules->start, NULL);
-	if (pthread_create(&monitor, NULL, supervise, (void *)philo) != 0)
-		return (EXIT_FAILURE);
-	while (i < dining_rules->nb_philo)
-	{
-		if (pthread_create(&thread_id[i], NULL, serve_food,
-				(void *)current) != 0)
-			return (EXIT_FAILURE);
-		current = current->right;
-		i++;
-	}
-	i = 0;
-	current = philo;
-	while (i < dining_rules->nb_philo)
-	{
-		if (pthread_join(thread_id[i], NULL) != 0)
-			return (EXIT_FAILURE);
-		current = current->right;
-		i++;
-	}
-	pthread_join(monitor, NULL);
-	i = 0;
-	current = philo;
-	while (i < dining_rules->nb_philo)
-	{
-		pthread_mutex_destroy(&current->mutex);
-		current = current->right;
-		i++;
-	}
-	pthread_mutex_destroy(&dining_rules->status_lock);
-	free_struct(philo, dining_rules->nb_philo);
-	free(thread_id);
-	return (EXIT_SUCCESS);
 }
