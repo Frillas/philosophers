@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 09:18:20 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/17 06:48:25 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/17 07:43:44 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,26 +25,26 @@ static void	verify_philo_end(t_philo *current, t_rules *rules)
 
 static int	monitor_philo(t_philo *current, t_rules *rules, int sleeptime)
 {
-	int	i;
-	int	j;
+	int	philo_checked;
+	int	philo_dead;
 
-	i = 0;
-	j = 0;
-	while (i < rules->nb_philo)
+	philo_checked = 0;
+	philo_dead = 0;
+	while (philo_checked < rules->nb_philo)
 	{
 		pthread_mutex_lock(&rules->status_lock);
 		if (current->status == DEAD)
-			j++;
+			philo_dead++;
 		if (current->status != EAT && current->status != DEAD)
 			verify_philo_end(current, rules);
 		pthread_mutex_unlock(&rules->status_lock);
-		i++;
+		philo_checked++;
 		current = current->right;
 	}
-	if (i == j)
+	if (philo_checked == philo_dead)
 		return (1);
-	i = 0;
-	j = 0;
+	philo_checked = 0;
+	philo_dead = 0;
 	usleep(sleeptime);
 	return (0);
 }
