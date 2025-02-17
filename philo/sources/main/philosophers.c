@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:49:16 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/17 12:34:35 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/17 12:48:34 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ static int	create_thread_id(t_rules *dining_rules, pthread_t **tid)
 	int	nb;
 
 	nb = dining_rules->nb_philo;
-	*tid = NULL;
+	*tid = (pthread_t *)malloc(sizeof(pthread_t) * nb);
 	if (*tid == NULL)
 	{
 		write(STDERR_FILENO, "Memory allocation failed for threads\n", 37);
