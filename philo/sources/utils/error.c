@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 12:42:44 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/16 17:45:56 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/17 17:31:34 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ t_bool	check_arg(t_rules *dining_rules)
 	}
 	if (dining_rules->time_to_eat == -1)
 	{
-		write(STDERR_FILENO, "ne entry for time to eat\n", 25);
+		write(STDERR_FILENO, "no entry for time to eat\n", 25);
 		check = FALSE;
 	}
 	if (dining_rules->time_to_sleep == -1)
@@ -57,4 +57,24 @@ void	error_msg(char str[], t_rules *dining_rules)
 {
 	write(STDERR_FILENO, str, ft_strlen(str) + 1);
 	dining_rules->error = TRUE;
+}
+
+int	check_mutex_lock(pthread_mutex_t *mutex)
+{
+	if (pthread_mutex_lock(mutex) != 0)
+	{
+		write(STDERR_FILENO, "Failed to lock mutex\n", 21);
+		return (EXIT_FAILURE);
+	}
+	return (EXIT_SUCCESS);
+}
+
+int	check_mutex_unlock(pthread_mutex_t *mutex)
+{
+	if (pthread_mutex_unlock(mutex) != 0)
+	{
+		write(STDERR_FILENO, "Failed to unlock mutex\n", 21);
+		return (EXIT_FAILURE);
+	}
+	return (EXIT_SUCCESS);
 }

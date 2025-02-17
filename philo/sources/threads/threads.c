@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 11:48:59 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/16 16:15:58 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/17 15:54:59 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,6 @@ int	handle_threads(t_rules *dining_rules, t_philo *philo, pthread_t *thread_id)
 {
 	pthread_t		monitor;
 
-	(void)dining_rules;
 	gettimeofday(&dining_rules->start, NULL);
 	if (launch_threads(philo, thread_id, &monitor) != 0)
 		return (EXIT_FAILURE);

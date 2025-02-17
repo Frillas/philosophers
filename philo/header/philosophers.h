@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:46:42 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/17 12:04:17 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/17 17:31:04 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,8 @@ char	**split(char const *s, char c);
 t_bool	is_empty(char *str);
 t_bool	check_arg(t_rules *dining_rules);
 void	error_msg(char str[], t_rules *dining_rules);
+int		check_mutex_lock(pthread_mutex_t *mutex);
+int		check_mutex_unlock(pthread_mutex_t *mutex);
 //philosophers.c
 int		start_philo(t_rules *dining_rules);
 //serve_food.c
