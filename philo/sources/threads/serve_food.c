@@ -6,14 +6,16 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:08:37 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/17 06:58:14 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/17 12:14:13 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../header/philosophers.h"
 
-static void	swap(t_philo *philo, pthread_mutex_t **one, pthread_mutex_t **two)
+static int	swap(t_philo *philo, pthread_mutex_t **one, pthread_mutex_t **two)
 {
+	if (philo == philo->left)
+		return (1);
 	*one = &philo->mutex;
 	*two = &philo->left->mutex;
 	if (philo->index > philo->left->index)
@@ -21,6 +23,7 @@ static void	swap(t_philo *philo, pthread_mutex_t **one, pthread_mutex_t **two)
 		*one = &philo->left->mutex;
 		*two = &philo->mutex;
 	}
+	return (0);
 }
 
 static int	check_status(t_philo *philo, t_status status)
@@ -44,19 +47,16 @@ static int	check_status(t_philo *philo, t_status status)
 	return (0);
 }
 
-static void	eat_or_sleep(long duration)
+static void	eat_or_sleep(long long duration)
 {
 	long	runtime;
-	int		sleeptime;
 
 	runtime = 0;
-	sleeptime = 1000;
-	if (duration < 1000)
-		sleeptime = 100;
+	duration *= 1000;
 	while (runtime < duration)
 	{
-		usleep(sleeptime);
-		runtime += sleeptime;
+		usleep(10000);
+		runtime += 10000;
 	}
 }
 
@@ -79,7 +79,8 @@ void	*serve_food(void *arg)
 	pthread_mutex_t	*second_mutex;
 
 	philo = (t_philo *)arg;
-	swap(philo, &first_mutex, &second_mutex);
+	if (swap(philo, &first_mutex, &second_mutex) != 0)
+		return (NULL);
 	while (1)
 	{
 		if (check_status(philo, UNCHANGED) == 1)

@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:49:16 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/16 15:29:20 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/17 12:34:35 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static int	init_philo(t_philo *philo, t_rules *dining_rules, t_philo **new)
 	static int	i;
 
 	*new = (t_philo *)malloc(sizeof(t_philo));
-	if (new == NULL || (pthread_mutex_init(&(*new)->mutex, NULL) != 0))
+	if (*new == NULL || (pthread_mutex_init(&(*new)->mutex, NULL) != 0))
 	{
 		free_struct(philo, i);
 		return (1);
@@ -67,7 +67,7 @@ static int	create_thread_id(t_rules *dining_rules, pthread_t **tid)
 	int	nb;
 
 	nb = dining_rules->nb_philo;
-	*tid = (pthread_t *)malloc(sizeof(pthread_t) * nb);
+	*tid = NULL;
 	if (*tid == NULL)
 	{
 		write(STDERR_FILENO, "Memory allocation failed for threads\n", 37);

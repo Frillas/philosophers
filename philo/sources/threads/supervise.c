@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 09:18:20 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/17 07:43:44 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/17 10:00:44 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static void	verify_philo_end(t_philo *current, t_rules *rules)
 	}
 }
 
-static int	monitor_philo(t_philo *current, t_rules *rules, int sleeptime)
+static int	monitor_philo(t_philo *current, t_rules *rules)
 {
 	int	philo_checked;
 	int	philo_dead;
@@ -45,7 +45,7 @@ static int	monitor_philo(t_philo *current, t_rules *rules, int sleeptime)
 		return (1);
 	philo_checked = 0;
 	philo_dead = 0;
-	usleep(sleeptime);
+	usleep(1000);
 	return (0);
 }
 
@@ -54,17 +54,13 @@ void	*supervise(void *arg)
 	t_philo	*philo;
 	t_philo	*current;
 	t_rules	*rules;
-	int		sleeptime;
 
 	philo = (t_philo *)arg;
 	rules = philo->lst_rules;
-	sleeptime = 1000;
-	if (rules->time_to_die < 1000)
-		sleeptime = 100;
 	while (1)
 	{
 		current = philo;
-		if (monitor_philo(current, rules, sleeptime) != 0)
+		if (monitor_philo(current, rules) != 0)
 			return (NULL);
 	}
 	return (NULL);

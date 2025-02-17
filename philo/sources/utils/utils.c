@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 12:24:35 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/16 14:01:06 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/17 10:54:42 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	print_status(t_philo *philo)
 		printf("%ld %d died\n", step_timer(rules), philo->index);
 }
 
-t_bool	atoi_valid(const char *s, long int *value, t_bool res)
+t_bool	atoll_valid(const char *s, long long *value, t_bool res)
 {
 	int		i;
 	int		sign;

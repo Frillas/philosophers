@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:46:42 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/16 17:43:07 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/17 12:04:17 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ typedef struct s_rules
 	long				time_to_die;
 	long				time_to_eat;
 	long				time_to_sleep;
-	int					meals_per_philo;
+	long				meals_per_philo;
 	struct timeval		start;
 	struct timeval		end;
 	pthread_mutex_t		status_lock;
@@ -54,7 +54,7 @@ typedef struct s_philo
 	t_status			status;
 	pthread_mutex_t		mutex;
 	long				last_meal_time;
-	int					meals_eaten;
+	long				meals_eaten;
 	struct s_rules		*lst_rules;
 	struct s_philo		*right;
 	struct s_philo		*left;
@@ -64,7 +64,7 @@ typedef struct s_philo
 void	parsing(int argc, char *argv[], t_rules *dining_rules);
 //utils
 void	print_status(t_philo *philo);
-t_bool	atoi_valid(const char *s, long int *value, t_bool res);
+t_bool	atoll_valid(const char *s, long long *value, t_bool res);
 size_t	ft_strlen(const char *s);
 void	free_2d(char **result);
 void	free_struct(t_philo *philo, int nb_philo);
