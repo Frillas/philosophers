@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:08:37 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/16 17:59:05 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/17 06:58:14 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,16 @@ static int	check_status(t_philo *philo, t_status status)
 static void	eat_or_sleep(long duration)
 {
 	long	runtime;
+	int		sleeptime;
 
 	runtime = 0;
+	sleeptime = 1000;
+	if (duration < 1000)
+		sleeptime = 100;
 	while (runtime < duration)
 	{
-		usleep(10000);
-		runtime += 10000;
+		usleep(sleeptime);
+		runtime += sleeptime;
 	}
 }
 

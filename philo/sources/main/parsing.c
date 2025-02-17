@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:21:23 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/16 17:37:13 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/17 07:12:25 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static void	build_list(char **result, t_rules *dining_rules)
 	{
 		value = 0;
 		res = atoi_valid(result[i], &value, res);
-		if (!res || ((value > 2417483647) || (value < 0)))
+		if (!res || ((value > 2147483647) || (value < 0)))
 		{
 			error_msg("Invalid argument\n", dining_rules);
 			break ;
