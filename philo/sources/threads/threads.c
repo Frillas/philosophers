@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 11:48:59 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/17 15:54:59 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/18 10:29:35 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ static int	launch_threads(t_philo *philo, pthread_t *thread, pthread_t *moni)
 
 static int	wait_threads(t_philo *philo, pthread_t *thread, pthread_t *monitor)
 {
+	int		*res;
 	t_philo	*current;
 	t_rules	*dining_rules;
 	int		i;
@@ -45,8 +46,13 @@ static int	wait_threads(t_philo *philo, pthread_t *thread, pthread_t *monitor)
 	dining_rules = philo->lst_rules;
 	while (i < dining_rules->nb_philo)
 	{
-		if (pthread_join(thread[i], NULL) != 0)
+		if (pthread_join(thread[i], (void **)&res) != 0)
 			return (EXIT_FAILURE);
+		if (res == NULL)
+			write(2, "Memory allocation failed\n",25);
+		else if (res > 0)
+			write(2, res + '0', 1);
+		free(res);
 		current = current->right;
 		i++;
 	}

@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:08:37 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/18 09:39:15 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/18 10:36:25 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ static int	philo_set_state(t_philo *philo)
 		if (check_mutex_unlock(&philo->mutex) != 0)
 		{
 			if (check_mutex_unlock(&philo->left->mutex) != 0)
-			return (1);
+				return (1);
 		}
 	}
 	eat_or_sleep(philo->lst_rules->time_to_eat);
@@ -82,7 +82,7 @@ static int	philo_set_state(t_philo *philo)
 	if (check_mutex_unlock(&philo->mutex) != 0)
 	{
 		if (check_mutex_unlock(&philo->left->mutex) != 0)
-		return (1);
+			return (1);
 	}
 	if (check_mutex_unlock(&philo->left->mutex) != 0)
 		return (1);
@@ -96,18 +96,21 @@ static int	philo_set_state(t_philo *philo)
 
 void	*serve_food(void *arg)
 {
-	t_status		status;
+	t_status		*status;
 	t_philo			*philo;
 	pthread_mutex_t	*first_mutex;
 	pthread_mutex_t	*second_mutex;
 
+	status = (t_status *)malloc(sizeof(t_status));
+	if (status == NULL)
+		return (NULL);
 	philo = (t_philo *)arg;
 	if (swap(philo, &first_mutex, &second_mutex) != 0)
 		return (NULL);
 	while (1)
 	{
-		status = check_status(philo, UNCHANGED);
-		if (status == DEAD || status == ERROR)
+		*status = check_status(philo, UNCHANGED);
+		if (*status == DEAD || *status == ERROR)
 			return ((int *)status);
 		if (check_mutex_lock(first_mutex) != 0)
 			return ((int *)1);
@@ -118,8 +121,8 @@ void	*serve_food(void *arg)
 			if (check_mutex_unlock(first_mutex) != 0)
 				return ((int *)1);
 		}
-		status = check_status(philo, TAKES_FORK);
-		if (status == DEAD || status == ERROR)
+		*status = check_status(philo, TAKES_FORK);
+		if (*status == DEAD || *status == ERROR)
 		{
 			if (check_mutex_unlock(first_mutex) != 0)
 			{
