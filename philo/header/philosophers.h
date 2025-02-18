@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:46:42 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/17 17:31:04 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/18 08:48:51 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,13 @@ typedef enum s_bool
 
 typedef enum s_status
 {
+	DEAD,
+	ERROR,
 	UNCHANGED,
 	TAKES_FORK,
 	SLEEP,
 	THINK,
 	EAT,
-	DEAD
 }	t_status;
 
 typedef struct s_rules
