@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 11:48:59 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/17 15:54:59 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/18 12:13:01 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static int	launch_threads(t_philo *philo, pthread_t *thread, pthread_t *moni)
 {
 	t_philo	*current;
 	t_rules	*dining_rules;
-	int		i;
+	long	i;
 
 	i = 0;
 	current = philo;
@@ -38,7 +38,7 @@ static int	wait_threads(t_philo *philo, pthread_t *thread, pthread_t *monitor)
 {
 	t_philo	*current;
 	t_rules	*dining_rules;
-	int		i;
+	long	i;
 
 	i = 0;
 	current = philo;
@@ -58,7 +58,7 @@ static int	wait_threads(t_philo *philo, pthread_t *thread, pthread_t *monitor)
 static int	destroy_mutexes(t_philo *philo, t_rules *dining_rules)
 {
 	t_philo	*current;
-	int		i;
+	long	i;
 
 	i = 0;
 	current = philo;

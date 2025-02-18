@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:49:16 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/18 12:10:04 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/18 11:51:29 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,8 @@
 
 static int	init_philo(t_philo *philo, t_rules *dining_rules, t_philo **new)
 {
-	static long	i;
+	static int	i;
 
-	*new = (t_philo *)malloc(sizeof(t_philo));
-	if (*new == NULL || (pthread_mutex_init(&(*new)->mutex, NULL) != 0))
-	{
-		free_struct(philo, i);
-		return (1);
-	}
 	(*new)->index = (i + 1);
 	(*new)->status = THINK;
 	(*new)->last_meal_time = current_time();
@@ -35,7 +29,7 @@ static int	init_philo(t_philo *philo, t_rules *dining_rules, t_philo **new)
 
 static t_philo	*create_philo(t_rules *rules, t_philo **end, t_philo **new)
 {
-	long	i;
+	int		i;
 	t_philo	*philo;
 
 	i = 0;
@@ -62,15 +56,15 @@ static t_philo	*create_philo(t_rules *rules, t_philo **end, t_philo **new)
 	return (philo);
 }
 
-static int	create_thread_id(t_rules *dining_rules, pthread_t **tid)
+static int	create_forks_id(t_rules *dining_rules, int **fork_id)
 {
-	long	nb;
+	int	nb;
 
 	nb = dining_rules->nb_philo;
-	*tid = (pthread_t *)malloc(sizeof(pthread_t) * nb);
-	if (*tid == NULL)
+	*fork_id = (int *)malloc(sizeof(int) * nb);
+	if (*fork_id == NULL)
 	{
-		write(STDERR_FILENO, "Memory allocation failed for threads\n", 37);
+		write(STDERR_FILENO, "Memory allocation failed to create forks\n", 41);
 		return (EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);
@@ -81,21 +75,21 @@ int	start_philo(t_rules *dining_rules)
 	t_philo		*philo;
 	t_philo		*end;
 	t_philo		*new;
-	pthread_t	*thread_id;
+	int			*fork_id;
 
 	end = NULL;
 	philo = create_philo(dining_rules, &end, &new);
 	if (philo == NULL)
 		return (EXIT_FAILURE);
-	if (create_thread_id(dining_rules, &thread_id) != EXIT_SUCCESS)
+	if (create_fork_id(dining_rules, &fork_id) != EXIT_SUCCESS)
 	{
 		free_struct(philo, dining_rules->nb_philo);
 		return (EXIT_FAILURE);
 	}
-	if (handle_threads(dining_rules, philo, thread_id) != EXIT_SUCCESS)
+	if (handle_forks(dining_rules, philo, fork_id) != EXIT_SUCCESS)
 	{
 		free_struct(philo, dining_rules->nb_philo);
-		free(thread_id);
+		free(fork_id);
 		return (EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);

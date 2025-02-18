@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 12:24:35 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/18 12:15:42 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/17 10:54:42 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,15 @@ void	print_status(t_philo *philo)
 
 	rules = philo->lst_rules;
 	if (philo->status == TAKES_FORK)
-		printf("%ld %ld has taken a fork\n", step_timer(rules), philo->index);
+		printf("%ld %d has taken a fork\n", step_timer(rules), philo->index);
 	else if (philo->status == EAT)
-		printf("%ld %ld is eating\n", step_timer(rules), philo->index);
+		printf("%ld %d is eating\n", step_timer(rules), philo->index);
 	else if (philo->status == SLEEP)
-		printf("%ld %ld is sleeping\n", step_timer(rules), philo->index);
+		printf("%ld %d is sleeping\n", step_timer(rules), philo->index);
 	else if (philo->status == THINK)
-		printf("%ld %ld is thinking\n", step_timer(rules), philo->index);
+		printf("%ld %d is thinking\n", step_timer(rules), philo->index);
 	else if (philo->status == DEAD)
-		printf("%ld %ld died\n", step_timer(rules), philo->index);
+		printf("%ld %d died\n", step_timer(rules), philo->index);
 }
 
 t_bool	atoll_valid(const char *s, long long *value, t_bool res)
@@ -72,7 +72,7 @@ size_t	ft_strlen(const char *s)
 
 void	free_2d(char **result)
 {
-	long	i;
+	int		i;
 
 	i = 0;
 	if (result != NULL)
@@ -89,7 +89,7 @@ void	free_2d(char **result)
 void	free_struct(t_philo *philo, int nb_philo)
 {
 	t_philo	*current;
-	long	i;
+	int		i;
 
 	i = 0;
 	if (philo != NULL)

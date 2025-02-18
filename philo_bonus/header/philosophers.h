@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:46:42 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/18 12:13:53 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/18 12:04:28 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ typedef enum s_status
 
 typedef struct s_rules
 {
-	long				nb_philo;
+	int					nb_philo;
 	long				time_to_die;
 	long				time_to_eat;
 	long				time_to_sleep;
@@ -50,7 +50,7 @@ typedef struct s_rules
 
 typedef struct s_philo
 {
-	long				index;
+	int					index;
 	t_status			status;
 	pthread_mutex_t		mutex;
 	long				last_meal_time;
@@ -76,13 +76,9 @@ t_bool	check_arg(t_rules *dining_rules);
 void	error_msg(char str[], t_rules *dining_rules);
 //philosophers.c
 int		start_philo(t_rules *dining_rules);
-//serve_food.c
-void	*serve_food(void *arg);
-//threads.c
-int		handle_threads(t_rules *rules, t_philo *philo, pthread_t *thread_id);
+//forks.c
+int		handle_forks(t_rules *rules, t_philo *philo, pthread_t *thread_id);
 //time.c
 long	current_time(void);
 long	step_timer(t_rules *rules);
-//supervise.c
-void	*supervise(void *arg);
 #endif

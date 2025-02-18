@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 09:18:20 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/17 17:31:59 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/18 12:12:06 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,21 +25,19 @@ static void	verify_philo_end(t_philo *current, t_rules *rules)
 
 static int	monitor_philo(t_philo *current, t_rules *rules)
 {
-	int	philo_checked;
-	int	philo_dead;
+	long	philo_checked;
+	long	philo_dead;
 
 	philo_checked = 0;
 	philo_dead = 0;
 	while (philo_checked < rules->nb_philo)
 	{
-		if (check_mutex_lock(&rules->status_lock) != 0)
-			return (1);
+		pthread_mutex_lock(&rules->status_lock);
 		if (current->status == DEAD)
 			philo_dead++;
 		if (current->status != EAT && current->status != DEAD)
 			verify_philo_end(current, rules);
-		if (check_mutex_unlock(&rules->status_lock) != 0)
-			return (1);
+		pthread_mutex_unlock(&rules->status_lock);
 		philo_checked++;
 		current = current->right;
 	}
