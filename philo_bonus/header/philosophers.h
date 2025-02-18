@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:46:42 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/18 12:04:28 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/18 17:37:56 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,11 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdio.h>
+# include <semaphore.h>
 # include <pthread.h>
 # include <sys/time.h>
+# include <sys/wait.h>
+# include <fcntl.h>
 
 typedef enum s_bool
 {
@@ -44,7 +47,8 @@ typedef struct s_rules
 	long				meals_per_philo;
 	struct timeval		start;
 	struct timeval		end;
-	pthread_mutex_t		status_lock;
+	sem_t				*sem_fork;
+	sem_t				*sem_print;
 	t_bool				error;
 }	t_rules;
 
@@ -52,7 +56,6 @@ typedef struct s_philo
 {
 	int					index;
 	t_status			status;
-	pthread_mutex_t		mutex;
 	long				last_meal_time;
 	long				meals_eaten;
 	struct s_rules		*lst_rules;
@@ -74,10 +77,13 @@ char	**split(char const *s, char c);
 t_bool	is_empty(char *str);
 t_bool	check_arg(t_rules *dining_rules);
 void	error_msg(char str[], t_rules *dining_rules);
+void    fork_error_exit(int *fork_id);
 //philosophers.c
 int		start_philo(t_rules *dining_rules);
 //forks.c
-int		handle_forks(t_rules *rules, t_philo *philo, pthread_t *thread_id);
+int		handle_forks(t_rules *rules, t_philo *philo, int *thread_id);
+//supervise.c
+void    *supervise(void *arg);
 //time.c
 long	current_time(void);
 long	step_timer(t_rules *rules);

@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 12:42:44 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/18 10:45:07 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/18 17:29:45 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,4 +57,11 @@ void	error_msg(char str[], t_rules *dining_rules)
 {
 	write(STDERR_FILENO, str, ft_strlen(str) + 1);
 	dining_rules->error = TRUE;
+}
+
+void	fork_error_exit(int *fork_id)
+{
+	write(STDERR_FILENO, "Error : fork failed\n", 21);
+	free(fork_id);
+	exit(EXIT_FAILURE);
 }

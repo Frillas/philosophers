@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:49:16 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/18 11:51:29 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/18 17:49:04 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,12 @@
 static int	init_philo(t_philo *philo, t_rules *dining_rules, t_philo **new)
 {
 	static int	i;
-
+	*new = (t_philo *)malloc(sizeof(t_philo));
+	if (*new == NULL)
+    {
+        free_struct(philo, i);
+        return (1);
+    }	
 	(*new)->index = (i + 1);
 	(*new)->status = THINK;
 	(*new)->last_meal_time = current_time();
@@ -81,7 +86,7 @@ int	start_philo(t_rules *dining_rules)
 	philo = create_philo(dining_rules, &end, &new);
 	if (philo == NULL)
 		return (EXIT_FAILURE);
-	if (create_fork_id(dining_rules, &fork_id) != EXIT_SUCCESS)
+	if (create_forks_id(dining_rules, &fork_id) != EXIT_SUCCESS)
 	{
 		free_struct(philo, dining_rules->nb_philo);
 		return (EXIT_FAILURE);
