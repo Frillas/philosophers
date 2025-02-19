@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:46:42 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/19 07:35:38 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/19 14:21:29 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,30 +62,33 @@ typedef struct s_philo
 }	t_philo;
 
 //parsing.c
-void	parsing(int argc, char *argv[], t_rules *dining_rules);
+void		parsing(int argc, char *argv[], t_rules *dining_rules);
 //utils
-void	print_status(t_philo *philo);
-t_bool	atoll_valid(const char *s, long long *value, t_bool res);
-size_t	ft_strlen(const char *s);
-void	free_2d(char **result);
-void	free_struct(t_philo *philo, int nb_philo);
+void		print_status(t_philo *philo);
+t_bool		atoll_valid(const char *s, long long *value, t_bool res);
+size_t		ft_strlen(const char *s);
+void		free_2d(char **result);
+void		free_struct(t_philo *philo, int nb_philo);
 //split.c
-char	**split(char const *s, char c);
+char		**split(char const *s, char c);
 //error.c
-t_bool	is_empty(char *str);
-t_bool	check_arg(t_rules *dining_rules);
-void	error_msg(char str[], t_rules *dining_rules);
-int		check_mutex_lock(pthread_mutex_t *mutex);
-int		check_mutex_unlock(pthread_mutex_t *mutex);
+t_bool		is_empty(char *str);
+t_bool		check_arg(t_rules *dining_rules);
+void		error_msg(char str[], t_rules *dining_rules);
+int			check_mutex_lock(pthread_mutex_t *mutex);
+int			check_mutex_unlock(pthread_mutex_t *mutex);
 //philosophers.c
-int		start_philo(t_rules *dining_rules);
+int			start_philo(t_rules *dining_rules);
 //serve_food.c
-void	*serve_food(void *arg);
+void		*serve_food(void *arg);
+//serve_food_utils.c
+int			unlock_mutex(pthread_mutex_t *mutex1, pthread_mutex_t *mutex2);
+t_status	eat_or_sleep(long long duration, t_philo *philo);
 //threads.c
-int		handle_threads(t_rules *rules, t_philo *philo, pthread_t *thread_id);
+int			handle_threads(t_rules *rules, t_philo *philo, pthread_t *thread);
 //time.c
-long	current_time(void);
-long	step_timer(t_rules *rules);
+long		current_time(void);
+long		step_timer(t_rules *rules);
 //supervise.c
-void	*supervise(void *arg);
+void		*supervise(void *arg);
 #endif

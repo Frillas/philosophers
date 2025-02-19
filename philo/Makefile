@@ -8,7 +8,8 @@ OBJ_DIR = ./obj
 SRC = sources/main/main.c sources/main/parsing.c sources/main/philosophers.c \
 	  sources/utils/split.c sources/utils/utils.c sources/utils/error.c \
 	  sources/utils/time.c sources/threads/serve_food.c \
-	  sources/threads/supervise.c sources/threads/threads.c
+	  sources/threads/serve_food_utils.c sources/threads/supervise.c \
+	  sources/threads/threads.c
 
 OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)
 

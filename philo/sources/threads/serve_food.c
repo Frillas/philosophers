@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 11:22:45 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/19 11:55:10 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/19 14:10:27 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,31 +44,6 @@ static t_status	check_status(t_philo *philo, t_status status)
 	return (status);
 }
 
-static void	eat_or_sleep(long long duration)
-{
-	long	runtime;
-
-	runtime = 0;
-	duration *= 1000;
-	while (runtime < duration)
-	{
-		usleep(10000);
-		runtime += 10000;
-	}
-}
-
-static int	unlock_mutex(pthread_mutex_t *mutex1, pthread_mutex_t *mutex2)
-{
-	int	error;
-
-	error = 0;
-	if (check_mutex_unlock(mutex1) != 0)
-		error = 1;
-	if (check_mutex_unlock(mutex2) != 0)
-		error = 1;
-	return (error);
-}
-
 static t_status	philo_set_state(t_philo *philo)
 {
 	if (check_status(philo, EAT) == ERROR)
@@ -76,7 +51,11 @@ static t_status	philo_set_state(t_philo *philo)
 		unlock_mutex(&philo->mutex, &philo->left->mutex);
 		return (ERROR);
 	}
-	eat_or_sleep(philo->lst_rules->time_to_eat);
+	if (eat_or_sleep(philo->lst_rules->time_to_eat, philo) != 0)
+	{
+		unlock_mutex(&philo->mutex, &philo->left->mutex);
+		return (DEAD);
+	}
 	philo->last_meal_time = current_time();
 	if (check_status(philo, SLEEP) == ERROR)
 	{
@@ -85,33 +64,34 @@ static t_status	philo_set_state(t_philo *philo)
 	}
 	if (unlock_mutex(&philo->mutex, &philo->left->mutex) != 0)
 		return (ERROR);
-	eat_or_sleep(philo->lst_rules->time_to_sleep);
+	if (eat_or_sleep(philo->lst_rules->time_to_eat, philo) != 0)
+		return (DEAD);
 	if (check_status(philo, THINK) == ERROR)
 		return (ERROR);
 	return (THINK);
 }
 
-static t_status	philo_take_fork(t_philo *philo, pthread_mutex_t *first, pthread_mutex_t *second)
+static t_status	t_fork(t_philo *philo, pthread_mutex_t *m1, pthread_mutex_t *m2)
 {
 	t_status	status;
 
-	if (check_mutex_lock(first) != 0)
+	if (check_mutex_lock(m1) != 0)
 		return (ERROR);
 	status = check_status(philo, TAKES_FORK);
 	if (status == ERROR)
 	{
-		check_mutex_unlock(first);
+		check_mutex_unlock(m1);
 		return (ERROR);
 	}
-	if (check_mutex_lock(second) != 0)
+	if (check_mutex_lock(m2) != 0)
 	{
-		check_mutex_unlock(first);
+		check_mutex_unlock(m1);
 		return (ERROR);
 	}
 	status = check_status(philo, TAKES_FORK);
 	if (status == ERROR || status == DEAD)
 	{
-		if (unlock_mutex(first, second) != 0 || status == ERROR)
+		if (unlock_mutex(m1, m2) != 0 || status == ERROR)
 			return (ERROR);
 	}
 	return (status);
@@ -135,7 +115,7 @@ void	*serve_food(void *arg)
 		*status = check_status(philo, UNCHANGED);
 		if (*status == ERROR || *status == DEAD)
 			return ((int *)status);
-		*status = philo_take_fork(philo, first_mutex, second_mutex);
+		*status = t_fork(philo, first_mutex, second_mutex);
 		if (*status == ERROR || *status == DEAD)
 			return ((int *)status);
 		*status = philo_set_state(philo);

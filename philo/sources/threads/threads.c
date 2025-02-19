@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 11:24:13 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/19 11:40:22 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/19 13:48:02 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static int	wait_threads(t_philo *philo, pthread_t *thread, pthread_t *monitor)
 	dining_rules = philo->lst_rules;
 	while (i < dining_rules->nb_philo)
 	{
-		if (pthread_join(thread[i], (void**)&status) != 0)
+		if (pthread_join(thread[i], (void **)&status) != 0)
 			return (EXIT_FAILURE);
 		current = current->right;
 		free(status);
