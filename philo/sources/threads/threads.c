@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/16 11:48:59 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/18 12:13:01 by aroullea         ###   ########.fr       */
+/*   Created: 2025/02/19 11:24:13 by aroullea          #+#    #+#             */
+/*   Updated: 2025/02/19 11:40:22 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,18 +36,20 @@ static int	launch_threads(t_philo *philo, pthread_t *thread, pthread_t *moni)
 
 static int	wait_threads(t_philo *philo, pthread_t *thread, pthread_t *monitor)
 {
-	t_philo	*current;
-	t_rules	*dining_rules;
-	long	i;
+	int			*status;
+	t_philo		*current;
+	t_rules		*dining_rules;
+	long		i;
 
 	i = 0;
 	current = philo;
 	dining_rules = philo->lst_rules;
 	while (i < dining_rules->nb_philo)
 	{
-		if (pthread_join(thread[i], NULL) != 0)
+		if (pthread_join(thread[i], (void**)&status) != 0)
 			return (EXIT_FAILURE);
 		current = current->right;
+		free(status);
 		i++;
 	}
 	if (pthread_join(*monitor, NULL) != 0)
@@ -76,7 +78,7 @@ static int	destroy_mutexes(t_philo *philo, t_rules *dining_rules)
 
 int	handle_threads(t_rules *dining_rules, t_philo *philo, pthread_t *thread_id)
 {
-	pthread_t		monitor;
+	pthread_t	monitor;
 
 	gettimeofday(&dining_rules->start, NULL);
 	if (launch_threads(philo, thread_id, &monitor) != 0)
