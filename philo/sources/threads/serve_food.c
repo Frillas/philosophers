@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 11:22:45 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/19 14:10:27 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/19 15:42:22 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ static t_status	check_status(t_philo *philo, t_status status)
 
 static t_status	philo_set_state(t_philo *philo)
 {
+	t_status	status;
+
 	if (check_status(philo, EAT) == ERROR)
 	{
 		unlock_mutex(&philo->mutex, &philo->left->mutex);
@@ -64,8 +66,9 @@ static t_status	philo_set_state(t_philo *philo)
 	}
 	if (unlock_mutex(&philo->mutex, &philo->left->mutex) != 0)
 		return (ERROR);
-	if (eat_or_sleep(philo->lst_rules->time_to_eat, philo) != 0)
-		return (DEAD);
+	status = eat_or_sleep(philo->lst_rules->time_to_eat, philo);
+	if (status)
+		return (status);
 	if (check_status(philo, THINK) == ERROR)
 		return (ERROR);
 	return (THINK);
