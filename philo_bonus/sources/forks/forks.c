@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 11:54:18 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/18 17:57:46 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/19 17:22:53 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ static void	serve_food(t_rules *dining_rules, t_philo *philo)
 			exit(EXIT_SUCCESS);
 		sem_wait(dining_rules->sem_fork);
 		check_status(philo, TAKES_FORK);
-		sem_wait(dining_rules->sem_fork);
 		if (check_status(philo, TAKES_FORK) == 1)
 		{
 			sem_post(dining_rules->sem_fork);

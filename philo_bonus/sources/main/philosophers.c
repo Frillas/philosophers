@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:49:16 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/18 17:49:04 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/19 17:28:01 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,12 +61,12 @@ static t_philo	*create_philo(t_rules *rules, t_philo **end, t_philo **new)
 	return (philo);
 }
 
-static int	create_forks_id(t_rules *dining_rules, int **fork_id)
+static int	create_forks_id(t_rules *dining_rules, pid_t **fork_id)
 {
 	int	nb;
 
 	nb = dining_rules->nb_philo;
-	*fork_id = (int *)malloc(sizeof(int) * nb);
+	*fork_id = (pid_t *)malloc(sizeof(pid_t) * nb);
 	if (*fork_id == NULL)
 	{
 		write(STDERR_FILENO, "Memory allocation failed to create forks\n", 41);
@@ -80,7 +80,7 @@ int	start_philo(t_rules *dining_rules)
 	t_philo		*philo;
 	t_philo		*end;
 	t_philo		*new;
-	int			*fork_id;
+	pid_t		*fork_id;
 
 	end = NULL;
 	philo = create_philo(dining_rules, &end, &new);
