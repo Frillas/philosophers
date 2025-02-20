@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:46:42 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/18 17:37:56 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/19 21:20:48 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ typedef struct s_rules
 	long				meals_per_philo;
 	struct timeval		start;
 	struct timeval		end;
-	sem_t				*sem_fork;
+	sem_t				**sem_fork;
 	sem_t				*sem_print;
 	t_bool				error;
 }	t_rules;

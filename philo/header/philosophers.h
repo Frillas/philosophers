@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:46:42 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/19 14:21:29 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/20 12:05:44 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@ typedef enum s_bool
 
 typedef enum s_status
 {
+	UNCHANGED,
 	DEAD,
 	ERROR,
-	UNCHANGED,
 	TAKES_FORK,
 	SLEEP,
 	THINK,
@@ -84,6 +84,9 @@ void		*serve_food(void *arg);
 //serve_food_utils.c
 int			unlock_mutex(pthread_mutex_t *mutex1, pthread_mutex_t *mutex2);
 t_status	eat_or_sleep(long long duration, t_philo *philo);
+t_status	philo_eat(t_philo *philo);
+t_status	philo_sleep(t_philo *philo);
+t_status	check_status(t_philo *philo, t_status status);
 //threads.c
 int			handle_threads(t_rules *rules, t_philo *philo, pthread_t *thread);
 //time.c
