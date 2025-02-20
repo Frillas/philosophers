@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 11:54:18 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/18 17:57:46 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/20 18:03:35 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ static void	serve_food(t_rules *dining_rules, t_philo *philo)
 	}
 }
 
-static void wait_child(t_rules *dining_rules, int *fork_id)
+static void wait_child(t_philo *philo, t_rules *dining_rules, int *fork_id)
 {
 	int	i;
 	int	status;
@@ -95,6 +95,11 @@ static void wait_child(t_rules *dining_rules, int *fork_id)
 		i++;
 	}
 	free(fork_id);
+	sem_close(dining_rules->sem_fork);
+	sem_close(dining_rules->sem_print);
+	sem_unlink("/fork_sem");
+	sem_unlink("/print_sem");
+	free_struct(philo, dining_rules->nb_philo);
 	exit(EXIT_SUCCESS);
 }
 
@@ -116,6 +121,6 @@ int	handle_forks(t_rules *dining_rules, t_philo *philo, int *fork_id)
 		current = current->right;
 		i++;
 	}
-	wait_child(dining_rules, fork_id);
+	wait_child(philo, dining_rules, fork_id);
 	return (EXIT_SUCCESS);
 }
