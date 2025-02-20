@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 09:18:20 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/20 11:10:37 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/20 14:56:47 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,13 @@ void	*supervise(void *arg)
 	rules = philo->lst_rules;
 	while (1)
 	{
+		pthread_mutex_lock(&rules->error_lock);
+		if (rules->error == TRUE)
+		{
+			pthread_mutex_unlock(&rules->error_lock);
+			return (NULL);
+		}
+		pthread_mutex_unlock(&rules->error_lock);
 		current = philo;
 		if (monitor_philo(current, rules) != 0)
 			return (NULL);

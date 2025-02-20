@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:46:42 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/20 12:05:44 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/20 12:51:34 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef struct s_rules
 	struct timeval		start;
 	struct timeval		end;
 	pthread_mutex_t		status_lock;
+	pthread_mutex_t		error_lock;
 	t_bool				error;
 }	t_rules;
 

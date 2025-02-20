@@ -6,7 +6,7 @@
 /*   By: aroullea <aroullea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 14:14:34 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/20 12:13:36 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/20 14:45:55 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ t_status	philo_sleep(t_philo *philo)
 	}
 	if (unlock_mutex(&philo->mutex, &philo->left->mutex) != 0)
 		return (ERROR);
-	status = eat_or_sleep(philo->lst_rules->time_to_eat, philo);
+	status = eat_or_sleep(philo->lst_rules->time_to_sleep, philo);
 	return (status);
 }
 

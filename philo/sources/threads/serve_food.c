@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 11:22:45 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/20 12:18:14 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/20 14:43:27 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static t_status	t_fork(t_philo *philo, pthread_mutex_t *m1, pthread_mutex_t *m2)
 	status = check_status(philo, TAKES_FORK);
 	if (status == ERROR || status == DEAD)
 	{
-		if (unlock_mutex(m1, m2) != 0 || status == ERROR)
+		if ((unlock_mutex(m1, m2) != 0) || status == ERROR)
 			return (ERROR);
 	}
 	return (status);

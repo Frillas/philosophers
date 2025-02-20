@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 11:24:13 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/19 13:48:02 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/20 14:58:22 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static int	launch_threads(t_philo *philo, pthread_t *thread, pthread_t *moni)
 
 static int	wait_threads(t_philo *philo, pthread_t *thread, pthread_t *monitor)
 {
-	int			*status;
+	t_status	*status;
 	t_philo		*current;
 	t_rules		*dining_rules;
 	long		i;
@@ -49,10 +49,16 @@ static int	wait_threads(t_philo *philo, pthread_t *thread, pthread_t *monitor)
 		if (pthread_join(thread[i], (void **)&status) != 0)
 			return (EXIT_FAILURE);
 		current = current->right;
+		if (*status == ERROR)
+		{
+			pthread_mutex_lock(&dining_rules->error_lock);
+			dining_rules->error = TRUE;
+			pthread_mutex_unlock(&dining_rules->error_lock);
+		}
 		free(status);
 		i++;
 	}
-	if (pthread_join(*monitor, NULL) != 0)
+	if (pthread_join(*monitor, NULL) != 0 || dining_rules->error == TRUE)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
