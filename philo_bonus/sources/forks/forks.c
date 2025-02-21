@@ -6,13 +6,13 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 11:54:18 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/21 12:14:12 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/21 12:26:54 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../header/philosophers.h"
 
-static void eat_or_sleep(long long duration, t_philo *philo)
+static void	eat_or_sleep(long long duration, t_philo *philo)
 {
 	long	runtime;
 
@@ -32,28 +32,28 @@ static void eat_or_sleep(long long duration, t_philo *philo)
 	}
 }
 
-static int  check_status(t_philo *philo, t_status status)
+static int	check_status(t_philo *philo, t_status status)
 {
 	sem_wait(philo->lst_rules->sem_print);
-    if (philo->status == DEAD)
+	if (philo->status == DEAD)
 	{
 		sem_post(philo->lst_rules->sem_print);
-        return (1);
+		return (1);
 	}
-    else if (status != UNCHANGED)
-    {
-        philo->status = status;
-        print_status(philo);
-        if (philo->status == EAT)
-            philo->meals_eaten++;
+	else if (status != UNCHANGED)
+	{
+		philo->status = status;
+		print_status(philo);
+		if (philo->status == EAT)
+			philo->meals_eaten++;
 		sem_post(philo->lst_rules->sem_print);
-    	return (0);
-    }
+		return (0);
+	}
 	sem_post(philo->lst_rules->sem_print);
-    return (0);
+	return (0);
 }
 
-static void philo_set_state(t_philo *philo)
+static void	philo_set_state(t_philo *philo)
 {
 	check_status(philo, EAT);
 	eat_or_sleep(philo->lst_rules->time_to_eat, philo);
@@ -62,7 +62,7 @@ static void philo_set_state(t_philo *philo)
 	sem_post(philo->lst_rules->sem_fork);
 	sem_post(philo->lst_rules->sem_fork);
 	eat_or_sleep(philo->lst_rules->time_to_sleep, philo);
-   	check_status(philo, THINK);
+	check_status(philo, THINK);
 	sem_wait(philo->lst_rules->sem_print);
 	if (philo->meals_eaten == philo->lst_rules->meals_per_philo)
 		philo->status = DEAD;
@@ -100,12 +100,12 @@ static void	serve_food(t_rules *dining_rules, t_philo *philo, pid_t *fork_id)
 			sem_post(dining_rules->sem_fork);
 			sem_post(dining_rules->sem_fork);
 			handle_exit(philo, fork_id, 0, &moni);
-		}	
+		}
 		philo_set_state(philo);
 	}
 }
 
-static void wait_child(t_philo *philo, t_rules *dining_rules, int *fork_id)
+static void	wait_child(t_philo *philo, t_rules *dining_rules, int *fork_id)
 {
 	int	i;
 	int	status;

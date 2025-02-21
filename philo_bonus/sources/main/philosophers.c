@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:49:16 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/21 10:37:08 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/21 12:28:52 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,13 @@
 static int	init_philo(t_philo *philo, t_rules *dining_rules, t_philo **new)
 {
 	static int	i;
+
 	*new = (t_philo *)malloc(sizeof(t_philo));
 	if (*new == NULL)
-    {
-        free_struct(philo, i);
-        return (1);
-    }	
+	{
+		free_struct(philo, i);
+		return (1);
+	}
 	(*new)->index = (i + 1);
 	(*new)->status = THINK;
 	(*new)->last_meal_time = current_time();
