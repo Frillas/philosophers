@@ -8,6 +8,7 @@ OBJ_DIR = ./obj
 SRC = sources/main/main.c sources/main/parsing.c sources/main/philosophers.c \
 	  sources/utils/split.c sources/utils/utils.c sources/utils/error.c \
 	  sources/utils/time.c  sources/forks/forks.c sources/forks/supervise.c \
+	  sources/forks/forks_utils.c
 
 OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)
 

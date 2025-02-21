@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:46:42 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/21 15:52:20 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/21 16:36:33 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,9 @@ void	fork_error_exit(int *fork_id);
 int		start_philo(t_rules *dining_rules);
 //forks.c
 int		handle_forks(t_rules *rules, t_philo *philo, pid_t *fork_id);
+//fork_utils.c
+int		check_status(t_philo *philo, t_status status);
+void	eat_or_sleep(long long duration, t_philo *philo);
 //supervise.c
 void	*supervise(void *arg);
 //time.c

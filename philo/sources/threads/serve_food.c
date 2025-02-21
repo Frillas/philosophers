@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:08:37 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/21 16:16:43 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/21 16:28:00 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static int	check_status(t_philo *philo, t_status status)
 static int	swap(t_philo *philo, pthread_mutex_t **one, pthread_mutex_t **two)
 {
 	if (philo == philo->left)
-	{	
+	{
 		check_status(philo, TAKES_FORK);
 		return (1);
 	}
