@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   forks_bonus.c                                      :+:      :+:    :+:   */
+/*   child_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 11:54:18 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/21 17:49:11 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/21 22:10:05 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,47 @@ static void	stop(t_philo *philo, pid_t *fork_id, int res, pthread_t *moni)
 	exit(res);
 }
 
+static int	check_status(t_philo *philo, t_status status)
+{
+	sem_wait(philo->lst_rules->sem_print);
+	if (philo->status == DEAD)
+	{
+		sem_post(philo->lst_rules->sem_print);
+		return (1);
+	}
+	else if (status != UNCHANGED)
+	{
+		philo->status = status;
+		print_status(philo);
+		if (philo->status == EAT)
+			philo->meals_eaten++;
+		sem_post(philo->lst_rules->sem_print);
+		return (0);
+	}
+	sem_post(philo->lst_rules->sem_print);
+	return (0);
+}
+
+static void	eat_or_sleep(long long duration, t_philo *philo)
+{
+	long	runtime;
+
+	runtime = 0;
+	duration *= 1000;
+	while (runtime < duration)
+	{
+		sem_wait(philo->lst_rules->sem_print);
+		if (philo->status == DEAD)
+		{
+			sem_post(philo->lst_rules->sem_print);
+			return ;
+		}
+		sem_post(philo->lst_rules->sem_print);
+		usleep(10000);
+		runtime += 10000;
+	}
+}
+
 static void	philo_set_state(t_philo *philo)
 {
 	check_status(philo, EAT);
@@ -41,7 +82,7 @@ static void	philo_set_state(t_philo *philo)
 	sem_post(philo->lst_rules->sem_print);
 }
 
-static void	serve_food(t_rules *dining_rules, t_philo *philo, pid_t *fork_id)
+void	serve_food(t_rules *dining_rules, t_philo *philo, pid_t *fork_id)
 {
 	pthread_t	moni;
 
@@ -67,46 +108,4 @@ static void	serve_food(t_rules *dining_rules, t_philo *philo, pid_t *fork_id)
 		}
 		philo_set_state(philo);
 	}
-}
-
-static void	wait_child(t_philo *philo, t_rules *dining_rules, int *fork_id)
-{
-	int	i;
-	int	status;
-
-	i = 0;
-	while (i < dining_rules->nb_philo)
-	{
-		waitpid(fork_id[i], &status, 0);
-		i++;
-	}
-	free(fork_id);
-	sem_close(dining_rules->sem_fork);
-	sem_close(dining_rules->sem_print);
-	sem_unlink("/fork_sem");
-	sem_unlink("/print_sem");
-	free_struct(philo, dining_rules->nb_philo);
-	exit(EXIT_SUCCESS);
-}
-
-int	handle_forks(t_rules *dining_rules, t_philo *philo, pid_t *fork_id)
-{
-	int		i;
-	t_philo	*current;
-
-	i = 0;
-	current = philo;
-	gettimeofday(&dining_rules->start, NULL);
-	while (i < dining_rules->nb_philo)
-	{
-		fork_id[i] = fork();
-		if (fork_id[i] < 0)
-			fork_error_exit(fork_id);
-		else if (fork_id[i] == 0)
-			serve_food(dining_rules, current, fork_id);
-		current = current->right;
-		i++;
-	}
-	wait_child(philo, dining_rules, fork_id);
-	return (EXIT_SUCCESS);
 }

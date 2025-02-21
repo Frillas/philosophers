@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:46:42 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/19 07:35:38 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/21 22:13:14 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,14 +75,12 @@ char	**split(char const *s, char c);
 t_bool	is_empty(char *str);
 t_bool	check_arg(t_rules *dining_rules);
 void	error_msg(char str[], t_rules *dining_rules);
-int		check_mutex_lock(pthread_mutex_t *mutex);
-int		check_mutex_unlock(pthread_mutex_t *mutex);
 //philosophers.c
 int		start_philo(t_rules *dining_rules);
-//serve_food.c
+//child_bonus.c
 void	*serve_food(void *arg);
-//threads.c
-int		handle_threads(t_rules *rules, t_philo *philo, pthread_t *thread_id);
+//parent_bonus.c
+int		handle_forks(t_rules *dining_rules, t_philo *philo, pid_t *fork_id);
 //time.c
 long	current_time(void);
 long	step_timer(t_rules *rules);
