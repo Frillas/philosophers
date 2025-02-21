@@ -6,13 +6,13 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 11:54:18 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/21 11:49:29 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/21 12:14:12 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../header/philosophers.h"
 
-static void eat_or_sleep(long long duration)
+static void eat_or_sleep(long long duration, t_philo *philo)
 {
 	long	runtime;
 
@@ -20,6 +20,13 @@ static void eat_or_sleep(long long duration)
 	duration *= 1000;
 	while (runtime < duration)
 	{
+		sem_wait(philo->lst_rules->sem_print);
+		if (philo->status == DEAD)
+		{
+			sem_post(philo->lst_rules->sem_print);
+			return ;
+		}
+		sem_post(philo->lst_rules->sem_print);
 		usleep(10000);
 		runtime += 10000;
 	}
@@ -49,12 +56,12 @@ static int  check_status(t_philo *philo, t_status status)
 static void philo_set_state(t_philo *philo)
 {
 	check_status(philo, EAT);
-	eat_or_sleep(philo->lst_rules->time_to_eat);
+	eat_or_sleep(philo->lst_rules->time_to_eat, philo);
 	philo->last_meal_time = current_time();
 	check_status(philo, SLEEP);
 	sem_post(philo->lst_rules->sem_fork);
 	sem_post(philo->lst_rules->sem_fork);
-	eat_or_sleep(philo->lst_rules->time_to_sleep);
+	eat_or_sleep(philo->lst_rules->time_to_sleep, philo);
    	check_status(philo, THINK);
 	sem_wait(philo->lst_rules->sem_print);
 	if (philo->meals_eaten == philo->lst_rules->meals_per_philo)
