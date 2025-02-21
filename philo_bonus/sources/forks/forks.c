@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 11:54:18 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/19 17:22:53 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/21 11:49:29 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,33 +56,49 @@ static void philo_set_state(t_philo *philo)
 	sem_post(philo->lst_rules->sem_fork);
 	eat_or_sleep(philo->lst_rules->time_to_sleep);
    	check_status(philo, THINK);
+	sem_wait(philo->lst_rules->sem_print);
+	if (philo->meals_eaten == philo->lst_rules->meals_per_philo)
+		philo->status = DEAD;
+	sem_post(philo->lst_rules->sem_print);
 }
 
-static void	serve_food(t_rules *dining_rules, t_philo *philo)
+void	handle_exit(t_philo *philo, pid_t *fork_id, int result, pthread_t *moni)
+{
+	t_rules	*dining_rules;
+
+	pthread_join(*moni, NULL);
+	dining_rules = philo->lst_rules;
+	free(fork_id);
+	sem_close(dining_rules->sem_fork);
+	sem_close(dining_rules->sem_print);
+	free_struct(philo, dining_rules->nb_philo);
+	exit(result);
+}
+
+static void	serve_food(t_rules *dining_rules, t_philo *philo, pid_t *fork_id)
 {
 	pthread_t	moni;
 
 	if (pthread_create(&moni, NULL, supervise, (void *)philo) != 0)
-		exit(EXIT_FAILURE);
-	if (pthread_detach(moni) != 0)
-		exit(EXIT_FAILURE);
+		handle_exit(philo, fork_id, 1, &moni);
 	while (1)
 	{
 		if (check_status(philo, UNCHANGED) == 1)
-			exit(EXIT_SUCCESS);
+			handle_exit(philo, fork_id, 0, &moni);
 		sem_wait(dining_rules->sem_fork);
 		check_status(philo, TAKES_FORK);
+		sem_wait(dining_rules->sem_fork);
 		if (check_status(philo, TAKES_FORK) == 1)
 		{
 			sem_post(dining_rules->sem_fork);
 			sem_post(dining_rules->sem_fork);
-			exit(EXIT_SUCCESS);
+			handle_exit(philo, fork_id, 0, &moni);
 		}	
 		philo_set_state(philo);
 	}
 }
 
-static void wait_child(t_rules *dining_rules, int *fork_id)
+static void wait_child(t_philo *philo, t_rules *dining_rules, int *fork_id)
 {
 	int	i;
 	int	status;
@@ -94,10 +110,15 @@ static void wait_child(t_rules *dining_rules, int *fork_id)
 		i++;
 	}
 	free(fork_id);
+	sem_close(dining_rules->sem_fork);
+	sem_close(dining_rules->sem_print);
+	sem_unlink("/fork_sem");
+	sem_unlink("/print_sem");
+	free_struct(philo, dining_rules->nb_philo);
 	exit(EXIT_SUCCESS);
 }
 
-int	handle_forks(t_rules *dining_rules, t_philo *philo, int *fork_id)
+int	handle_forks(t_rules *dining_rules, t_philo *philo, pid_t *fork_id)
 {
 	int		i;
 	t_philo	*current;
@@ -111,10 +132,10 @@ int	handle_forks(t_rules *dining_rules, t_philo *philo, int *fork_id)
 		if (fork_id[i] < 0)
 			fork_error_exit(fork_id);
 		else if (fork_id[i] == 0)
-			serve_food(dining_rules, current);
+			serve_food(dining_rules, current, fork_id);
 		current = current->right;
 		i++;
 	}
-	wait_child(dining_rules, fork_id);
+	wait_child(philo, dining_rules, fork_id);
 	return (EXIT_SUCCESS);
 }

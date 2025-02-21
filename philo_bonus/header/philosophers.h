@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:46:42 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/18 17:37:56 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/21 10:38:03 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void    fork_error_exit(int *fork_id);
 //philosophers.c
 int		start_philo(t_rules *dining_rules);
 //forks.c
-int		handle_forks(t_rules *rules, t_philo *philo, int *thread_id);
+int		handle_forks(t_rules *rules, t_philo *philo, pid_t *fork_id);
 //supervise.c
 void    *supervise(void *arg);
 //time.c

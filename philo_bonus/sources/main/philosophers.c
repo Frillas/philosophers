@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:49:16 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/19 17:28:01 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/21 10:37:08 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ static int	create_forks_id(t_rules *dining_rules, pid_t **fork_id)
 	int	nb;
 
 	nb = dining_rules->nb_philo;
-	*fork_id = (pid_t *)malloc(sizeof(pid_t) * nb);
+	*fork_id = (pid_t *)malloc(sizeof(int) * nb);
 	if (*fork_id == NULL)
 	{
 		write(STDERR_FILENO, "Memory allocation failed to create forks\n", 41);
