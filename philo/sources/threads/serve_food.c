@@ -6,25 +6,11 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:08:37 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/21 12:31:41 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/21 16:16:43 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../header/philosophers.h"
-
-static int	swap(t_philo *philo, pthread_mutex_t **one, pthread_mutex_t **two)
-{
-	if (philo == philo->left)
-		return (1);
-	*one = &philo->mutex;
-	*two = &philo->left->mutex;
-	if (philo->index > philo->left->index)
-	{
-		*one = &philo->left->mutex;
-		*two = &philo->mutex;
-	}
-	return (0);
-}
 
 static int	check_status(t_philo *philo, t_status status)
 {
@@ -44,6 +30,23 @@ static int	check_status(t_philo *philo, t_status status)
 		return (0);
 	}
 	pthread_mutex_unlock(&philo->lst_rules->status_lock);
+	return (0);
+}
+
+static int	swap(t_philo *philo, pthread_mutex_t **one, pthread_mutex_t **two)
+{
+	if (philo == philo->left)
+	{	
+		check_status(philo, TAKES_FORK);
+		return (1);
+	}
+	*one = &philo->mutex;
+	*two = &philo->left->mutex;
+	if (philo->index > philo->left->index)
+	{
+		*one = &philo->left->mutex;
+		*two = &philo->mutex;
+	}
 	return (0);
 }
 

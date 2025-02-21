@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 12:24:35 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/18 17:28:49 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/21 15:52:06 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,18 +18,18 @@ void	print_status(t_philo *philo)
 
 	rules = philo->lst_rules;
 	if (philo->status == TAKES_FORK)
-		printf("%ld %d has taken a fork\n", step_timer(rules), philo->index);
+		printf("%ld %ld has taken a fork\n", step_timer(rules), philo->index);
 	else if (philo->status == EAT)
-		printf("%ld %d is eating\n", step_timer(rules), philo->index);
+		printf("%ld %ld is eating\n", step_timer(rules), philo->index);
 	else if (philo->status == SLEEP)
-		printf("%ld %d is sleeping\n", step_timer(rules), philo->index);
+		printf("%ld %ld is sleeping\n", step_timer(rules), philo->index);
 	else if (philo->status == THINK)
-		printf("%ld %d is thinking\n", step_timer(rules), philo->index);
+		printf("%ld %ld is thinking\n", step_timer(rules), philo->index);
 	else if (philo->status == DEAD)
-		printf("%ld %d died\n", step_timer(rules), philo->index);
+		printf("%ld %ld died\n", step_timer(rules), philo->index);
 }
 
-t_bool	atoll_valid(const char *s, long long *value, t_bool res)
+t_bool	atol_valid(const char *s, long *value, t_bool res)
 {
 	int		i;
 	int		sign;

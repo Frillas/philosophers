@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 11:54:18 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/21 12:26:54 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/21 16:12:28 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,12 +82,20 @@ void	handle_exit(t_philo *philo, pid_t *fork_id, int result, pthread_t *moni)
 	exit(result);
 }
 
+void	handle_one(t_philo *philo, pid_t *fork_id, int result, pthread_t *moni)
+{
+	check_status(philo, TAKES_FORK);
+	handle_exit(philo, fork_id, result, moni);
+}
+
 static void	serve_food(t_rules *dining_rules, t_philo *philo, pid_t *fork_id)
 {
 	pthread_t	moni;
 
 	if (pthread_create(&moni, NULL, supervise, (void *)philo) != 0)
 		handle_exit(philo, fork_id, 1, &moni);
+	if (philo == philo->right)
+		handle_one(philo, fork_id, 1, &moni);
 	while (1)
 	{
 		if (check_status(philo, UNCHANGED) == 1)

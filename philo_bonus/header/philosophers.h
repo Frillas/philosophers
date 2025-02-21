@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:46:42 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/21 12:27:38 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/21 15:52:20 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ typedef enum s_status
 
 typedef struct s_rules
 {
-	int					nb_philo;
+	long				nb_philo;
 	long				time_to_die;
 	long				time_to_eat;
 	long				time_to_sleep;
@@ -54,7 +54,7 @@ typedef struct s_rules
 
 typedef struct s_philo
 {
-	int					index;
+	long				index;
 	t_status			status;
 	long				last_meal_time;
 	long				meals_eaten;
@@ -67,7 +67,7 @@ typedef struct s_philo
 void	parsing(int argc, char *argv[], t_rules *dining_rules);
 //utils
 void	print_status(t_philo *philo);
-t_bool	atoll_valid(const char *s, long long *value, t_bool res);
+t_bool	atol_valid(const char *s, long *value, t_bool res);
 size_t	ft_strlen(const char *s);
 void	free_2d(char **result);
 void	free_struct(t_philo *philo, int nb_philo);
