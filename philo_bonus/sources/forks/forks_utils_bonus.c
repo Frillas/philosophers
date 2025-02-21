@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   forks_utils.c                                      :+:      :+:    :+:   */
+/*   forks_utils_bonus.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 16:32:34 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/21 16:35:33 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/21 17:47:37 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../header/philosophers.h"
+#include "../../header/philosophers_bonus.h"
 
 int	check_status(t_philo *philo, t_status status)
 {

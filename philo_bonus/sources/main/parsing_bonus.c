@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.c                                          :+:      :+:    :+:   */
+/*   parsing_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:21:23 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/21 16:28:23 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/21 17:48:01 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../header/philosophers.h"
+#include "../../header/philosophers_bonus.h"
 
 static void	add_rules(long long value, t_rules *dining_rules)
 {

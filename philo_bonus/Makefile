@@ -1,31 +1,33 @@
-NAME = philo
+BONUS_NAME = philo_bonus
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -g
 RM = rm -f
 OBJ_DIR = ./obj
 
-SRC = sources/main/main.c sources/main/parsing.c sources/main/philosophers.c \
-	  sources/utils/split.c sources/utils/utils.c sources/utils/error.c \
-	  sources/utils/time.c  sources/forks/forks.c sources/forks/supervise.c \
-	  sources/forks/forks_utils.c
+SRC = sources/main/main_bonus.c sources/main/parsing_bonus.c sources/main/philosophers_bonus.c \
+	  sources/utils/split_bonus.c sources/utils/utils_bonus.c sources/utils/error_bonus.c \
+	  sources/utils/time_bonus.c sources/forks/forks_bonus.c sources/forks/supervise_bonus.c \
+	  sources/forks/forks_utils_bonus.c
 
 OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)
 
-all: $(NAME)
+all: $(BONUS_NAME)
+
+bonus: $(BONUS_NAME)
 
 $(OBJ_DIR)/%.o: %.c
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) $(IFLAGS) -c $< -o $@
 
-$(NAME): $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) -pthread -o $(NAME)
+$(BONUS_NAME): $(OBJ)
+	$(CC) $(CFLAGS) $(OBJ) -pthread -o $(BONUS_NAME)
 
 clean:
 	$(RM) -r $(OBJ_DIR)
 
 fclean: clean
-	$(RM) $(NAME)
+	$(RM) $(BONUS_NAME)
 
 re: fclean all
 

@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   split.c                                            :+:      :+:    :+:   */
+/*   split_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 06:56:35 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/16 14:00:46 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/21 17:48:24 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../header/philosophers.h"
+#include "../../header/philosophers_bonus.h"
 
 static int	countwords(char const *s, char c)
 {

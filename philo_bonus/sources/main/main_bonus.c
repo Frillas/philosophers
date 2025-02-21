@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   main_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:19:57 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/21 16:08:18 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/21 17:47:53 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../header/philosophers.h"
+#include "../../header/philosophers_bonus.h"
 
 static int	init_semaphores(t_rules *rules)
 {
