@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:08:37 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/19 16:44:56 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/21 12:31:41 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,10 @@ static void	philo_set_state(t_philo *philo)
 	if (eat_or_sleep(philo->lst_rules->time_to_sleep, philo) != 0)
 		return ;
 	check_status(philo, THINK);
+	pthread_mutex_lock(&philo->lst_rules->status_lock);
+	if (philo->meals_eaten == philo->lst_rules->meals_per_philo)
+		philo->status = DEAD;
+	pthread_mutex_unlock(&philo->lst_rules->status_lock);
 }
 
 void	*serve_food(void *arg)

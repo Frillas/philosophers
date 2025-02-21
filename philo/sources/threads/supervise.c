@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 09:18:20 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/18 12:12:06 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/21 09:57:22 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,7 @@
 
 static void	verify_philo_end(t_philo *current, t_rules *rules)
 {
-	if (current->meals_eaten == rules->meals_per_philo)
-		current->status = DEAD;
-	else if ((current_time() - current->last_meal_time > rules->time_to_die))
+	if ((current_time() - current->last_meal_time > rules->time_to_die))
 	{
 		current->status = DEAD;
 		print_status(current);
