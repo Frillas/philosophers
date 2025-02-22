@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 11:54:18 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/21 22:10:05 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/22 05:31:36 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,17 +20,17 @@ static void	stop(t_philo *philo, pid_t *fork_id, int res, pthread_t *moni)
 	dining_rules = philo->lst_rules;
 	free(fork_id);
 	sem_close(dining_rules->sem_fork);
-	sem_close(dining_rules->sem_print);
+	sem_close(dining_rules->sem_status);
 	free_struct(philo, dining_rules->nb_philo);
 	exit(res);
 }
 
 static int	check_status(t_philo *philo, t_status status)
 {
-	sem_wait(philo->lst_rules->sem_print);
+	sem_wait(philo->lst_rules->sem_status);
 	if (philo->status == DEAD)
 	{
-		sem_post(philo->lst_rules->sem_print);
+		sem_post(philo->lst_rules->sem_status);
 		return (1);
 	}
 	else if (status != UNCHANGED)
@@ -39,10 +39,10 @@ static int	check_status(t_philo *philo, t_status status)
 		print_status(philo);
 		if (philo->status == EAT)
 			philo->meals_eaten++;
-		sem_post(philo->lst_rules->sem_print);
+		sem_post(philo->lst_rules->sem_status);
 		return (0);
 	}
-	sem_post(philo->lst_rules->sem_print);
+	sem_post(philo->lst_rules->sem_status);
 	return (0);
 }
 
@@ -54,13 +54,13 @@ static void	eat_or_sleep(long long duration, t_philo *philo)
 	duration *= 1000;
 	while (runtime < duration)
 	{
-		sem_wait(philo->lst_rules->sem_print);
+		sem_wait(philo->lst_rules->sem_status);
 		if (philo->status == DEAD)
 		{
-			sem_post(philo->lst_rules->sem_print);
+			sem_post(philo->lst_rules->sem_status);
 			return ;
 		}
-		sem_post(philo->lst_rules->sem_print);
+		sem_post(philo->lst_rules->sem_status);
 		usleep(10000);
 		runtime += 10000;
 	}
@@ -76,10 +76,10 @@ static void	philo_set_state(t_philo *philo)
 	sem_post(philo->lst_rules->sem_fork);
 	eat_or_sleep(philo->lst_rules->time_to_sleep, philo);
 	check_status(philo, THINK);
-	sem_wait(philo->lst_rules->sem_print);
+	sem_wait(philo->lst_rules->sem_status);
 	if (philo->meals_eaten == philo->lst_rules->meals_per_philo)
 		philo->status = DEAD;
-	sem_post(philo->lst_rules->sem_print);
+	sem_post(philo->lst_rules->sem_status);
 }
 
 void	serve_food(t_rules *dining_rules, t_philo *philo, pid_t *fork_id)

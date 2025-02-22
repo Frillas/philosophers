@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:19:57 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/21 17:47:53 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/22 05:31:12 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ static int	init_semaphores(t_rules *rules)
 	rules->sem_fork = sem_open("/fork_sem", O_CREAT, 0666, rules->nb_philo);
 	if (rules->sem_fork == SEM_FAILED)
 		return (EXIT_FAILURE);
-	rules->sem_print = sem_open("/print_sem", O_CREAT, 0666, 1);
-	if (rules->sem_print == SEM_FAILED)
+	rules->sem_status = sem_open("/status_sem", O_CREAT, 0666, 1);
+	if (rules->sem_status == SEM_FAILED)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }

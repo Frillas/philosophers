@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 16:32:34 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/21 22:33:59 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/22 05:32:59 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static void	wait_child(t_philo *philo, t_rules *dining_rules, int *fork_id)
 	}
 	free(fork_id);
 	sem_close(dining_rules->sem_fork);
-	sem_close(dining_rules->sem_print);
+	sem_close(dining_rules->sem_status);
 	sem_unlink("/fork_sem");
 	sem_unlink("/print_sem");
 	free_struct(philo, dining_rules->nb_philo);
