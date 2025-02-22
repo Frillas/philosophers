@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:08:37 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/21 16:28:00 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/22 05:50:50 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static int	swap(t_philo *philo, pthread_mutex_t **one, pthread_mutex_t **two)
 	return (0);
 }
 
-static int	eat_or_sleep(long long duration, t_philo *philo)
+static int	eat_or_sleep(long duration, t_philo *philo)
 {
 	long	runtime;
 

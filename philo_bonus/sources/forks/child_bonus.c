@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 11:54:18 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/22 05:31:36 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/22 06:04:55 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ static void	stop(t_philo *philo, pid_t *fork_id, int res, pthread_t *moni)
 {
 	t_rules	*dining_rules;
 
-	pthread_join(*moni, NULL);
+	if (pthread_join(*moni, NULL) != 0)
+		write(2, "thread wait failded\n", 20);
 	dining_rules = philo->lst_rules;
 	free(fork_id);
 	sem_close(dining_rules->sem_fork);
@@ -46,7 +47,7 @@ static int	check_status(t_philo *philo, t_status status)
 	return (0);
 }
 
-static void	eat_or_sleep(long long duration, t_philo *philo)
+static void	eat_or_sleep(long duration, t_philo *philo)
 {
 	long	runtime;
 

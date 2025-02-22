@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:46:42 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/22 05:43:11 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/22 05:48:33 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,27 +63,27 @@ typedef struct s_philo
 
 //parsing.c
 void	parsing(int argc, char *argv[], t_rules *dining_rules);
+//philosophers.c
+int		start_philo(t_rules *dining_rules);
+//serve_food.c
+void	*serve_food(void *arg);
+//supervise.c
+void	*supervise(void *arg);
+//threads.c
+int		handle_threads(t_rules *rules, t_philo *philo, pthread_t *thread_id);
+//error.c
+t_bool	is_empty(char *str);
+t_bool	check_arg(t_rules *dining_rules);
+void	error_msg(char str[], t_rules *dining_rules);
+//split.c
+char	**split(char const *s, char c);
+//time.c
+long	current_time(void);
+long	step_timer(t_rules *rules);
 //utils
 void	print_status(t_philo *philo);
 t_bool	atoll_valid(const char *s, long long *value, t_bool res);
 size_t	ft_strlen(const char *s);
 void	free_2d(char **result);
 void	free_struct(t_philo *philo, int nb_philo);
-//split.c
-char	**split(char const *s, char c);
-//error.c
-t_bool	is_empty(char *str);
-t_bool	check_arg(t_rules *dining_rules);
-void	error_msg(char str[], t_rules *dining_rules);
-//philosophers.c
-int		start_philo(t_rules *dining_rules);
-//serve_food.c
-void	*serve_food(void *arg);
-//parent_bonus.c
-int		handle_threads(t_rules *rules, t_philo *philo, pthread_t *thread_id);
-//time.c
-long	current_time(void);
-long	step_timer(t_rules *rules);
-//supervise.c
-void	*supervise(void *arg);
 #endif
