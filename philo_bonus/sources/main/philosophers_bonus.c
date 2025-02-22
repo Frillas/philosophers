@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:49:16 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/21 17:48:08 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/22 15:07:51 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,11 +92,6 @@ int	start_philo(t_rules *dining_rules)
 		free_struct(philo, dining_rules->nb_philo);
 		return (EXIT_FAILURE);
 	}
-	if (handle_forks(dining_rules, philo, fork_id) != EXIT_SUCCESS)
-	{
-		free_struct(philo, dining_rules->nb_philo);
-		free(fork_id);
-		return (EXIT_FAILURE);
-	}
+	handle_forks(dining_rules, philo, fork_id);
 	return (EXIT_SUCCESS);
 }

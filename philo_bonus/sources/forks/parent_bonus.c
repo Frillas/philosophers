@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 16:32:34 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/22 05:32:59 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/22 15:10:38 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,22 @@
 
 static void	wait_child(t_philo *philo, t_rules *dining_rules, int *fork_id)
 {
-	int		i;
-	int		status;
-	pid_t	pid;
+	int			i;
+	pid_t		pid;
+	int			status;
 
 	i = 0;
-	status = 0;
 	while (i < dining_rules->nb_philo)
 	{
 		pid = waitpid(-1, &status, 0);
 		if (pid == -1)
-			write(2, "waitpid error\n", 14);
+			error_msg("waitpid error\n", dining_rules);
 		if (WEXITSTATUS(status) == 1)
 			status = 1;
 		i++;
 	}
+	if (dining_rules->error == TRUE && status == 0)
+		status = 1;
 	free(fork_id);
 	sem_close(dining_rules->sem_fork);
 	sem_close(dining_rules->sem_status);
@@ -38,7 +39,7 @@ static void	wait_child(t_philo *philo, t_rules *dining_rules, int *fork_id)
 	exit(status);
 }
 
-int	handle_forks(t_rules *dining_rules, t_philo *philo, pid_t *fork_id)
+void	handle_forks(t_rules *dining_rules, t_philo *philo, pid_t *fork_id)
 {
 	int		i;
 	t_philo	*current;
@@ -50,12 +51,14 @@ int	handle_forks(t_rules *dining_rules, t_philo *philo, pid_t *fork_id)
 	{
 		fork_id[i] = fork();
 		if (fork_id[i] < 0)
-			fork_error_exit(fork_id);
+		{
+			error_msg("fork error\n", dining_rules);
+			wait_child(philo, dining_rules, fork_id);
+		}
 		else if (fork_id[i] == 0)
 			serve_food(dining_rules, current, fork_id);
 		current = current->right;
 		i++;
 	}
 	wait_child(philo, dining_rules, fork_id);
-	return (EXIT_SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 11:54:18 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/22 06:04:55 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/22 15:14:43 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@ static void	stop(t_philo *philo, pid_t *fork_id, int res, pthread_t *moni)
 {
 	t_rules	*dining_rules;
 
-	if (pthread_join(*moni, NULL) != 0)
-		write(2, "thread wait failded\n", 20);
 	dining_rules = philo->lst_rules;
+	if (pthread_join(*moni, NULL) != 0)
+		error_msg("thread wait failded\n", dining_rules);
 	free(fork_id);
 	sem_close(dining_rules->sem_fork);
 	sem_close(dining_rules->sem_status);
@@ -83,29 +83,30 @@ static void	philo_set_state(t_philo *philo)
 	sem_post(philo->lst_rules->sem_status);
 }
 
-void	serve_food(t_rules *dining_rules, t_philo *philo, pid_t *fork_id)
+void	serve_food(t_rules *rules, t_philo *philo, pid_t *fork_id)
 {
-	pthread_t	moni;
-
-	if (pthread_create(&moni, NULL, supervise, (void *)philo) != 0)
-		stop(philo, fork_id, 1, &moni);
+	if (pthread_create(&rules->moni, NULL, supervise, (void *)philo) != 0)
+	{
+		error_msg("thread create failded\n", rules);
+		stop(philo, fork_id, 1, &rules->moni);
+	}
 	if (philo == philo->right)
 	{
 		check_status(philo, TAKES_FORK);
-		stop(philo, fork_id, 0, &moni);
+		stop(philo, fork_id, 0, &rules->moni);
 	}
 	while (1)
 	{
 		if (check_status(philo, UNCHANGED) == 1)
-			stop(philo, fork_id, 0, &moni);
-		sem_wait(dining_rules->sem_fork);
+			stop(philo, fork_id, 0, &rules->moni);
+		sem_wait(rules->sem_fork);
 		check_status(philo, TAKES_FORK);
-		sem_wait(dining_rules->sem_fork);
+		sem_wait(rules->sem_fork);
 		if (check_status(philo, TAKES_FORK) == 1)
 		{
-			sem_post(dining_rules->sem_fork);
-			sem_post(dining_rules->sem_fork);
-			stop(philo, fork_id, 0, &moni);
+			sem_post(rules->sem_fork);
+			sem_post(rules->sem_fork);
+			stop(philo, fork_id, 0, &rules->moni);
 		}
 		philo_set_state(philo);
 	}
