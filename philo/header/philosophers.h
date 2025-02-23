@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:46:42 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/22 05:48:33 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/23 17:16:50 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,8 @@ void	error_msg(char str[], t_rules *dining_rules);
 //split.c
 char	**split(char const *s, char c);
 //time.c
-long	current_time(void);
-long	step_timer(t_rules *rules);
+time_t	current_time(void);
+time_t	step_timer(t_rules *rules);
 //utils
 void	print_status(t_philo *philo);
 t_bool	atoll_valid(const char *s, long long *value, t_bool res);

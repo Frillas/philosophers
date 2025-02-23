@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:19:57 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/16 14:01:17 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/23 15:28:16 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ int	main(int argc, char *argv[])
 	parsing(argc, argv, &dining_rules);
 	if (dining_rules.error == TRUE || !(check_arg(&dining_rules)))
 		return (EXIT_FAILURE);
+	if (dining_rules.meals_per_philo == 0)
+		return (EXIT_SUCCESS);
 	if (start_philo(&dining_rules) != 0)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
