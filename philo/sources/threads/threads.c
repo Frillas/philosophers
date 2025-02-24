@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 11:24:13 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/24 18:42:32 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/24 20:43:18 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,11 @@ static int	launch(t_philo *philo, pthread_t *thread, pthread_t *moni)
 		return (EXIT_FAILURE);
 	while (thread_created < dining_rules->nb_philo)
 	{
-		if ((pthread_create(&thread[thread_created], NULL, serve_food,
-				(void *)current) != 0))
+		if (pthread_create(&thread[thread_created], NULL, serve_food,
+				(void *)current) != 0)
 		{
 			write(2, "\n\tThread create error\n\n", 23);
-			err_thread(philo, thread, thread_created);
+			err_thread(philo, thread, moni, thread_created + 1);
 			return (EXIT_FAILURE);
 		}
 		current = current->right;
@@ -38,7 +38,7 @@ static int	launch(t_philo *philo, pthread_t *thread, pthread_t *moni)
 	return (EXIT_SUCCESS);
 }
 
-static t_bool	wait_threads(t_philo *philo, pthread_t *thread)
+static t_bool	wait_threads(t_philo *philo, pthread_t *thread, pthread_t *moni)
 {
 	long		nb_thread_waited;
 	t_philo		*current;
@@ -57,32 +57,15 @@ static t_bool	wait_threads(t_philo *philo, pthread_t *thread)
 		current = current->right;
 		nb_thread_waited++;
 	}
-	return (error);
-}
-
-static t_bool	wait_monitor(t_philo *philo, pthread_t *monitor)
-{
-	t_philo	*current;
-	long	nb_mutex_destroy;
-	t_bool	error;
-
-	current = philo;
-	nb_mutex_destroy = 0;
-	error = FALSE;
-	if (pthread_join(*monitor, NULL) != 0)
+	if (pthread_join(*moni, NULL) != 0)
 	{
 		write(2, "\n\tthread wait error\n\n", 21);
 		error = TRUE;
 	}
-	if (pthread_mutex_destroy(&philo->lst_rules->status_lock) != 0)
-	{
-		write(2, "\n\tmutex destroy error\n\n", 23);
-		error = TRUE;
-	}
 	return (error);
 }
 
-static t_bool	destroy_mutexes(t_philo *philo)
+static t_bool	destroy_mutexes(t_philo *philo, t_rules *dining_rules)
 {
 	long		nb_mutex_destroy;
 	t_philo		*current;
@@ -91,7 +74,7 @@ static t_bool	destroy_mutexes(t_philo *philo)
 	nb_mutex_destroy = 0;
 	error = FALSE;
 	current = philo;
-	while (nb_mutex_destroy < philo->lst_rules->nb_philo)
+	while (nb_mutex_destroy < dining_rules->nb_philo)
 	{
 		if (pthread_mutex_destroy(&current->mutex) != 0)
 		{
@@ -101,25 +84,28 @@ static t_bool	destroy_mutexes(t_philo *philo)
 		current = current->right;
 		nb_mutex_destroy++;
 	}
+	if (pthread_mutex_destroy(&dining_rules->status_lock) != 0)
+	{
+		write(2, "\n\tmutex destroy error\n\n", 23);
+		error = TRUE;
+	}
 	return (error);
 }
 
 int	handle_threads(t_rules *rules, t_philo *philo, pthread_t *thread_id)
 {
 	pthread_t	monitor;
-	int			error;
+	t_bool		error;
 
 	error = 0;
 	gettimeofday(&rules->start, NULL);
 	if (launch(philo, thread_id, &monitor) != 0)
-		error = 1;
-	if (error == 0)
-		wait_threads(philo, thread_id);
-	if (wait_monitor(philo, &monitor) != 0)
-		error = 1;
-	if (destroy_mutexes(philo) != 0)
-		error = 1;
-	if (error)
+		return (EXIT_FAILURE);
+	if (wait_threads(philo, thread_id, &monitor) != 0)
+		error = TRUE;
+	if (destroy_mutexes(philo, rules) != 0)
+		error = TRUE;
+	if (error == TRUE)
 		return (EXIT_FAILURE);
 	free_struct(philo, rules->nb_philo);
 	free(thread_id);

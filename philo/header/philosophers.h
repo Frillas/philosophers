@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:46:42 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/24 18:37:11 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/24 20:46:14 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void	*supervise(void *arg);
 //threads.c
 int		handle_threads(t_rules *rules, t_philo *philo, pthread_t *thread_id);
 //threads_error.c
-void 	err_thread(t_philo *philo, pthread_t *thread, long created);
+void	err_thread(t_philo *phi, pthread_t *t_id, pthread_t *moni, long creat);
 //error.c
 t_bool	is_empty(char *str);
 t_bool	check_arg(t_rules *dining_rules);
