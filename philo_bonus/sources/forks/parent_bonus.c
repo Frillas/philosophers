@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 16:32:34 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/22 15:10:38 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/24 11:15:39 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	handle_forks(t_rules *dining_rules, t_philo *philo, pid_t *fork_id)
 		if (fork_id[i] < 0)
 		{
 			error_msg("fork error\n", dining_rules);
-			wait_child(philo, dining_rules, fork_id);
+			break ;
 		}
 		else if (fork_id[i] == 0)
 			serve_food(dining_rules, current, fork_id);

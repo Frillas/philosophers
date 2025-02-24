@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:19:57 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/22 15:08:20 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/24 11:03:18 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,15 @@ static int	init_semaphores(t_rules *rules)
 		return (EXIT_FAILURE);
 	rules->sem_status = sem_open("/status_sem", O_CREAT, 0666, 1);
 	if (rules->sem_status == SEM_FAILED)
+	{
+		sem_close(rules->sem_fork);
+		sem_unlink("/fork_sem");
 		return (EXIT_FAILURE);
+	}
 	return (EXIT_SUCCESS);
 }
 
-static int	initialize_rules(t_rules *dining_rules)
+static void	initialize_rules(t_rules *dining_rules)
 {
 	dining_rules->nb_philo = -1;
 	dining_rules->time_to_die = -1;
@@ -31,7 +35,6 @@ static int	initialize_rules(t_rules *dining_rules)
 	dining_rules->time_to_sleep = -1;
 	dining_rules->meals_per_philo = -1;
 	dining_rules->error = FALSE;
-	return (EXIT_SUCCESS);
 }
 
 int	main(int argc, char *argv[])
@@ -43,11 +46,12 @@ int	main(int argc, char *argv[])
 		error_msg("Too much arguments\n", &dining_rules);
 		return (EXIT_FAILURE);
 	}
-	if (initialize_rules(&dining_rules) != 0)
-		return (EXIT_FAILURE);
+	initialize_rules(&dining_rules);
 	parsing(argc, argv, &dining_rules);
 	if (dining_rules.error == TRUE || !(check_arg(&dining_rules)))
 		return (EXIT_FAILURE);
+	if (dining_rules.meals_per_philo == 0)
+		return (EXIT_SUCCESS);
 	if (init_semaphores(&dining_rules) != 0)
 		return (EXIT_FAILURE);
 	if (start_philo(&dining_rules) != 0)
