@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 11:24:13 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/25 10:47:27 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/25 13:33:35 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,17 @@
 static int	launch(t_philo *philo, pthread_t *thread, pthread_t *moni)
 {
 	t_philo	*current;
-	t_rules	*dining_rules;
 	long	thread_created;
 
 	thread_created = 0;
 	current = philo;
-	dining_rules = philo->lst_rules;
 	if (pthread_create(moni, NULL, supervise, (void *)philo) != 0)
+	{
+		write(2, "Thread create error\n", 20);
+		err_thread(philo, thread, moni, 0);
 		return (EXIT_FAILURE);
-	while (thread_created < dining_rules->nb_philo)
+	}
+	while (thread_created < philo->lst_rules->nb_philo)
 	{
 		if (pthread_create(&thread[thread_created], NULL, serve_food,
 				(void *)current) != 0)

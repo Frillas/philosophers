@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 14:45:48 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/25 10:46:50 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/25 13:30:28 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ void	err_thread(t_philo *philo, pthread_t *t_id, pthread_t *moni, long tot)
 	t_rules	*dining_rules;
 
 	dining_rules = philo->lst_rules;
-	err_wait(philo, t_id, moni, tot);
+	if (tot > 0)
+		err_wait(philo, t_id, moni, tot);
 	err_mutex(philo, dining_rules);
 }
