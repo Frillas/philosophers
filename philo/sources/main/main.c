@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:19:57 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/24 17:33:41 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/25 09:50:54 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,17 @@ int	main(int argc, char *argv[])
 		return (EXIT_FAILURE);
 	parsing(argc, argv, &dining_rules);
 	if (dining_rules.error == TRUE || !(check_arg(&dining_rules)))
+	{
+		if (pthread_mutex_destroy(&dining_rules.status_lock) != 0)
+			write(2, "mutex destroy error\n", 20);
 		return (EXIT_FAILURE);
+	}
 	if (dining_rules.meals_per_philo == 0)
+	{
+		if (pthread_mutex_destroy(&dining_rules.status_lock) != 0)
+			write(2, "mutex destroy error\n", 20);
 		return (EXIT_SUCCESS);
+	}
 	if (start_philo(&dining_rules) != 0)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
