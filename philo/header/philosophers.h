@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:46:42 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/24 20:46:14 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/25 11:45:30 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ typedef struct s_philo
 //parsing.c
 void	parsing(int argc, char *argv[], t_rules *dining_rules);
 //philosophers.c
-int		start_philo(t_rules *dining_rules);
+int		handle_philo(t_rules *dining_rules);
 //serve_food.c
 void	*serve_food(void *arg);
 //supervise.c
@@ -78,6 +78,7 @@ void	err_thread(t_philo *phi, pthread_t *t_id, pthread_t *moni, long creat);
 t_bool	is_empty(char *str);
 t_bool	check_arg(t_rules *dining_rules);
 void	error_msg(char str[], t_rules *dining_rules);
+void	err_init_philo(t_philo *philo, long nb_philo);
 //split.c
 char	**split(char const *s, char c);
 //time.c

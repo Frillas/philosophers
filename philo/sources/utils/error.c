@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 12:42:44 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/19 15:55:54 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/25 11:54:54 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,4 +57,23 @@ void	error_msg(char str[], t_rules *dining_rules)
 {
 	write(STDERR_FILENO, str, ft_strlen(str) + 1);
 	dining_rules->error = TRUE;
+}
+
+void	err_init_philo(t_philo *philo, long nb_philo)
+{
+	long	mutex_destroy;
+	t_philo	*current;
+
+	current = philo;
+	mutex_destroy = 0;
+	while (mutex_destroy < nb_philo)
+	{
+		if (pthread_mutex_destroy(&current->mutex) != 0)
+			write(2, "mutex destroy error\n", 20);
+		current = current->right;
+		mutex_destroy++;
+	}
+	if (pthread_mutex_destroy(&philo->lst_rules->status_lock) != 0)
+		write(2, "mutex destroy error\n", 20);
+	free_struct(philo, nb_philo);
 }

@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:49:16 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/24 18:07:05 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/25 11:57:01 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,31 @@
 
 static int	init_philo(t_philo *philo, t_rules *dining_rules, t_philo **new)
 {
-	static long	i;
+	static long	nb_philo;
 
 	*new = (t_philo *)malloc(sizeof(t_philo));
-	if (*new == NULL || (pthread_mutex_init(&(*new)->mutex, NULL) != 0))
+	if (*new == NULL)
 	{
-		free_struct(philo, i);
-		return (1);
+		write(2, "new philosopher's memory allocation failed\n", 43);
+		err_init_philo(philo, nb_philo);
+		return (EXIT_FAILURE);
 	}
-	(*new)->index = (i + 1);
+	if (pthread_mutex_init(&(*new)->mutex, NULL) != 0)
+	{
+		write(2, "mutex init error\n", 17);
+		free(*new);
+		err_init_philo(philo, nb_philo);
+		return (EXIT_FAILURE);
+	}
+	(*new)->index = (nb_philo + 1);
 	(*new)->status = THINK;
 	(*new)->last_meal_time = current_time();
 	(*new)->meals_eaten = 0;
 	(*new)->lst_rules = dining_rules;
 	(*new)->right = NULL;
 	(*new)->left = NULL;
-	i++;
-	return (0);
+	nb_philo++;
+	return (EXIT_SUCCESS);
 }
 
 static t_philo	*create_philo(t_rules *rules, t_philo **end, t_philo **new)
@@ -76,7 +84,7 @@ static int	create_thread_id(t_rules *dining_rules, pthread_t **tid)
 	return (EXIT_SUCCESS);
 }
 
-int	start_philo(t_rules *dining_rules)
+int	handle_philo(t_rules *dining_rules)
 {
 	t_philo		*philo;
 	t_philo		*end;
@@ -89,7 +97,7 @@ int	start_philo(t_rules *dining_rules)
 		return (EXIT_FAILURE);
 	if (create_thread_id(dining_rules, &thread_id) != EXIT_SUCCESS)
 	{
-		free_struct(philo, dining_rules->nb_philo);
+		err_init_philo(philo, dining_rules->nb_philo);
 		return (EXIT_FAILURE);
 	}
 	if (handle_threads(dining_rules, philo, thread_id) != EXIT_SUCCESS)
