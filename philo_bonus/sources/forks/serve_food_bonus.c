@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   child_bonus.c                                      :+:      :+:    :+:   */
+/*   serve_food_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 11:54:18 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/24 10:42:38 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/25 17:42:34 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,14 @@ static void	stop(t_philo *philo, pid_t *fork_id, int res, pthread_t *moni)
 	t_rules	*dining_rules;
 
 	dining_rules = philo->lst_rules;
-	if (pthread_join(*moni, NULL) != 0)
-		error_msg("thread wait failded\n", dining_rules);
+	if (res == 0)
+	{
+		if (pthread_join(*moni, NULL) != 0)
+		{
+			error_msg("thread wait failded\n", dining_rules);
+			res = 1;
+		}
+	}
 	free(fork_id);
 	sem_close(dining_rules->sem_fork);
 	sem_close(dining_rules->sem_status);

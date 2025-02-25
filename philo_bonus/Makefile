@@ -7,8 +7,8 @@ OBJ_DIR = ./obj
 
 SRC = sources/main/main_bonus.c sources/main/parsing_bonus.c sources/main/philosophers_bonus.c \
 	  sources/utils/split_bonus.c sources/utils/utils_bonus.c sources/utils/error_bonus.c \
-	  sources/utils/time_bonus.c sources/forks/child_bonus.c sources/forks/supervise_bonus.c \
-	  sources/forks/parent_bonus.c
+	  sources/utils/time_bonus.c sources/utils/free_bonus.c sources/forks/serve_food_bonus.c \
+	  sources/forks/supervise_bonus.c sources/forks/parent_bonus.c
 
 OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)
 

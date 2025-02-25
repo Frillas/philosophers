@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 12:24:35 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/21 17:48:39 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/25 15:35:13 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,39 +68,4 @@ size_t	ft_strlen(const char *s)
 	while (s[i] != '\0')
 		i++;
 	return (i);
-}
-
-void	free_2d(char **result)
-{
-	int		i;
-
-	i = 0;
-	if (result != NULL)
-	{
-		while (result[i])
-		{
-			free(result[i]);
-			i++;
-		}
-		free(result);
-	}
-}
-
-void	free_struct(t_philo *philo, int nb_philo)
-{
-	t_philo	*current;
-	int		i;
-
-	i = 0;
-	if (philo != NULL)
-	{
-		current = philo;
-		while (i < nb_philo)
-		{
-			philo = philo->right;
-			free(current);
-			current = philo;
-			i++;
-		}
-	}
 }

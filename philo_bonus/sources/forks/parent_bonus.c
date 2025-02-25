@@ -6,59 +6,60 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 16:32:34 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/24 11:15:39 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/25 18:06:40 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../header/philosophers_bonus.h"
 
-static void	wait_child(t_philo *philo, t_rules *dining_rules, int *fork_id)
+static void	wait_child(t_philo *philo, t_rules *rules, int *fork_id, int nb)
 {
-	int			i;
-	pid_t		pid;
+	int			philo_waited;
 	int			status;
+	int			returned;
+	int			err_code;
 
-	i = 0;
-	while (i < dining_rules->nb_philo)
+	philo_waited = 0;
+	returned = 0;
+	err_code = 0;
+	while (philo_waited < nb)
 	{
-		pid = waitpid(-1, &status, 0);
-		if (pid == -1)
-			error_msg("waitpid error\n", dining_rules);
-		if (WEXITSTATUS(status) == 1)
-			status = 1;
-		i++;
+		if (waitpid(-1, &status, 0) == -1)
+			error_msg("waitpid error\n", rules);
+		if (WIFEXITED(status) == 1)
+			returned = WEXITSTATUS(status);
+		if (returned == 1)
+			err_code = 1;
+		philo_waited++;
 	}
-	if (dining_rules->error == TRUE && status == 0)
-		status = 1;
+	if (rules->error == TRUE)
+		err_code = 1;
+	close_semaphores(rules);
 	free(fork_id);
-	sem_close(dining_rules->sem_fork);
-	sem_close(dining_rules->sem_status);
-	sem_unlink("/fork_sem");
-	sem_unlink("/print_sem");
-	free_struct(philo, dining_rules->nb_philo);
-	exit(status);
+	free_struct(philo, rules->nb_philo);
+	exit (err_code);
 }
 
 void	handle_forks(t_rules *dining_rules, t_philo *philo, pid_t *fork_id)
 {
-	int		i;
+	int		philo_created;
 	t_philo	*current;
 
-	i = 0;
+	philo_created = 0;
 	current = philo;
 	gettimeofday(&dining_rules->start, NULL);
-	while (i < dining_rules->nb_philo)
+	while (philo_created < dining_rules->nb_philo)
 	{
-		fork_id[i] = fork();
-		if (fork_id[i] < 0)
+		fork_id[philo_created] = fork();
+		if (fork_id[philo_created] < 0)
 		{
 			error_msg("fork error\n", dining_rules);
 			break ;
 		}
-		else if (fork_id[i] == 0)
+		else if (fork_id[philo_created] == 0)
 			serve_food(dining_rules, current, fork_id);
 		current = current->right;
-		i++;
+		philo_created++;
 	}
-	wait_child(philo, dining_rules, fork_id);
+	wait_child(philo, dining_rules, fork_id, philo_created);
 }

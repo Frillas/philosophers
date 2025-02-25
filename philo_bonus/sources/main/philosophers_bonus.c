@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:49:16 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/22 15:07:51 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/25 16:17:23 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,25 @@
 
 static int	init_philo(t_philo *philo, t_rules *dining_rules, t_philo **new)
 {
-	static int	i;
+	static int	nb_philo;
 
 	*new = (t_philo *)malloc(sizeof(t_philo));
 	if (*new == NULL)
 	{
-		free_struct(philo, i);
-		return (1);
+		write(2, "new philosopher's memory allocation failed\n", 43);
+		close_semaphores(dining_rules);
+		free_struct(philo, nb_philo);
+		return (EXIT_FAILURE);
 	}
-	(*new)->index = (i + 1);
+	(*new)->index = (nb_philo + 1);
 	(*new)->status = THINK;
 	(*new)->last_meal_time = current_time();
 	(*new)->meals_eaten = 0;
 	(*new)->lst_rules = dining_rules;
 	(*new)->right = NULL;
 	(*new)->left = NULL;
-	i++;
-	return (0);
+	nb_philo++;
+	return (EXIT_SUCCESS);
 }
 
 static t_philo	*create_philo(t_rules *rules, t_philo **end, t_philo **new)
@@ -89,6 +91,7 @@ int	start_philo(t_rules *dining_rules)
 		return (EXIT_FAILURE);
 	if (create_forks_id(dining_rules, &fork_id) != EXIT_SUCCESS)
 	{
+		close_semaphores(dining_rules);
 		free_struct(philo, dining_rules->nb_philo);
 		return (EXIT_FAILURE);
 	}

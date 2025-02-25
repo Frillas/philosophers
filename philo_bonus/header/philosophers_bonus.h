@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:46:42 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/24 11:00:14 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/25 16:21:39 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,20 +69,21 @@ void	parsing(int argc, char *argv[], t_rules *dining_rules);
 void	print_status(t_philo *philo);
 t_bool	atol_valid(const char *s, long *value, t_bool res);
 size_t	ft_strlen(const char *s);
-void	free_2d(char **result);
-void	free_struct(t_philo *philo, int nb_philo);
 //split_bonus.c
 char	**split(char const *s, char c);
 //error_bonus.c
 t_bool	is_empty(char *str);
 t_bool	check_arg(t_rules *dining_rules);
 void	error_msg(char str[], t_rules *dining_rules);
-void	fork_error_exit(int *fork_id);
+//free_bonus.c
+void	free_2d(char **result);
+void	free_struct(t_philo *philo, int nb_philo);
+void	close_semaphores(t_rules *rules);
 //philosophers_bonus.c
 int		start_philo(t_rules *dining_rules);
 //parent_bonus.c
 void	handle_forks(t_rules *rules, t_philo *philo, pid_t *fork_id);
-//child_bonus.c
+//serve_food_bonus.c
 void	serve_food(t_rules *dining_rules, t_philo *philo, pid_t *fork_id);
 //supervise_bonus.c
 void	*supervise(void *arg);
