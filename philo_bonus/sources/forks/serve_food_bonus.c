@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 11:54:18 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/25 17:42:34 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/26 12:36:33 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,10 @@ static t_status	check_status(t_philo *philo, t_status status)
 		philo->status = status;
 		print_status(philo);
 		if (philo->status == EAT)
+		{
+			philo->last_meal_time = current_time();
 			philo->meals_eaten++;
+		}
 	}
 	sem_post(philo->lst_rules->sem_status);
 	return (EXIT_SUCCESS);
@@ -76,7 +79,6 @@ static void	philo_set_state(t_philo *philo)
 
 	rules = philo->lst_rules;
 	check_status(philo, EAT);
-	philo->last_meal_time = current_time();
 	if (eat_or_sleep(rules->time_to_eat, philo) == DEAD)
 	{
 		sem_post(rules->sem_fork);
