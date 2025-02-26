@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 09:18:20 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/25 10:56:56 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/26 12:20:50 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,35 +14,45 @@
 
 static void	verify_philo_end(t_philo *current, t_rules *rules)
 {
+	int		i;
+
+	i = 0;
 	if ((current_time() - current->last_meal_time > rules->time_to_die))
 	{
 		current->status = DEAD;
 		print_status(current);
+	}
+	if (current->status == DEAD)
+	{
+		current = current->right;
+		while (i < rules->nb_philo)
+		{
+			current->status = DEAD;
+			current = current->right;
+			i++;
+		}
 	}
 }
 
 static int	monitor_philo(t_philo *current, t_rules *rules)
 {
 	long	philo_checked;
-	long	philo_dead;
 
 	philo_checked = 0;
-	philo_dead = 0;
 	while (philo_checked < rules->nb_philo)
 	{
 		pthread_mutex_lock(&rules->status_lock);
-		if (current->status == DEAD)
-			philo_dead++;
-		if (current->status != EAT && current->status != DEAD)
+		if (current->status != DEAD)
 			verify_philo_end(current, rules);
+		if (current->status == DEAD)
+		{
+			pthread_mutex_unlock(&rules->status_lock);
+			return (1);
+		}
 		pthread_mutex_unlock(&rules->status_lock);
 		philo_checked++;
 		current = current->right;
 	}
-	if (philo_checked == philo_dead)
-		return (1);
-	philo_checked = 0;
-	philo_dead = 0;
 	usleep(100);
 	return (0);
 }

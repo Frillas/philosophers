@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:08:37 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/24 10:22:24 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/26 12:20:25 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,10 @@ static int	check_status(t_philo *philo, t_status status)
 		philo->status = status;
 		print_status(philo);
 		if (philo->status == EAT)
+		{
+			philo->last_meal_time = current_time();
 			philo->meals_eaten++;
+		}
 	}
 	pthread_mutex_unlock(&rules->status_lock);
 	return (0);
@@ -76,7 +79,6 @@ static void	philo_set_state(t_philo *philo)
 
 	rules = philo->lst_rules;
 	check_status(philo, EAT);
-	philo->last_meal_time = current_time();
 	if (eat_or_sleep(rules->time_to_eat, philo) != 0)
 	{
 		pthread_mutex_unlock(&philo->mutex);
