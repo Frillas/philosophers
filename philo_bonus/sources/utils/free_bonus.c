@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 15:33:13 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/25 16:05:44 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/27 09:10:15 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,10 @@ void	close_semaphores(t_rules *rules)
 {
 	sem_close(rules->sem_fork);
 	sem_close(rules->sem_status);
+	sem_close(rules->sem_die);
 	sem_unlink("/fork_sem");
 	sem_unlink("/status_sem");
+	sem_unlink("/die_sem");
 }
 
 void	free_2d(char **result)

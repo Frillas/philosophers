@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 16:32:34 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/25 18:06:40 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/27 11:24:58 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ static void	wait_child(t_philo *philo, t_rules *rules, int *fork_id, int nb)
 	philo_waited = 0;
 	returned = 0;
 	err_code = 0;
+	pthread_join(rules->philo_death, NULL);
 	while (philo_waited < nb)
 	{
 		if (waitpid(-1, &status, 0) == -1)
@@ -40,26 +41,45 @@ static void	wait_child(t_philo *philo, t_rules *rules, int *fork_id, int nb)
 	exit (err_code);
 }
 
-void	handle_forks(t_rules *dining_rules, t_philo *philo, pid_t *fork_id)
+static void *stop_philo(void *arg)
 {
-	int		philo_created;
-	t_philo	*current;
+	t_rules *rules;
+	int		i;
+
+	i = 0;
+	rules = (t_rules *)arg;
+	sem_wait(rules->sem_die);
+	{
+		while (i < rules->nb_philo)
+		{
+			kill(rules->fork_id[i], SIGKILL);
+			i++;
+		}
+	}
+	return (NULL);
+}
+
+void	handle_forks(t_rules *rules, t_philo *philo)
+{
+	int			philo_created;
+	t_philo		*current;
 
 	philo_created = 0;
 	current = philo;
-	gettimeofday(&dining_rules->start, NULL);
-	while (philo_created < dining_rules->nb_philo)
+	gettimeofday(&rules->start, NULL);
+	while (philo_created < rules->nb_philo)
 	{
-		fork_id[philo_created] = fork();
-		if (fork_id[philo_created] < 0)
+		rules->fork_id[philo_created] = fork();
+		if (rules->fork_id[philo_created] < 0)
 		{
-			error_msg("fork error\n", dining_rules);
+			error_msg("fork error\n", rules);
 			break ;
 		}
-		else if (fork_id[philo_created] == 0)
-			serve_food(dining_rules, current, fork_id);
+		else if (rules->fork_id[philo_created] == 0)
+			serve_food(rules, current, rules->fork_id);
 		current = current->right;
 		philo_created++;
 	}
-	wait_child(philo, dining_rules, fork_id, philo_created);
+	pthread_create(&rules->philo_death, NULL, stop_philo, (void *)philo->lst_rules);
+	wait_child(philo, rules, rules->fork_id, philo_created);
 }

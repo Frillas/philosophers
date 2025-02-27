@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:46:42 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/25 16:21:39 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/27 08:44:37 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,10 @@ typedef struct s_rules
 	struct timeval		start;
 	sem_t				*sem_fork;
 	sem_t				*sem_status;
+	sem_t				*sem_die;
 	pthread_t			moni;
+	pthread_t			philo_death;
+	pid_t				*fork_id;
 	t_bool				error;
 }	t_rules;
 
@@ -82,7 +85,7 @@ void	close_semaphores(t_rules *rules);
 //philosophers_bonus.c
 int		start_philo(t_rules *dining_rules);
 //parent_bonus.c
-void	handle_forks(t_rules *rules, t_philo *philo, pid_t *fork_id);
+void	handle_forks(t_rules *rules, t_philo *philo);
 //serve_food_bonus.c
 void	serve_food(t_rules *dining_rules, t_philo *philo, pid_t *fork_id);
 //supervise_bonus.c

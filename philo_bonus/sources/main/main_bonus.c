@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:19:57 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/24 11:03:18 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/27 11:27:24 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ static int	init_semaphores(t_rules *rules)
 		sem_unlink("/fork_sem");
 		return (EXIT_FAILURE);
 	}
+	rules->sem_die = sem_open("/die_sem", O_CREAT, 0666, 0);
 	return (EXIT_SUCCESS);
 }
 

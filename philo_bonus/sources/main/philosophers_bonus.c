@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:49:16 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/25 16:17:23 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/27 09:01:34 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,13 +64,13 @@ static t_philo	*create_philo(t_rules *rules, t_philo **end, t_philo **new)
 	return (philo);
 }
 
-static int	create_forks_id(t_rules *dining_rules, pid_t **fork_id)
+static int	create_forks_id(t_rules *dining_rules)
 {
 	int	nb;
 
 	nb = dining_rules->nb_philo;
-	*fork_id = (pid_t *)malloc(sizeof(int) * nb);
-	if (*fork_id == NULL)
+	dining_rules->fork_id = (pid_t *)malloc(sizeof(pid_t) * nb);
+	if (dining_rules->fork_id == NULL)
 	{
 		write(STDERR_FILENO, "Memory allocation failed to create forks\n", 41);
 		return (EXIT_FAILURE);
@@ -83,18 +83,17 @@ int	start_philo(t_rules *dining_rules)
 	t_philo		*philo;
 	t_philo		*end;
 	t_philo		*new;
-	pid_t		*fork_id;
 
 	end = NULL;
 	philo = create_philo(dining_rules, &end, &new);
 	if (philo == NULL)
 		return (EXIT_FAILURE);
-	if (create_forks_id(dining_rules, &fork_id) != EXIT_SUCCESS)
+	if (create_forks_id(dining_rules) != EXIT_SUCCESS)
 	{
 		close_semaphores(dining_rules);
 		free_struct(philo, dining_rules->nb_philo);
 		return (EXIT_FAILURE);
 	}
-	handle_forks(dining_rules, philo, fork_id);
+	handle_forks(dining_rules, philo);
 	return (EXIT_SUCCESS);
 }
