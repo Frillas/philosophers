@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:46:42 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/27 08:44:37 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/27 18:01:16 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ typedef enum s_bool
 typedef enum s_status
 {
 	UNCHANGED,
+	SATIATED,
 	TAKES_FORK,
 	SLEEP,
 	THINK,
@@ -49,9 +50,12 @@ typedef struct s_rules
 	sem_t				*sem_fork;
 	sem_t				*sem_status;
 	sem_t				*sem_die;
+	sem_t				*sem_eat;
 	pthread_t			moni;
 	pthread_t			philo_death;
+	pthread_t			philo_eat;
 	pid_t				*fork_id;
+	t_bool				end_dinner;
 	t_bool				error;
 }	t_rules;
 

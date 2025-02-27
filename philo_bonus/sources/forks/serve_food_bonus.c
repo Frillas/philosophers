@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 11:54:18 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/27 11:26:52 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/27 17:44:40 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ static void	stop(t_philo *philo, pid_t *fork_id, int res, pthread_t *moni)
 	free(fork_id);
 	sem_close(dining_rules->sem_fork);
 	sem_close(dining_rules->sem_status);
+	sem_close(dining_rules->sem_die);
+	sem_close(dining_rules->sem_eat);
 	free_struct(philo, dining_rules->nb_philo);
 	exit(res);
 }
@@ -93,15 +95,15 @@ static void	philo_set_state(t_philo *philo)
 	check_status(philo, THINK);
 	sem_wait(rules->sem_status);
 	if (philo->meals_eaten == rules->meals_per_philo)
+	{	
 		philo->status = DEAD;
+		sem_post(rules->sem_eat);
+	}
 	sem_post(rules->sem_status);
 }
 
 void	serve_food(t_rules *rules, t_philo *philo, pid_t *fork_id)
 {
-	rules->sem_fork = sem_open("/fork_sem", 0);
-	rules->sem_status = sem_open("/status_sem", 0);
-	rules->sem_die = sem_open("/die_sem", 0);
 	if (pthread_create(&rules->moni, NULL, supervise, (void *)philo) != 0)
 	{
 		error_msg("thread create failded\n", rules);
