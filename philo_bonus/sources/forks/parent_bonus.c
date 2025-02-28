@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 16:32:34 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/27 18:31:50 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/28 08:00:24 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,19 +48,24 @@ static void *stop_philo(void *arg)
 	i = 0;
 	rules = (t_rules *)arg;
 	sem_wait(rules->sem_die);
+	sem_wait(rules->sem_end);
+	if (rules->end_dinner == TRUE)
 	{
-		if (rules->end_dinner == TRUE)
-			return (NULL);
-		while (i < rules->nb_philo)
-		{
-			kill(rules->fork_id[i], SIGKILL);
-			i++;
-		}
-		if (i == rules->nb_philo)
-		{
-			rules->end_dinner = TRUE;
-			sem_post(rules->sem_eat);
-		}
+		sem_post(rules->sem_end);
+		return (NULL);
+	}
+	sem_post(rules->sem_end);
+	while (i < rules->nb_philo)
+	{
+		kill(rules->fork_id[i], SIGKILL);
+		i++;
+	}
+	if (i == rules->nb_philo)
+	{
+		sem_wait(rules->sem_end);
+		rules->end_dinner = TRUE;
+		sem_post(rules->sem_end);
+		sem_post(rules->sem_eat);
 	}
 	return (NULL);
 }
@@ -75,13 +80,20 @@ static void	*big_belly(void *arg)
 	while (i < rules->nb_philo)
 	{
 		sem_wait(rules->sem_eat);
+		sem_wait(rules->sem_end);
 		if (rules->end_dinner == TRUE)
+		{	
+			sem_post(rules->sem_end);
 			return (NULL);
+		}
+		sem_post(rules->sem_end);
 		i++;
 	}
 	if (i == rules->nb_philo)
 	{
+		sem_wait(rules->sem_end);
 		rules->end_dinner = TRUE;
+		sem_post(rules->sem_end);
 		sem_post(rules->sem_die);
 	}
 	return (NULL);

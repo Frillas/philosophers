@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 11:54:18 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/27 17:44:40 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/28 07:46:00 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,7 @@ static void	philo_set_state(t_philo *philo)
 
 void	serve_food(t_rules *rules, t_philo *philo, pid_t *fork_id)
 {
+	sem_close(rules->sem_end);
 	if (pthread_create(&rules->moni, NULL, supervise, (void *)philo) != 0)
 	{
 		error_msg("thread create failded\n", rules);

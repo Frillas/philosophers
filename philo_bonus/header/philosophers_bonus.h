@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:46:42 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/27 18:01:16 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/28 07:35:49 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ typedef struct s_rules
 	sem_t				*sem_status;
 	sem_t				*sem_die;
 	sem_t				*sem_eat;
+	sem_t				*sem_end;
 	pthread_t			moni;
 	pthread_t			philo_death;
 	pthread_t			philo_eat;

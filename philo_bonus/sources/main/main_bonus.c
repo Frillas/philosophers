@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:19:57 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/27 17:22:23 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/28 07:53:10 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,19 @@
 
 static int	init_semaphores(t_rules *rules)
 {
-	rules->sem_fork = sem_open("/fork_sem", O_CREAT | O_EXCL, 0666, rules->nb_philo);
+	rules->sem_fork = sem_open("/fork_sem", O_CREAT | O_EXCL, 0644, rules->nb_philo);
 	if (rules->sem_fork == SEM_FAILED)
 		return (EXIT_FAILURE);
-	rules->sem_status = sem_open("/status_sem", O_CREAT | O_EXCL, 0666, 1);
+	rules->sem_status = sem_open("/status_sem", O_CREAT | O_EXCL, 0644, 1);
 	if (rules->sem_status == SEM_FAILED)
 	{
 		sem_close(rules->sem_fork);
 		sem_unlink("/fork_sem");
 		return (EXIT_FAILURE);
 	}
-	rules->sem_die = sem_open("/die_sem", O_CREAT | O_EXCL, 0666, 0);
-	rules->sem_eat = sem_open("/eat_sem", O_CREAT | O_EXCL, 0666, 0);
+	rules->sem_die = sem_open("/die_sem", O_CREAT | O_EXCL, 0644, 0);
+	rules->sem_eat = sem_open("/eat_sem", O_CREAT | O_EXCL, 0644, 0);
+	rules->sem_end = sem_open("/end_sem", O_CREAT | O_EXCL, 0644, 1);
 	return (EXIT_SUCCESS);
 }
 
