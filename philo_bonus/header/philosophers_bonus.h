@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:46:42 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/28 07:35:49 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/28 12:43:47 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ void	error_msg(char str[], t_rules *dining_rules);
 void	free_2d(char **result);
 void	free_struct(t_philo *philo, int nb_philo);
 void	close_semaphores(t_rules *rules);
+void	err_init_semaphores(int error, t_rules *rules);
 //philosophers_bonus.c
 int		start_philo(t_rules *dining_rules);
 //parent_bonus.c
@@ -95,6 +96,8 @@ void	handle_forks(t_rules *rules, t_philo *philo);
 void	serve_food(t_rules *dining_rules, t_philo *philo, pid_t *fork_id);
 //supervise_bonus.c
 void	*supervise(void *arg);
+//check_philosopher_bonus.c
+void	death_and_meal_threads(t_rules *rules);
 //time_bonus.c
 long	current_time(void);
 long	step_timer(t_rules *rules);

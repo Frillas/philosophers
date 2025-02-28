@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 15:33:13 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/28 07:36:13 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/28 12:21:07 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,14 @@
 void	close_semaphores(t_rules *rules)
 {
 	sem_close(rules->sem_fork);
-	sem_close(rules->sem_status);
-	sem_close(rules->sem_die);
-	sem_close(rules->sem_eat);
-	sem_close(rules->sem_end);
 	sem_unlink("/fork_sem");
+	sem_close(rules->sem_status);
 	sem_unlink("/status_sem");
+	sem_close(rules->sem_die);
 	sem_unlink("/die_sem");
+	sem_close(rules->sem_eat);
 	sem_unlink("/eat_sem");
+	sem_close(rules->sem_end);
 	sem_unlink("/end_sem");
 }
 
@@ -59,4 +59,30 @@ void	free_struct(t_philo *philo, int nb_philo)
 			i++;
 		}
 	}
+}
+
+void	err_init_semaphores(int error, t_rules *rules)
+{
+	write(2, "Sem open error\n", 15);
+	if (error >= 1)
+	{
+		sem_close(rules->sem_fork);
+		sem_unlink("/fork_sem");
+	}
+	if (error >= 2)
+	{
+		sem_close(rules->sem_status);
+		sem_unlink("/status_sem");
+	}
+	if (error >= 3)
+	{
+		sem_close(rules->sem_die);
+		sem_unlink("/die_sem");
+	}
+	if (error >= 4)
+	{
+		sem_close(rules->sem_eat);
+		sem_unlink("/eat_sem");
+	}
+	exit(EXIT_FAILURE);
 }

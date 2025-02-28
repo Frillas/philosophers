@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 16:32:34 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/28 09:05:44 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/28 12:41:25 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,65 +40,6 @@ static void	wait_child(t_philo *philo, t_rules *rules, int *fork_id, int nb)
 	exit (err_code);
 }
 
-static void	*stop_philo(void *arg)
-{
-	t_rules	*rules;
-	int		i;
-
-	i = 0;
-	rules = (t_rules *)arg;
-	sem_wait(rules->sem_die);
-	sem_wait(rules->sem_end);
-	if (rules->end_dinner == TRUE)
-	{
-		sem_post(rules->sem_end);
-		return (NULL);
-	}
-	sem_post(rules->sem_end);
-	while (i < rules->nb_philo)
-	{
-		kill(rules->fork_id[i], SIGKILL);
-		i++;
-	}
-	if (i == rules->nb_philo)
-	{
-		sem_wait(rules->sem_end);
-		rules->end_dinner = TRUE;
-		sem_post(rules->sem_end);
-		sem_post(rules->sem_eat);
-	}
-	return (NULL);
-}
-
-static void	*big_belly(void *arg)
-{
-	t_rules	*rules;
-	int		i;
-
-	rules = (t_rules *)arg;
-	i = 0;
-	while (i < rules->nb_philo)
-	{
-		sem_wait(rules->sem_eat);
-		sem_wait(rules->sem_end);
-		if (rules->end_dinner == TRUE)
-		{
-			sem_post(rules->sem_end);
-			return (NULL);
-		}
-		sem_post(rules->sem_end);
-		i++;
-	}
-	if (i == rules->nb_philo)
-	{
-		sem_wait(rules->sem_end);
-		rules->end_dinner = TRUE;
-		sem_post(rules->sem_end);
-		sem_post(rules->sem_die);
-	}
-	return (NULL);
-}
-
 void	handle_forks(t_rules *rules, t_philo *philo)
 {
 	int			philo_created;
@@ -121,12 +62,6 @@ void	handle_forks(t_rules *rules, t_philo *philo)
 		current = current->right;
 		philo_created++;
 	}
-	if (rules->nb_philo > 1)
-	{
-		pthread_create(&rules->philo_death, NULL, stop_philo, (void *)rules);
-		pthread_detach(rules->philo_death);
-		pthread_create(&rules->philo_eat, NULL, big_belly, (void *)rules);
-		pthread_detach(rules->philo_eat);
-	}
+	death_and_meal_threads(rules);
 	wait_child(philo, rules, rules->fork_id, philo_created);
 }
