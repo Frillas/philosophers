@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 11:54:18 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/28 07:46:00 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/28 08:56:36 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ static void	philo_set_state(t_philo *philo)
 	check_status(philo, THINK);
 	sem_wait(rules->sem_status);
 	if (philo->meals_eaten == rules->meals_per_philo)
-	{	
+	{
 		philo->status = DEAD;
 		sem_post(rules->sem_eat);
 	}

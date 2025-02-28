@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 16:32:34 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/28 08:00:24 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/02/28 09:05:44 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,9 @@ static void	wait_child(t_philo *philo, t_rules *rules, int *fork_id, int nb)
 	exit (err_code);
 }
 
-static void *stop_philo(void *arg)
+static void	*stop_philo(void *arg)
 {
-	t_rules *rules;
+	t_rules	*rules;
 	int		i;
 
 	i = 0;
@@ -82,7 +82,7 @@ static void	*big_belly(void *arg)
 		sem_wait(rules->sem_eat);
 		sem_wait(rules->sem_end);
 		if (rules->end_dinner == TRUE)
-		{	
+		{
 			sem_post(rules->sem_end);
 			return (NULL);
 		}
@@ -121,9 +121,12 @@ void	handle_forks(t_rules *rules, t_philo *philo)
 		current = current->right;
 		philo_created++;
 	}
-	pthread_create(&rules->philo_death, NULL, stop_philo, (void *)philo->lst_rules);
-	pthread_detach(rules->philo_death);
-	pthread_create(&rules->philo_eat, NULL, big_belly, (void *)philo->lst_rules);
-	pthread_detach(rules->philo_eat);
+	if (rules->nb_philo > 1)
+	{
+		pthread_create(&rules->philo_death, NULL, stop_philo, (void *)rules);
+		pthread_detach(rules->philo_death);
+		pthread_create(&rules->philo_eat, NULL, big_belly, (void *)rules);
+		pthread_detach(rules->philo_eat);
+	}
 	wait_child(philo, rules, rules->fork_id, philo_created);
 }
