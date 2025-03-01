@@ -6,13 +6,13 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 16:32:34 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/01 17:43:34 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/01 17:59:44 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../header/philosophers_bonus.h"
 
-static void	wait_child(t_philo *philo, t_rules *rules, int *fork_id, int nb)
+static void	wait_philo(t_philo *philo, t_rules *rules, int *fork_id)
 {
 	int			philo_waited;
 	int			status;
@@ -20,7 +20,7 @@ static void	wait_child(t_philo *philo, t_rules *rules, int *fork_id, int nb)
 
 	philo_waited = 0;
 	err_code = 0;
-	while (philo_waited < nb)
+	while (philo_waited < rules->created_philo)
 	{
 		if (waitpid(-1, &status, 0) == -1)
 			error_msg("waitpid error\n", rules);
@@ -57,6 +57,7 @@ void	handle_forks(t_rules *rules, t_philo *philo)
 		current = current->right;
 		philo_created++;
 	}
+	rules->created_philo = philo_created;
 	death_and_meal_threads(rules, philo_created);
-	wait_child(philo, rules, rules->fork_id, philo_created);
+	wait_philo(philo, rules, rules->fork_id);
 }

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_philosopher_bonus.c                          :+:      :+:    :+:   */
+/*   death_meal_threads_bonus.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 12:36:02 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/01 17:31:45 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/01 18:12:14 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,7 @@ void	death_and_meal_threads(t_rules *rules, long philo_created)
 	pthread_t	philo_death;
 	pthread_t	philo_eat;
 
-	rules->created_philo = philo_created;
-	if (rules->nb_philo > 1)
+	if (rules->created_philo > 1)
 	{
 		if (pthread_create(&philo_death, NULL, elysium, (void *)rules) != 0)
 		{
