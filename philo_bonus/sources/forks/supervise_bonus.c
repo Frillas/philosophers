@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 09:18:20 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/01 18:01:13 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/01 22:10:05 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,13 @@ void	*supervise(void *arg)
 	while (1)
 	{
 		sem_wait(philo->lst_rules->sem_status);
-		if (philo->status != DEAD)
-			if (verify_philo_end(philo, rules) != 0)
-				break ;
-		if (philo->status == DEAD)
+		if (philo->status == SATIATED)
 		{
 			sem_post(philo->lst_rules->sem_status);
 			break ;
 		}
+		if (verify_philo_end(philo, rules) != 0)
+			break ;
 		sem_post(philo->lst_rules->sem_status);
 		usleep(100);
 	}

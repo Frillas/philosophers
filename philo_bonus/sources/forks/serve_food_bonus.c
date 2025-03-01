@@ -6,39 +6,39 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 11:54:18 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/01 17:17:06 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/01 22:29:41 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../header/philosophers_bonus.h"
 
-static void	stop(t_philo *philo, pid_t *fork_id, int res)
+static void	stop(t_philo *philo, pid_t *fork_id, int err_thread)
 {
 	t_rules	*dining_rules;
 
 	dining_rules = philo->lst_rules;
-	if (res == 0)
+	if (err_thread == 0)
 	{
 		if (pthread_join(dining_rules->moni, NULL) != 0)
 		{
 			error_msg("thread wait failded\n", dining_rules);
-			res = 1;
+			err_thread = 1;
 		}
 	}
 	sem_close(dining_rules->sem_fork);
 	sem_close(dining_rules->sem_status);
 	sem_close(dining_rules->sem_die);
 	sem_close(dining_rules->sem_eat);
-	sem_close(dining_rules->sem_end);
+	sem_close(dining_rules->sem_end_diner);
 	free(fork_id);
 	free_struct(philo, dining_rules->nb_philo);
-	exit(res);
+	exit(err_thread);
 }
 
 static t_status	check_status(t_philo *philo, t_status status)
 {
 	sem_wait(philo->lst_rules->sem_status);
-	if (philo->status == DEAD)
+	if (philo->status == DEAD || philo->status == SATIATED)
 	{
 		sem_post(philo->lst_rules->sem_status);
 		return (DEAD);
@@ -97,7 +97,7 @@ static void	philo_set_state(t_philo *philo)
 	sem_wait(rules->sem_status);
 	if (philo->meals_eaten == rules->meals_per_philo)
 	{
-		philo->status = DEAD;
+		philo->status = SATIATED;
 		sem_post(rules->sem_eat);
 	}
 	sem_post(rules->sem_status);
