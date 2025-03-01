@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parent_bonus.c                                     :+:      :+:    :+:   */
+/*   philo_spawn_bonus.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 16:32:34 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/01 15:48:46 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/01 17:43:34 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,15 @@ static void	wait_child(t_philo *philo, t_rules *rules, int *fork_id, int nb)
 {
 	int			philo_waited;
 	int			status;
-	int			returned;
 	int			err_code;
 
 	philo_waited = 0;
-	returned = 0;
 	err_code = 0;
 	while (philo_waited < nb)
 	{
 		if (waitpid(-1, &status, 0) == -1)
 			error_msg("waitpid error\n", rules);
-		if (WIFEXITED(status) == 1)
-			returned = WEXITSTATUS(status);
-		if (returned == 1)
+		if (WIFEXITED(status) && WEXITSTATUS(status) == 1)
 			err_code = 1;
 		philo_waited++;
 	}

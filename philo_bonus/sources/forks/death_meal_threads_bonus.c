@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 12:36:02 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/01 17:19:42 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/01 17:31:45 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,8 @@ static void	*elysium(void *arg)
 		kill(rules->fork_id[souls], SIGKILL);
 		souls++;
 	}
-	if (souls == rules->created_philo)
-	{
-		stop_dinner(rules);
-		sem_post(rules->sem_eat);
-	}
+	stop_dinner(rules);
+	sem_post(rules->sem_eat);
 	return (NULL);
 }
 
@@ -66,11 +63,8 @@ static void	*big_belly(void *arg)
 		sem_post(rules->sem_end);
 		fed_philo++;
 	}
-	if (fed_philo == rules->created_philo)
-	{
-		stop_dinner(rules);
-		sem_post(rules->sem_die);
-	}
+	stop_dinner(rules);
+	sem_post(rules->sem_die);
 	return (NULL);
 }
 
