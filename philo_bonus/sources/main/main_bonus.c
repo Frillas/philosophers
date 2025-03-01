@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:19:57 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/28 12:27:50 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/01 15:28:24 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ static void	initialize_rules(t_rules *dining_rules)
 	dining_rules->time_to_sleep = -1;
 	dining_rules->meals_per_philo = -1;
 	dining_rules->error = FALSE;
+	dining_rules->end_dinner = FALSE;
 }
 
 int	main(int argc, char *argv[])

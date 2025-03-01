@@ -6,20 +6,20 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 11:54:18 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/28 13:00:12 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/01 17:17:06 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../header/philosophers_bonus.h"
 
-static void	stop(t_philo *philo, pid_t *fork_id, int res, pthread_t *moni)
+static void	stop(t_philo *philo, pid_t *fork_id, int res)
 {
 	t_rules	*dining_rules;
 
 	dining_rules = philo->lst_rules;
 	if (res == 0)
 	{
-		if (pthread_join(*moni, NULL) != 0)
+		if (pthread_join(dining_rules->moni, NULL) != 0)
 		{
 			error_msg("thread wait failded\n", dining_rules);
 			res = 1;
@@ -108,17 +108,17 @@ void	serve_food(t_rules *rules, t_philo *philo, pid_t *fork_id)
 	if (pthread_create(&rules->moni, NULL, supervise, (void *)philo) != 0)
 	{
 		error_msg("thread create failded\n", rules);
-		stop(philo, fork_id, 1, &rules->moni);
+		stop(philo, fork_id, 1);
 	}
 	if (philo == philo->right)
 	{
 		check_status(philo, TAKES_FORK);
-		stop(philo, fork_id, 0, &rules->moni);
+		stop(philo, fork_id, 0);
 	}
 	while (1)
 	{
 		if (check_status(philo, UNCHANGED) == DEAD)
-			stop(philo, fork_id, 0, &rules->moni);
+			stop(philo, fork_id, 0);
 		sem_wait(rules->sem_fork);
 		check_status(philo, TAKES_FORK);
 		sem_wait(rules->sem_fork);
@@ -126,7 +126,7 @@ void	serve_food(t_rules *rules, t_philo *philo, pid_t *fork_id)
 		{
 			sem_post(rules->sem_fork);
 			sem_post(rules->sem_fork);
-			stop(philo, fork_id, 0, &rules->moni);
+			stop(philo, fork_id, 0);
 		}
 		philo_set_state(philo);
 	}

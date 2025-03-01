@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 16:32:34 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/28 12:41:25 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/01 15:48:46 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,11 @@ static void	wait_child(t_philo *philo, t_rules *rules, int *fork_id, int nb)
 
 void	handle_forks(t_rules *rules, t_philo *philo)
 {
-	int			philo_created;
+	long		philo_created;
 	t_philo		*current;
 
 	philo_created = 0;
 	current = philo;
-	rules->end_dinner = FALSE;
 	gettimeofday(&rules->start, NULL);
 	while (philo_created < rules->nb_philo)
 	{
@@ -62,6 +61,6 @@ void	handle_forks(t_rules *rules, t_philo *philo)
 		current = current->right;
 		philo_created++;
 	}
-	death_and_meal_threads(rules);
+	death_and_meal_threads(rules, philo_created);
 	wait_child(philo, rules, rules->fork_id, philo_created);
 }

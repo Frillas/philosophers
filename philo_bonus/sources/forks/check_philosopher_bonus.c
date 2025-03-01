@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 12:36:02 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/28 12:56:37 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/01 17:19:42 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@ static void	stop_dinner(t_rules *rules)
 static void	*elysium(void *arg)
 {
 	t_rules	*rules;
-	int		i;
+	long	souls;
 
-	i = 0;
+	souls = 0;
 	rules = (t_rules *)arg;
 	sem_wait(rules->sem_die);
 	sem_wait(rules->sem_end);
@@ -34,12 +34,12 @@ static void	*elysium(void *arg)
 		return (NULL);
 	}
 	sem_post(rules->sem_end);
-	while (i < rules->nb_philo)
+	while (souls < rules->created_philo)
 	{
-		kill(rules->fork_id[i], SIGKILL);
-		i++;
+		kill(rules->fork_id[souls], SIGKILL);
+		souls++;
 	}
-	if (i == rules->nb_philo)
+	if (souls == rules->created_philo)
 	{
 		stop_dinner(rules);
 		sem_post(rules->sem_eat);
@@ -50,11 +50,11 @@ static void	*elysium(void *arg)
 static void	*big_belly(void *arg)
 {
 	t_rules	*rules;
-	int		i;
+	long	fed_philo;
 
 	rules = (t_rules *)arg;
-	i = 0;
-	while (i < rules->nb_philo)
+	fed_philo = 0;
+	while (fed_philo < rules->created_philo)
 	{
 		sem_wait(rules->sem_eat);
 		sem_wait(rules->sem_end);
@@ -64,9 +64,9 @@ static void	*big_belly(void *arg)
 			return (NULL);
 		}
 		sem_post(rules->sem_end);
-		i++;
+		fed_philo++;
 	}
-	if (i == rules->nb_philo)
+	if (fed_philo == rules->created_philo)
 	{
 		stop_dinner(rules);
 		sem_post(rules->sem_die);
@@ -74,13 +74,26 @@ static void	*big_belly(void *arg)
 	return (NULL);
 }
 
-void	death_and_meal_threads(t_rules *rules)
+void	death_and_meal_threads(t_rules *rules, long philo_created)
 {
+	pthread_t	philo_death;
+	pthread_t	philo_eat;
+
+	rules->created_philo = philo_created;
 	if (rules->nb_philo > 1)
 	{
-		pthread_create(&rules->philo_death, NULL, elysium, (void *)rules);
-		pthread_detach(rules->philo_death);
-		pthread_create(&rules->philo_eat, NULL, big_belly, (void *)rules);
-		pthread_detach(rules->philo_eat);
+		if (pthread_create(&philo_death, NULL, elysium, (void *)rules) != 0)
+		{
+			error_msg("thread create error\n", rules);
+			return ;
+		}
+		pthread_detach(philo_death);
+		if (pthread_create(&philo_eat, NULL, big_belly, (void *)rules) != 0)
+		{
+			error_msg("thread create error\n", rules);
+			sem_post(rules->sem_die);
+			return ;
+		}
+		pthread_detach(philo_eat);
 	}
 }

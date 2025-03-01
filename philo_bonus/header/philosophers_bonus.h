@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:46:42 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/28 12:43:47 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/01 16:51:29 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ typedef enum s_bool
 typedef enum s_status
 {
 	UNCHANGED,
-	SATIATED,
 	TAKES_FORK,
 	SLEEP,
 	THINK,
@@ -42,6 +41,7 @@ typedef enum s_status
 typedef struct s_rules
 {
 	long				nb_philo;
+	long				created_philo;
 	time_t				time_to_die;
 	time_t				time_to_eat;
 	time_t				time_to_sleep;
@@ -53,8 +53,6 @@ typedef struct s_rules
 	sem_t				*sem_eat;
 	sem_t				*sem_end;
 	pthread_t			moni;
-	pthread_t			philo_death;
-	pthread_t			philo_eat;
 	pid_t				*fork_id;
 	t_bool				end_dinner;
 	t_bool				error;
@@ -97,7 +95,7 @@ void	serve_food(t_rules *dining_rules, t_philo *philo, pid_t *fork_id);
 //supervise_bonus.c
 void	*supervise(void *arg);
 //check_philosopher_bonus.c
-void	death_and_meal_threads(t_rules *rules);
+void	death_and_meal_threads(t_rules *rules, long philo_created);
 //time_bonus.c
 long	current_time(void);
 long	step_timer(t_rules *rules);
