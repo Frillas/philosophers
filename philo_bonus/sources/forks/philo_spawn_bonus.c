@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 16:32:34 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/01 17:59:44 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/01 18:17:23 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,6 @@ void	handle_forks(t_rules *rules, t_philo *philo)
 		philo_created++;
 	}
 	rules->created_philo = philo_created;
-	death_and_meal_threads(rules, philo_created);
+	death_and_meal_threads(rules);
 	wait_philo(philo, rules, rules->fork_id);
 }

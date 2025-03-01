@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 12:36:02 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/01 18:12:14 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/01 18:16:45 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static void	*big_belly(void *arg)
 	return (NULL);
 }
 
-void	death_and_meal_threads(t_rules *rules, long philo_created)
+void	death_and_meal_threads(t_rules *rules)
 {
 	pthread_t	philo_death;
 	pthread_t	philo_eat;
