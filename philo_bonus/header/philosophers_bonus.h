@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:46:42 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/01 22:09:55 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/02 10:40:25 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,6 @@ void	*supervise(void *arg);
 //check_philosopher_bonus.c
 void	death_and_meal_threads(t_rules *rules);
 //time_bonus.c
-long	current_time(void);
-long	step_timer(t_rules *rules);
+time_t	current_time(void);
+time_t	step_timer(t_rules *rules);
 #endif

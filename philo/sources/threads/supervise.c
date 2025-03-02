@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 09:18:20 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/26 12:20:50 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/01 22:51:49 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ static int	monitor_philo(t_philo *current, t_rules *rules)
 		philo_checked++;
 		current = current->right;
 	}
-	usleep(100);
 	return (0);
 }
 
@@ -70,6 +69,7 @@ void	*supervise(void *arg)
 		current = philo;
 		if (monitor_philo(current, rules) != 0)
 			return (NULL);
+		usleep(100);
 	}
 	return (NULL);
 }

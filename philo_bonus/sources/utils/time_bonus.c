@@ -6,13 +6,13 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 10:05:18 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/24 10:25:47 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/02 11:44:20 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../header/philosophers_bonus.h"
 
-long	current_time(void)
+time_t	current_time(void)
 {
 	struct timeval	start;
 	long			time;
@@ -22,7 +22,7 @@ long	current_time(void)
 	return (time);
 }
 
-long	step_timer(t_rules *rules)
+time_t	step_timer(t_rules *rules)
 {
 	struct timeval	end;
 	long			time;
@@ -30,7 +30,7 @@ long	step_timer(t_rules *rules)
 	gettimeofday(&end, NULL);
 	time = (end.tv_sec - rules->start.tv_sec) * 1000
 		+ (end.tv_usec - rules->start.tv_usec) / 1000;
-	if (time % 10 == 9)
+	if (time > 100 && time % 10 == 9)
 		time += 1;
 	return (time);
 }

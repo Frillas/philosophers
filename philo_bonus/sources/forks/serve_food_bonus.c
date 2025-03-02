@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 11:54:18 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/01 22:29:41 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/02 11:36:23 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,9 @@ static t_status	check_status(t_philo *philo, t_status status)
 	return (EXIT_SUCCESS);
 }
 
-static t_status	eat_or_sleep(long duration, t_philo *philo)
+static t_status	eat_or_sleep(time_t duration, t_philo *philo)
 {
-	long	end_time;
+	time_t	end_time;
 
 	end_time = current_time() + duration;
 	while (current_time() < end_time)
