@@ -6,23 +6,25 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 15:33:13 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/01 22:00:59 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/02 12:51:58 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../header/philosophers_bonus.h"
 
-void	close_semaphores(t_rules *rules)
+void	close_semaphores(t_rules *rules, int child)
 {
 	sem_close(rules->sem_fork);
-	sem_unlink("/fork_sem");
 	sem_close(rules->sem_status);
-	sem_unlink("/status_sem");
 	sem_close(rules->sem_die);
-	sem_unlink("/die_sem");
 	sem_close(rules->sem_eat);
-	sem_unlink("/eat_sem");
 	sem_close(rules->sem_end_diner);
+	if (child == 1)
+		return ;
+	sem_unlink("/fork_sem");
+	sem_unlink("/status_sem");
+	sem_unlink("/die_sem");
+	sem_unlink("/eat_sem");
 	sem_unlink("/end_sem");
 }
 

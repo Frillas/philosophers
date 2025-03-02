@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 16:32:34 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/02 10:31:13 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/02 12:56:59 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static void	wait_philo(t_philo *philo, t_rules *rules)
 	}
 	if (rules->error == TRUE)
 		exit_code = 1;
-	close_semaphores(rules);
+	close_semaphores(rules, 0);
 	free(rules->fork_id);
 	free_struct(philo, rules->nb_philo);
 	exit (exit_code);

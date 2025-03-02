@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 12:36:02 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/02 08:28:38 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/02 12:05:35 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ static void	*terminate_philo(void *arg)
 	t_rules	*rules;
 	long	fallen_philo;
 
-	fallen_philo = 0;
 	rules = (t_rules *)arg;
+	fallen_philo = 0;
 	sem_wait(rules->sem_die);
 	if (get_end_diner_status(rules) == TRUE)
 		return (NULL);
@@ -49,7 +49,7 @@ static void	*terminate_philo(void *arg)
 	return (NULL);
 }
 
-static void	*big_belly(void *arg)
+static void	*wait_for_meals(void *arg)
 {
 	t_rules	*rules;
 	long	fed_philo;
@@ -81,7 +81,7 @@ void	death_and_meal_threads(t_rules *rules)
 		return ;
 	}
 	pthread_detach(philo_death);
-	if (pthread_create(&philo_eat, NULL, big_belly, (void *)rules) != 0)
+	if (pthread_create(&philo_eat, NULL, wait_for_meals, (void *)rules) != 0)
 	{
 		error_msg("thread create error\n", rules);
 		sem_post(rules->sem_die);

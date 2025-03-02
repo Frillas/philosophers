@@ -6,13 +6,13 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:08:37 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/26 12:20:25 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/02 14:28:37 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../header/philosophers.h"
 
-static int	check_status(t_philo *philo, t_status status)
+static int	update_status(t_philo *philo, t_status status)
 {
 	t_rules	*rules;
 
@@ -41,7 +41,7 @@ static int	swap(t_philo *philo, pthread_mutex_t **one, pthread_mutex_t **two)
 {
 	if (philo == philo->left)
 	{
-		check_status(philo, TAKES_FORK);
+		update_status(philo, TAKES_FORK);
 		return (1);
 	}
 	*one = &philo->mutex;
@@ -78,19 +78,19 @@ static void	philo_set_state(t_philo *philo)
 	t_rules	*rules;
 
 	rules = philo->lst_rules;
-	check_status(philo, EAT);
+	update_status(philo, EAT);
 	if (eat_or_sleep(rules->time_to_eat, philo) != 0)
 	{
 		pthread_mutex_unlock(&philo->mutex);
 		pthread_mutex_unlock(&philo->left->mutex);
 		return ;
 	}
-	check_status(philo, SLEEP);
+	update_status(philo, SLEEP);
 	pthread_mutex_unlock(&philo->mutex);
 	pthread_mutex_unlock(&philo->left->mutex);
 	if (eat_or_sleep(rules->time_to_sleep, philo) != 0)
 		return ;
-	check_status(philo, THINK);
+	update_status(philo, THINK);
 	pthread_mutex_lock(&rules->status_lock);
 	if (philo->meals_eaten == rules->meals_per_philo)
 		philo->status = DEAD;
@@ -108,12 +108,12 @@ void	*serve_food(void *arg)
 		return (NULL);
 	while (1)
 	{
-		if (check_status(philo, UNCHANGED) == 1)
+		if (update_status(philo, UNCHANGED) == 1)
 			return (NULL);
 		pthread_mutex_lock(first_mutex);
-		check_status(philo, TAKES_FORK);
+		update_status(philo, TAKES_FORK);
 		pthread_mutex_lock(second_mutex);
-		if (check_status(philo, TAKES_FORK) == 1)
+		if (update_status(philo, TAKES_FORK) == 1)
 		{
 			pthread_mutex_unlock(first_mutex);
 			pthread_mutex_unlock(second_mutex);

@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:46:42 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/02 10:40:25 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/02 12:57:52 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void	error_msg(char str[], t_rules *dining_rules);
 //free_bonus.c
 void	free_2d(char **result);
 void	free_struct(t_philo *philo, int nb_philo);
-void	close_semaphores(t_rules *rules);
+void	close_semaphores(t_rules *rules, int child);
 void	err_init_semaphores(int error, t_rules *rules);
 //philosophers_bonus.c
 int		start_philo(t_rules *dining_rules);

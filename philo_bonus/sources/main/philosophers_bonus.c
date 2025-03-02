@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:49:16 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/02 10:31:27 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/02 12:56:39 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int	init_philo(t_philo *philo, t_rules *dining_rules, t_philo **new)
 	if (*new == NULL)
 	{
 		write(2, "new philosopher's memory allocation failed\n", 43);
-		close_semaphores(dining_rules);
+		close_semaphores(dining_rules, 0);
 		free_struct(philo, nb_philo);
 		return (EXIT_FAILURE);
 	}
@@ -90,7 +90,7 @@ int	start_philo(t_rules *dining_rules)
 		return (EXIT_FAILURE);
 	if (create_forks_id(dining_rules) != EXIT_SUCCESS)
 	{
-		close_semaphores(dining_rules);
+		close_semaphores(dining_rules, 0);
 		free_struct(philo, dining_rules->nb_philo);
 		return (EXIT_FAILURE);
 	}
