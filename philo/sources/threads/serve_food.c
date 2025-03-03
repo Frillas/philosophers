@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:08:37 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/02 14:28:37 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/03 18:39:40 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,9 @@ static int	update_status(t_philo *philo, t_status status)
 		if (philo->status == EAT)
 		{
 			philo->last_meal_time = current_time();
+			pthread_mutex_lock(&philo->lst_rules->prio);
 			philo->meals_eaten++;
+			pthread_mutex_unlock(&philo->lst_rules->prio);
 		}
 	}
 	pthread_mutex_unlock(&rules->status_lock);
@@ -44,10 +46,16 @@ static int	swap(t_philo *philo, pthread_mutex_t **one, pthread_mutex_t **two)
 		update_status(philo, TAKES_FORK);
 		return (1);
 	}
-	*one = &philo->mutex;
-	*two = &philo->left->mutex;
-	if (philo->index > philo->left->index)
+	pthread_mutex_lock(&philo->lst_rules->prio);
+	if (philo->index % 2 != 0)
 	{
+		pthread_mutex_unlock(&philo->lst_rules->prio);
+		*one = &philo->mutex;
+		*two = &philo->left->mutex;
+	}
+	else
+	{
+		pthread_mutex_unlock(&philo->lst_rules->prio);
 		*one = &philo->left->mutex;
 		*two = &philo->mutex;
 	}
@@ -110,6 +118,20 @@ void	*serve_food(void *arg)
 	{
 		if (update_status(philo, UNCHANGED) == 1)
 			return (NULL);
+		while (1)
+		{
+			pthread_mutex_lock(&philo->lst_rules->prio);
+			if (philo->left->meals_eaten == 0 && philo->index % 2 == 0)
+			{
+				pthread_mutex_unlock(&philo->lst_rules->prio);
+				usleep(100);
+			}
+			else
+			{
+				pthread_mutex_unlock(&philo->lst_rules->prio);
+				break ;
+			}
+		}
 		pthread_mutex_lock(first_mutex);
 		update_status(philo, TAKES_FORK);
 		pthread_mutex_lock(second_mutex);

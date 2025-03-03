@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:46:42 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/02 12:57:52 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/03 11:27:55 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ typedef struct s_rules
 	sem_t				*sem_die;
 	sem_t				*sem_eat;
 	sem_t				*sem_end_diner;
+	sem_t				*sem_prio;
 	pthread_t			moni;
 	pid_t				*fork_id;
 	t_bool				end_dinner;
@@ -71,33 +72,37 @@ typedef struct s_philo
 }	t_philo;
 
 //parsing_bonus.c
-void	parsing(int argc, char *argv[], t_rules *dining_rules);
+void		parsing(int argc, char *argv[], t_rules *dining_rules);
 //utils_bonus.c
-void	print_status(t_philo *philo);
-t_bool	atol_valid(const char *s, long *value, t_bool res);
-size_t	ft_strlen(const char *s);
+void		print_status(t_philo *philo);
+t_bool		atol_valid(const char *s, long *value, t_bool res);
+size_t		ft_strlen(const char *s);
 //split_bonus.c
-char	**split(char const *s, char c);
+char		**split(char const *s, char c);
 //error_bonus.c
-t_bool	is_empty(char *str);
-t_bool	check_arg(t_rules *dining_rules);
-void	error_msg(char str[], t_rules *dining_rules);
+t_bool		is_empty(char *str);
+t_bool		check_arg(t_rules *dining_rules);
+void		error_msg(char str[], t_rules *dining_rules);
 //free_bonus.c
-void	free_2d(char **result);
-void	free_struct(t_philo *philo, int nb_philo);
-void	close_semaphores(t_rules *rules, int child);
-void	err_init_semaphores(int error, t_rules *rules);
+void		free_2d(char **result);
+void		free_struct(t_philo *philo, int nb_philo);
+void		close_semaphores(t_rules *rules, int child);
+void		err_init_semaphores(int error, t_rules *rules);
 //philosophers_bonus.c
-int		start_philo(t_rules *dining_rules);
+int			start_philo(t_rules *dining_rules);
 //parent_bonus.c
-void	handle_forks(t_rules *rules, t_philo *philo);
+void		handle_forks(t_rules *rules, t_philo *philo);
 //serve_food_bonus.c
-void	serve_food(t_rules *dining_rules, t_philo *philo, pid_t *fork_id);
+void		serve_food(t_rules *dining_rules, t_philo *philo, pid_t *fork_id);
+//serve_food_utils_bonus.c
+void		free_exit(t_philo *philo, pid_t *fork_id, int err_thread);
+t_status	wait_with_death_check(time_t duration, t_philo *philo);
+t_status	update_status(t_philo *philo, t_status status);
 //supervise_bonus.c
-void	*supervise(void *arg);
+void		*supervise(void *arg);
 //check_philosopher_bonus.c
-void	death_and_meal_threads(t_rules *rules);
+void		death_and_meal_threads(t_rules *rules);
 //time_bonus.c
-time_t	current_time(void);
-time_t	step_timer(t_rules *rules);
+time_t		current_time(void);
+time_t		step_timer(t_rules *rules);
 #endif
