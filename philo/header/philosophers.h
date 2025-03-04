@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:46:42 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/03 18:40:02 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/04 10:10:51 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ typedef struct s_philo
 	long				index;
 	t_status			status;
 	pthread_mutex_t		mutex;
-	long				last_meal_time;
+	time_t				last_meal_time;
 	long				meals_eaten;
 	struct s_rules		*lst_rules;
 	struct s_philo		*right;
