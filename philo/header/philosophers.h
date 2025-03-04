@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:46:42 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/04 10:10:51 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/04 15:40:39 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,10 @@ void	parsing(int argc, char *argv[], t_rules *dining_rules);
 int		handle_philo(t_rules *dining_rules);
 //serve_food.c
 void	*serve_food(void *arg);
+//serve_food_utils.c
+int		update_status(t_philo *philo, t_status status);
+int		eat_or_sleep(long duration, t_philo *philo);
+void	philo_wait(t_philo *philo);
 //supervise.c
 void	*supervise(void *arg);
 //threads.c

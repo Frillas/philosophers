@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:46:42 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/03 11:27:55 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/04 16:16:11 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ void		serve_food(t_rules *dining_rules, t_philo *philo, pid_t *fork_id);
 void		free_exit(t_philo *philo, pid_t *fork_id, int err_thread);
 t_status	wait_with_death_check(time_t duration, t_philo *philo);
 t_status	update_status(t_philo *philo, t_status status);
+void		philo_wait(t_philo *philo);
 //supervise_bonus.c
 void		*supervise(void *arg);
 //check_philosopher_bonus.c

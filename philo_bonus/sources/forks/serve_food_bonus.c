@@ -6,11 +6,19 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 11:54:18 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/04 09:15:43 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/04 16:40:33 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../header/philosophers_bonus.h"
+
+static void	check_philo_wait(t_philo *philo)
+{
+	if (philo->meals_eaten == 0 && philo->index % 2 == 0)
+		philo_wait(philo);
+	if (philo->meals_eaten > 0 && philo->lst_rules->nb_philo % 2 != 0)
+		philo_wait(philo);
+}
 
 static void	philo_cycle(t_philo *philo)
 {
@@ -20,13 +28,11 @@ static void	philo_cycle(t_philo *philo)
 	update_status(philo, EAT);
 	if (wait_with_death_check(rules->time_to_eat, philo) == DEAD)
 	{
-		sem_post(rules->sem_prio);
 		sem_post(rules->sem_fork);
 		sem_post(rules->sem_fork);
 		return ;
 	}
 	update_status(philo, SLEEP);
-	sem_post(rules->sem_prio);
 	sem_post(rules->sem_fork);
 	sem_post(rules->sem_fork);
 	if (wait_with_death_check(rules->time_to_sleep, philo) == DEAD)
@@ -47,9 +53,7 @@ void	start_routine( t_rules *rules, t_philo *philo, pid_t *fork_id)
 	{
 		if (update_status(philo, UNCHANGED) == DEAD)
 			free_exit(philo, fork_id, 0);
-		if (philo->meals_eaten == 0 && philo->index % 2 == 0)
-			usleep(100);
-		sem_wait(rules->sem_prio);
+		check_philo_wait(philo);
 		sem_wait(rules->sem_fork);
 		update_status(philo, TAKES_FORK);
 		sem_wait(rules->sem_fork);

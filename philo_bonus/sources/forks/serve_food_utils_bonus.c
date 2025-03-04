@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 11:24:18 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/03 14:05:28 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/04 16:40:21 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,4 +69,16 @@ t_status	update_status(t_philo *philo, t_status status)
 	}
 	sem_post(philo->lst_rules->sem_status);
 	return (EXIT_SUCCESS);
+}
+
+void	philo_wait(t_philo *philo)
+{
+	time_t	time_to_wait;
+	t_rules	*rules;
+
+	rules = philo->lst_rules;
+	time_to_wait = (rules->time_to_eat + rules->time_to_sleep) / 2;
+	time_to_wait += current_time();
+	while (current_time() < time_to_wait)
+		usleep(300);
 }
