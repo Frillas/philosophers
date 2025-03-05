@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 15:26:16 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/05 15:54:01 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/05 21:38:09 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,17 +56,15 @@ int	eat_or_sleep(long duration, t_philo *philo)
 	return (0);
 }
 
-void	philo_wait(t_philo *philo)
+void	philo_wait(t_rules *rules, time_t *last_meal)
 {
-	time_t	avoid_death;
-	t_rules	*rules;
+	time_t	duration;
 
-	rules = philo->lst_rules;
-	avoid_death = rules->time_to_die - 100;
-	while (current_time() < rules->time_to_wait)
+	duration = rules->time_to_wait + current_time();
+	while (current_time() < duration)
 	{
-		if (((current_time() - philo->last_meal_time) > avoid_death))
+		if ((current_time() - *last_meal) > rules->hunger)
 			break ;
-		usleep(500);
+		usleep(300);
 	}
 }

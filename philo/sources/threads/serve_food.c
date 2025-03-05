@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:08:37 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/05 15:53:57 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/05 21:51:54 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,9 @@ static void	check_philo_wait(t_philo *philo)
 	if (philo->lst_rules->time_to_die < 100)
 		return ;
 	if (philo->meals_eaten == 0 && philo->index % 2 != 0)
-		philo_wait(philo);
-	if (philo->meals_eaten > 0)
-		philo_wait(philo);
+		philo_wait(philo->lst_rules, &philo->last_meal_time);
+	if (philo->meals_eaten > 0 && philo->lst_rules->nb_philo % 2 == 1)
+		philo_wait(philo->lst_rules, &philo->last_meal_time);
 }
 
 static void	philo_set_state(t_philo *philo)
