@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:08:37 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/05 10:45:00 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/05 15:53:57 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,11 @@ static int	swap(t_philo *philo, pthread_mutex_t **one, pthread_mutex_t **two)
 
 static void	check_philo_wait(t_philo *philo)
 {
-	if (philo->meals_eaten == 0 && philo->index % 2 == 0)
+	if (philo->lst_rules->time_to_die < 100)
+		return ;
+	if (philo->meals_eaten == 0 && philo->index % 2 != 0)
 		philo_wait(philo);
-	if (philo->meals_eaten > 0 && philo->lst_rules->nb_philo % 2 != 0)
+	if (philo->meals_eaten > 0)
 		philo_wait(philo);
 }
 

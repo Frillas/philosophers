@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 11:24:13 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/01 22:47:45 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/05 15:35:07 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,8 @@ int	handle_threads(t_rules *rules, t_philo *philo, pthread_t *thread_id)
 
 	error = 0;
 	gettimeofday(&rules->start, NULL);
+	rules->time_to_wait = (rules->time_to_eat + rules->time_to_sleep) / 2;
+	rules->time_to_wait += current_time();
 	if (launch(philo, thread_id, &monitor) != 0)
 		return (EXIT_FAILURE);
 	if (wait_threads(philo, thread_id, &monitor) != 0)

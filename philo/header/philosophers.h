@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:46:42 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/05 12:24:47 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/05 15:13:11 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ typedef struct s_rules
 	time_t				time_to_die;
 	time_t				time_to_eat;
 	time_t				time_to_sleep;
+	time_t				time_to_wait;
 	long				meals_per_philo;
 	struct timeval		start;
 	struct timeval		end;
