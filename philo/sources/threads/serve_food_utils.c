@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 15:26:16 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/04 15:50:39 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/05 12:50:59 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,5 +65,9 @@ void	philo_wait(t_philo *philo)
 	time_to_wait = (rules->time_to_eat + rules->time_to_sleep) / 2;
 	time_to_wait += current_time();
 	while (current_time() < time_to_wait)
+	{
+		if (((current_time() - philo->last_meal_time) > (rules->time_to_die - 100)))
+			break ;
 		usleep(300);
+	}
 }
