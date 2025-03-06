@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:49:16 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/02 12:56:39 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/06 04:05:24 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,22 +78,25 @@ static int	create_forks_id(t_rules *dining_rules)
 	return (EXIT_SUCCESS);
 }
 
-int	start_philo(t_rules *dining_rules)
+int	start_philo(t_rules *rules)
 {
 	t_philo		*philo;
 	t_philo		*end;
 	t_philo		*new;
 
 	end = NULL;
-	philo = create_philo(dining_rules, &end, &new);
+	rules->time_to_think = (rules->time_to_eat + rules->time_to_sleep) / 2;
+	rules->is_hungry = (rules->time_to_die - 100) % 100;
+	rules->is_hungry = (rules->time_to_die - 100) - rules->is_hungry;
+	philo = create_philo(rules, &end, &new);
 	if (philo == NULL)
 		return (EXIT_FAILURE);
-	if (create_forks_id(dining_rules) != EXIT_SUCCESS)
+	if (create_forks_id(rules) != EXIT_SUCCESS)
 	{
-		close_semaphores(dining_rules, 0);
-		free_struct(philo, dining_rules->nb_philo);
+		close_semaphores(rules, 0);
+		free_struct(philo, rules->nb_philo);
 		return (EXIT_FAILURE);
 	}
-	handle_forks(dining_rules, philo);
+	handle_forks(rules, philo);
 	return (EXIT_SUCCESS);
 }

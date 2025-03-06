@@ -6,18 +6,20 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 11:54:18 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/04 16:40:33 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/06 04:06:09 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../header/philosophers_bonus.h"
 
-static void	check_philo_wait(t_philo *philo)
+static void	check_philo_think(t_philo *philo)
 {
+	if (philo->lst_rules->time_to_die < 100)
+		return ;
 	if (philo->meals_eaten == 0 && philo->index % 2 == 0)
-		philo_wait(philo);
+		philo_think(philo->lst_rules, &philo->last_meal_time);
 	if (philo->meals_eaten > 0 && philo->lst_rules->nb_philo % 2 != 0)
-		philo_wait(philo);
+		philo_think(philo->lst_rules, &philo->last_meal_time);
 }
 
 static void	philo_cycle(t_philo *philo)
@@ -53,7 +55,7 @@ void	start_routine( t_rules *rules, t_philo *philo, pid_t *fork_id)
 	{
 		if (update_status(philo, UNCHANGED) == DEAD)
 			free_exit(philo, fork_id, 0);
-		check_philo_wait(philo);
+		check_philo_think(philo);
 		sem_wait(rules->sem_fork);
 		update_status(philo, TAKES_FORK);
 		sem_wait(rules->sem_fork);

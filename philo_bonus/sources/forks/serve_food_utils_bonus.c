@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 11:24:18 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/04 16:40:21 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/06 04:02:04 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,14 +71,15 @@ t_status	update_status(t_philo *philo, t_status status)
 	return (EXIT_SUCCESS);
 }
 
-void	philo_wait(t_philo *philo)
+void	philo_think(t_rules *rules, time_t *last_meal)
 {
-	time_t	time_to_wait;
-	t_rules	*rules;
+	time_t	duration;
 
-	rules = philo->lst_rules;
-	time_to_wait = (rules->time_to_eat + rules->time_to_sleep) / 2;
-	time_to_wait += current_time();
-	while (current_time() < time_to_wait)
-		usleep(300);
+	duration = rules->time_to_think + current_time();
+	while (current_time() < duration)
+	{
+		if ((current_time() - *last_meal) > rules->is_hungry)
+			break ;
+		usleep(1000);
+	}
 }

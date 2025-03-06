@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:46:42 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/04 16:51:01 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/06 04:09:13 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,33 +41,35 @@ typedef enum s_status
 
 typedef struct s_rules
 {
-	long				nb_philo;
-	long				created_philo;
-	time_t				time_to_die;
-	time_t				time_to_eat;
-	time_t				time_to_sleep;
-	long				meals_per_philo;
-	struct timeval		start;
-	sem_t				*sem_fork;
-	sem_t				*sem_status;
-	sem_t				*sem_die;
-	sem_t				*sem_eat;
-	sem_t				*sem_end_diner;
-	pthread_t			moni;
-	pid_t				*fork_id;
-	t_bool				end_dinner;
-	t_bool				error;
+	long			nb_philo;
+	long			created_philo;
+	time_t			time_to_die;
+	time_t			time_to_eat;
+	time_t			time_to_sleep;
+	time_t			time_to_think;
+	time_t			is_hungry;
+	long			meals_per_philo;
+	struct timeval	start;
+	sem_t			*sem_fork;
+	sem_t			*sem_status;
+	sem_t			*sem_die;
+	sem_t			*sem_eat;
+	sem_t			*sem_end_diner;
+	pthread_t		moni;
+	pid_t			*fork_id;
+	t_bool			end_dinner;
+	t_bool			error;
 }	t_rules;
 
 typedef struct s_philo
 {
-	long				index;
-	t_status			status;
-	time_t				last_meal_time;
-	long				meals_eaten;
-	t_rules				*lst_rules;
-	struct s_philo		*right;
-	struct s_philo		*left;
+	long			index;
+	t_status		status;
+	time_t			last_meal_time;
+	long			meals_eaten;
+	t_rules			*lst_rules;
+	struct s_philo	*right;
+	struct s_philo	*left;
 }	t_philo;
 
 //parsing_bonus.c
@@ -97,7 +99,7 @@ void		serve_food(t_rules *dining_rules, t_philo *philo, pid_t *fork_id);
 void		free_exit(t_philo *philo, pid_t *fork_id, int err_thread);
 t_status	wait_with_death_check(time_t duration, t_philo *philo);
 t_status	update_status(t_philo *philo, t_status status);
-void		philo_wait(t_philo *philo);
+void		philo_think(t_rules *rules, time_t *last_meal);
 //supervise_bonus.c
 void		*supervise(void *arg);
 //check_philosopher_bonus.c

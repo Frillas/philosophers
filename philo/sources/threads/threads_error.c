@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 14:45:48 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/25 13:30:28 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/06 04:20:37 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static void	err_mutex(t_philo *philo, t_rules *dining_rules)
 	current = philo;
 	while (mutex_destroy < dining_rules->nb_philo)
 	{
-		if (pthread_mutex_destroy(&current->mutex) != 0)
+		if (pthread_mutex_destroy(&current->fork_mutex) != 0)
 			write(2, "mutex destroy error\n", 20);
 		current = current->right;
 		mutex_destroy++;

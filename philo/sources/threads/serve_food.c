@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:08:37 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/05 21:51:54 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/06 04:19:51 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,24 +19,24 @@ static int	swap(t_philo *philo, pthread_mutex_t **one, pthread_mutex_t **two)
 		update_status(philo, TAKES_FORK);
 		return (1);
 	}
-	*one = &philo->mutex;
-	*two = &philo->left->mutex;
+	*one = &philo->fork_mutex;
+	*two = &philo->left->fork_mutex;
 	if (philo->index > philo->left->index)
 	{
-		*one = &philo->left->mutex;
-		*two = &philo->mutex;
+		*one = &philo->left->fork_mutex;
+		*two = &philo->fork_mutex;
 	}
 	return (0);
 }
 
-static void	check_philo_wait(t_philo *philo)
+static void	check_philo_think(t_philo *philo)
 {
 	if (philo->lst_rules->time_to_die < 100)
 		return ;
 	if (philo->meals_eaten == 0 && philo->index % 2 != 0)
-		philo_wait(philo->lst_rules, &philo->last_meal_time);
+		philo_think(philo->lst_rules, &philo->last_meal_time);
 	if (philo->meals_eaten > 0 && philo->lst_rules->nb_philo % 2 == 1)
-		philo_wait(philo->lst_rules, &philo->last_meal_time);
+		philo_think(philo->lst_rules, &philo->last_meal_time);
 }
 
 static void	philo_set_state(t_philo *philo)
@@ -47,13 +47,13 @@ static void	philo_set_state(t_philo *philo)
 	update_status(philo, EAT);
 	if (eat_or_sleep(rules->time_to_eat, philo) != 0)
 	{
-		pthread_mutex_unlock(&philo->mutex);
-		pthread_mutex_unlock(&philo->left->mutex);
+		pthread_mutex_unlock(&philo->fork_mutex);
+		pthread_mutex_unlock(&philo->left->fork_mutex);
 		return ;
 	}
 	update_status(philo, SLEEP);
-	pthread_mutex_unlock(&philo->mutex);
-	pthread_mutex_unlock(&philo->left->mutex);
+	pthread_mutex_unlock(&philo->fork_mutex);
+	pthread_mutex_unlock(&philo->left->fork_mutex);
 	if (eat_or_sleep(rules->time_to_sleep, philo) != 0)
 		return ;
 	update_status(philo, THINK);
@@ -76,7 +76,7 @@ void	*serve_food(void *arg)
 	{
 		if (update_status(philo, UNCHANGED) == 1)
 			return (NULL);
-		check_philo_wait(philo);
+		check_philo_think(philo);
 		pthread_mutex_lock(first_mutex);
 		update_status(philo, TAKES_FORK);
 		pthread_mutex_lock(second_mutex);

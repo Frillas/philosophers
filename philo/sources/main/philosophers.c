@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:49:16 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/25 11:57:01 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/06 04:18:08 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static int	init_philo(t_philo *philo, t_rules *dining_rules, t_philo **new)
 		err_init_philo(philo, nb_philo);
 		return (EXIT_FAILURE);
 	}
-	if (pthread_mutex_init(&(*new)->mutex, NULL) != 0)
+	if (pthread_mutex_init(&(*new)->fork_mutex, NULL) != 0)
 	{
 		write(2, "mutex init error\n", 17);
 		free(*new);
@@ -59,14 +59,14 @@ static t_philo	*create_philo(t_rules *rules, t_philo **end, t_philo **new)
 		}
 		else
 		{
-			(*end)->right = *new;
-			(*new)->left = *end;
+			(*end)->left = *new;
+			(*new)->right = *end;
 			(*end) = *new;
 		}
 		i++;
 	}
-	philo->left = *end;
-	(*end)->right = philo;
+	philo->right = *end;
+	(*end)->left = philo;
 	return (philo);
 }
 

@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:46:42 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/05 21:53:34 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/06 04:15:11 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ typedef struct s_rules
 	time_t				time_to_die;
 	time_t				time_to_eat;
 	time_t				time_to_sleep;
-	time_t				time_to_wait;
-	time_t				hunger;
+	time_t				time_to_think;
+	time_t				is_hungry;
 	long				meals_per_philo;
 	struct timeval		start;
 	struct timeval		end;
@@ -56,7 +56,7 @@ typedef struct s_philo
 {
 	long				index;
 	t_status			status;
-	pthread_mutex_t		mutex;
+	pthread_mutex_t		fork_mutex;
 	time_t				last_meal_time;
 	long				meals_eaten;
 	struct s_rules		*lst_rules;
@@ -73,7 +73,7 @@ void	*serve_food(void *arg);
 //serve_food_utils.c
 int		update_status(t_philo *philo, t_status status);
 int		eat_or_sleep(long duration, t_philo *philo);
-void	philo_wait(t_rules *rules, time_t *last_meal);
+void	philo_think(t_rules *rules, time_t *last_meal);
 //supervise.c
 void	*supervise(void *arg);
 //threads.c

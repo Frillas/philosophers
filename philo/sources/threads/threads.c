@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 11:24:13 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/05 21:37:42 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/06 04:20:17 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ static t_bool	destroy_mutexes(t_philo *philo, t_rules *dining_rules)
 	current = philo;
 	while (mutex_destroy < dining_rules->nb_philo)
 	{
-		if (pthread_mutex_destroy(&current->mutex) != 0)
+		if (pthread_mutex_destroy(&current->fork_mutex) != 0)
 		{
 			write(2, "mutex destroy error\n", 20);
 			error = TRUE;
@@ -101,9 +101,9 @@ int	handle_threads(t_rules *rules, t_philo *philo, pthread_t *thread_id)
 
 	error = 0;
 	gettimeofday(&rules->start, NULL);
-	rules->time_to_wait = (rules->time_to_eat + rules->time_to_sleep) / 2;
-	rules->hunger = (rules->time_to_die - 100) % 100;
-	rules->hunger = (rules->time_to_die - 100) - rules->hunger;
+	rules->time_to_think = (rules->time_to_eat + rules->time_to_sleep) / 2;
+	rules->is_hungry = (rules->time_to_die - 100) % 100;
+	rules->is_hungry = (rules->time_to_die - 100) - rules->is_hungry;
 	if (launch(philo, thread_id, &monitor) != 0)
 		return (EXIT_FAILURE);
 	if (wait_threads(philo, thread_id, &monitor) != 0)

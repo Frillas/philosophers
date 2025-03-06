@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 15:26:16 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/05 21:38:09 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/06 03:49:03 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,20 +51,20 @@ int	eat_or_sleep(long duration, t_philo *philo)
 			return (1);
 		}
 		pthread_mutex_unlock(&philo->lst_rules->status_lock);
-		usleep(100);
+		usleep(1000);
 	}
 	return (0);
 }
 
-void	philo_wait(t_rules *rules, time_t *last_meal)
+void	philo_think(t_rules *rules, time_t *last_meal)
 {
 	time_t	duration;
 
-	duration = rules->time_to_wait + current_time();
+	duration = rules->time_to_think + current_time();
 	while (current_time() < duration)
 	{
-		if ((current_time() - *last_meal) > rules->hunger)
+		if ((current_time() - *last_meal) > rules->is_hungry)
 			break ;
-		usleep(300);
+		usleep(1000);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 12:42:44 by aroullea          #+#    #+#             */
-/*   Updated: 2025/02/25 11:54:54 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/06 04:18:50 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	err_init_philo(t_philo *philo, long nb_philo)
 	mutex_destroy = 0;
 	while (mutex_destroy < nb_philo)
 	{
-		if (pthread_mutex_destroy(&current->mutex) != 0)
+		if (pthread_mutex_destroy(&current->fork_mutex) != 0)
 			write(2, "mutex destroy error\n", 20);
 		current = current->right;
 		mutex_destroy++;
