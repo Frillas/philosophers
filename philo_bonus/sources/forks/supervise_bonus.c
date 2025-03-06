@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 09:18:20 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/01 22:10:05 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/06 14:43:24 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	*supervise(void *arg)
 		if (verify_philo_end(philo, rules) != 0)
 			break ;
 		sem_post(philo->lst_rules->sem_status);
-		usleep(100);
+		usleep(500);
 	}
 	return (NULL);
 }

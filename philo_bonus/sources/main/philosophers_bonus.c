@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:49:16 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/06 04:05:24 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/06 14:26:04 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,9 +85,6 @@ int	start_philo(t_rules *rules)
 	t_philo		*new;
 
 	end = NULL;
-	rules->time_to_think = (rules->time_to_eat + rules->time_to_sleep) / 2;
-	rules->is_hungry = (rules->time_to_die - 100) % 100;
-	rules->is_hungry = (rules->time_to_die - 100) - rules->is_hungry;
 	philo = create_philo(rules, &end, &new);
 	if (philo == NULL)
 		return (EXIT_FAILURE);

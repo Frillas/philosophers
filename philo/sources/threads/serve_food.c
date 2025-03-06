@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:08:37 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/06 11:41:35 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/06 18:22:59 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static void	check_philo_think(t_philo *philo)
 		return ;
 	if (philo->meals_eaten == 0 && philo->index % 2 != 0)
 		philo_think(philo->lst_rules, &philo->last_meal_time);
-	if (philo->meals_eaten > 0 && philo->lst_rules->nb_philo % 2 == 1)
+	if (philo->meals_eaten > 0)
 		philo_think(philo->lst_rules, &philo->last_meal_time);
 }
 

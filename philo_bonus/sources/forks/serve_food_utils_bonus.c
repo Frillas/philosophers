@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 11:24:18 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/06 04:02:04 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/06 14:42:35 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ t_status	wait_with_death_check(time_t duration, t_philo *philo)
 		sem_post(philo->lst_rules->sem_status);
 		if (status == DEAD)
 			return (DEAD);
-		usleep(100);
+		usleep(500);
 	}
 	return (EXIT_SUCCESS);
 }

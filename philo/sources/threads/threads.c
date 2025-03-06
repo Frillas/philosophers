@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 11:24:13 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/06 13:38:25 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/06 18:42:58 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ static void	init_time_to_think(t_rules *rules)
 	rules->is_hungry = rules->time_to_die % 100;
 	rules->is_hungry = (rules->time_to_die - 100) - rules->is_hungry;
 	if (rules->time_to_think < 100)
-		rules->is_hungry = 120;
+		rules->is_hungry = 180;
 }
 
 int	handle_threads(t_rules *rules, t_philo *philo, pthread_t *thread_id)

@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 16:32:34 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/02 12:56:59 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/06 14:33:46 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,15 @@ static void	wait_philo(t_philo *philo, t_rules *rules)
 	exit (exit_code);
 }
 
+static void	init_time_to_think(t_rules *rules)
+{
+	rules->time_to_think = (rules->time_to_eat + rules->time_to_sleep) / 2;
+	rules->is_hungry = rules->time_to_die % 100;
+	rules->is_hungry = (rules->time_to_die - 100) - rules->is_hungry;
+	if (rules->time_to_think < 100)
+		rules->is_hungry = 180;
+}
+
 void	handle_forks(t_rules *rules, t_philo *philo)
 {
 	long		philo_created;
@@ -43,6 +52,7 @@ void	handle_forks(t_rules *rules, t_philo *philo)
 
 	philo_created = 0;
 	current = philo;
+	init_time_to_think(rules);
 	gettimeofday(&rules->start, NULL);
 	while (philo_created < rules->nb_philo)
 	{
