@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 15:26:16 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/06 11:49:33 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/06 13:39:10 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ void	philo_think(t_rules *rules, time_t *last_meal)
 	time_t	duration;
 
 	duration = rules->time_to_think + current_time();
-	//rules->is_hungry = 200;
 	while (current_time() < duration)
 	{
 		if ((current_time() - *last_meal) > rules->is_hungry)
