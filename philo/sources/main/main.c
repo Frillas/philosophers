@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:19:57 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/04 16:49:54 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/09 10:51:17 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,14 @@ static int	initialize_rules(t_rules *dining_rules)
 {
 	if (pthread_mutex_init(&dining_rules->status_lock, NULL) != 0)
 		return (EXIT_FAILURE);
+	if (pthread_mutex_init(&dining_rules->meals_lock, NULL) != 0)
+		return (EXIT_FAILURE);
 	dining_rules->nb_philo = -1;
 	dining_rules->time_to_die = -1;
 	dining_rules->time_to_eat = -1;
 	dining_rules->time_to_sleep = -1;
 	dining_rules->meals_per_philo = -1;
+	dining_rules->meals_count = 0;
 	dining_rules->error = FALSE;
 	return (EXIT_SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:08:37 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/06 18:22:59 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/09 11:14:53 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static void	check_philo_think(t_philo *philo)
 		return ;
 	if (philo->meals_eaten == 0 && philo->index % 2 != 0)
 		philo_think(philo->lst_rules, &philo->last_meal_time);
-	if (philo->meals_eaten > 0)
+	if (philo->meals_eaten > 0 && philo->lst_rules->nb_philo % 2 != 0)
 		philo_think(philo->lst_rules, &philo->last_meal_time);
 }
 
@@ -51,16 +51,41 @@ static void	philo_set_state(t_philo *philo)
 		pthread_mutex_unlock(&philo->left->fork_mutex);
 		return ;
 	}
+	pthread_mutex_lock(&rules->meals_lock);
+	if (philo->meals_eaten == rules->meals_per_philo)
+		rules->meals_count++;
+	pthread_mutex_unlock(&rules->meals_lock);
 	update_status(philo, SLEEP);
 	pthread_mutex_unlock(&philo->fork_mutex);
 	pthread_mutex_unlock(&philo->left->fork_mutex);
 	if (eat_or_sleep(rules->time_to_sleep, philo) != 0)
 		return ;
 	update_status(philo, THINK);
-	pthread_mutex_lock(&rules->status_lock);
-	if (philo->meals_eaten == rules->meals_per_philo)
-		philo->status = DEAD;
-	pthread_mutex_unlock(&rules->status_lock);
+}
+
+static void	forks(t_philo *philo, pthread_mutex_t **one, pthread_mutex_t **two)
+{
+	while (1)
+	{
+		if (update_status(philo, UNCHANGED) || check_meals(philo->lst_rules))
+			break ;
+		check_philo_think(philo);
+		pthread_mutex_lock(*one);
+		if (check_meals(philo->lst_rules))
+		{
+			pthread_mutex_unlock(*one);
+			break ;
+		}
+		update_status(philo, TAKES_FORK);
+		pthread_mutex_lock(*two);
+		if (update_status(philo, TAKES_FORK) == 1)
+		{
+			pthread_mutex_unlock(*one);
+			pthread_mutex_unlock(*two);
+			break ;
+		}
+		philo_set_state(philo);
+	}
 }
 
 void	*serve_food(void *arg)
@@ -72,21 +97,6 @@ void	*serve_food(void *arg)
 	philo = (t_philo *)arg;
 	if (swap(philo, &first_mutex, &second_mutex) != 0)
 		return (NULL);
-	while (1)
-	{
-		if (update_status(philo, UNCHANGED) == 1)
-			return (NULL);
-		check_philo_think(philo);
-		pthread_mutex_lock(first_mutex);
-		update_status(philo, TAKES_FORK);
-		pthread_mutex_lock(second_mutex);
-		if (update_status(philo, TAKES_FORK) == 1)
-		{
-			pthread_mutex_unlock(first_mutex);
-			pthread_mutex_unlock(second_mutex);
-			return (NULL);
-		}
-		philo_set_state(philo);
-	}
+	forks(philo, &first_mutex, &second_mutex);
 	return (NULL);
 }

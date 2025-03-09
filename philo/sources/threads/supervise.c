@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 09:18:20 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/06 18:01:51 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/09 11:00:35 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static void	verify_philo_end(t_philo *current, t_rules *rules)
 {
-	int		i;
+	long	i;
 
 	i = 0;
 	if ((current_time() - current->last_meal_time > rules->time_to_die))
@@ -69,6 +69,13 @@ void	*supervise(void *arg)
 		current = philo;
 		if (monitor_philo(current, rules) != 0)
 			return (NULL);
+		pthread_mutex_lock(&rules->meals_lock);
+		if (rules->meals_count == rules->nb_philo)
+		{
+			pthread_mutex_unlock(&rules->meals_lock);
+			break ;
+		}
+		pthread_mutex_unlock(&rules->meals_lock);
 		usleep(800);
 	}
 	return (NULL);

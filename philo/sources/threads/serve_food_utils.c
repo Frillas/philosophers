@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 15:26:16 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/06 18:04:49 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/09 10:55:15 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,4 +67,16 @@ void	philo_think(t_rules *rules, time_t *last_meal)
 			break ;
 		usleep(500);
 	}
+}
+
+int	check_meals(t_rules *rules)
+{
+	t_bool	all_fed;
+
+	pthread_mutex_lock(&rules->meals_lock);
+	all_fed = rules->meals_count == rules->nb_philo;
+	pthread_mutex_unlock(&rules->meals_lock);
+	if (all_fed == TRUE)
+		return (1);
+	return (0);
 }

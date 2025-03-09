@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 11:24:13 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/06 18:42:58 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/09 11:48:33 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ static t_bool	destroy_mutexes(t_philo *philo, t_rules *dining_rules)
 	current = philo;
 	while (mutex_destroy < dining_rules->nb_philo)
 	{
-		if (pthread_mutex_destroy(&current->fork_mutex) != 0)
+		if (destroy_mutex(&current->fork_mutex) != 0)
 		{
 			write(2, "mutex destroy error\n", 20);
 			error = TRUE;
@@ -86,11 +86,10 @@ static t_bool	destroy_mutexes(t_philo *philo, t_rules *dining_rules)
 		current = current->right;
 		mutex_destroy++;
 	}
-	if (pthread_mutex_destroy(&dining_rules->status_lock) != 0)
-	{
-		write(2, "mutex destroy error\n", 20);
+	if (destroy_mutex(&dining_rules->status_lock) == TRUE)
 		error = TRUE;
-	}
+	if (destroy_mutex(&dining_rules->meals_lock) == TRUE)
+		error = TRUE;
 	return (error);
 }
 

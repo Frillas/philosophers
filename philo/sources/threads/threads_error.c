@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 14:45:48 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/06 04:20:37 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/09 11:54:56 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ static void	err_mutex(t_philo *philo, t_rules *dining_rules)
 		mutex_destroy++;
 	}
 	if (pthread_mutex_destroy(&dining_rules->status_lock) != 0)
+		write(2, "mutex destroy error\n", 20);
+	if (pthread_mutex_destroy(&dining_rules->meals_lock) != 0)
 		write(2, "mutex destroy error\n", 20);
 }
 

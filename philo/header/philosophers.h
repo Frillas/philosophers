@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:46:42 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/06 04:15:11 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/09 11:49:44 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ typedef enum s_bool
 typedef enum s_status
 {
 	DEAD,
+	SATIATED,
 	ERROR,
 	UNCHANGED,
 	TAKES_FORK,
@@ -45,10 +46,12 @@ typedef struct s_rules
 	time_t				time_to_think;
 	time_t				is_hungry;
 	long				meals_per_philo;
+	long				meals_count;
 	struct timeval		start;
 	struct timeval		end;
 	pthread_t			thread_id;
 	pthread_mutex_t		status_lock;
+	pthread_mutex_t		meals_lock;
 	t_bool				error;
 }	t_rules;
 
@@ -74,6 +77,7 @@ void	*serve_food(void *arg);
 int		update_status(t_philo *philo, t_status status);
 int		eat_or_sleep(long duration, t_philo *philo);
 void	philo_think(t_rules *rules, time_t *last_meal);
+int		check_meals(t_rules *rules);
 //supervise.c
 void	*supervise(void *arg);
 //threads.c
@@ -96,4 +100,6 @@ t_bool	atoll_valid(const char *s, long long *value, t_bool res);
 size_t	ft_strlen(const char *s);
 void	free_2d(char **result);
 void	free_struct(t_philo *philo, int nb_philo);
+//destoy_mutex.c
+t_bool	destroy_mutex(pthread_mutex_t *mutex);
 #endif
