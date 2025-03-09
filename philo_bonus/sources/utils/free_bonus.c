@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 15:33:13 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/04 16:41:50 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/09 14:01:59 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	close_semaphores(t_rules *rules, int child)
 	sem_close(rules->sem_die);
 	sem_close(rules->sem_eat);
 	sem_close(rules->sem_end_diner);
+	sem_close(rules->sem_meals_eaten);
 	if (child == 1)
 		return ;
 	sem_unlink("/fork_sem");
@@ -26,6 +27,7 @@ void	close_semaphores(t_rules *rules, int child)
 	sem_unlink("/die_sem");
 	sem_unlink("/eat_sem");
 	sem_unlink("/end_sem");
+	sem_unlink("/meals_sem");
 }
 
 void	free_2d(char **result)
@@ -80,5 +82,7 @@ void	err_init_semaphores(int error, t_rules *rules)
 		close_and_unlink(rules->sem_die, "/die_sem");
 	if (error >= 4)
 		close_and_unlink(rules->sem_eat, "/eat_sem");
+	if (error >= 5)
+		close_and_unlink(rules->sem_meals_eaten, "/meals_sem");
 	exit(EXIT_FAILURE);
 }

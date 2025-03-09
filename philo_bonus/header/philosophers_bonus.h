@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:46:42 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/06 04:09:13 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/09 13:49:43 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ typedef struct s_rules
 	sem_t			*sem_die;
 	sem_t			*sem_eat;
 	sem_t			*sem_end_diner;
+	sem_t			*sem_meals_eaten;
 	pthread_t		moni;
 	pid_t			*fork_id;
 	t_bool			end_dinner;

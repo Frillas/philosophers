@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:19:57 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/04 16:41:07 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/09 13:53:06 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,9 @@ static int	init_semaphores(t_rules *rules)
 	rules->sem_end_diner = sem_open("/end_sem", O_CREAT | O_EXCL, 0644, 1);
 	if (rules->sem_end_diner == SEM_FAILED)
 		err_init_semaphores(4, rules);
+	rules->sem_meals_eaten = sem_open("/meals_sem", O_CREAT | O_EXCL, 0644, 0);
+	if (rules->sem_meals_eaten == SEM_FAILED)
+		err_init_semaphores(5, rules);
 	return (EXIT_SUCCESS);
 }
 

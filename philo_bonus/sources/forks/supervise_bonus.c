@@ -6,11 +6,21 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 09:18:20 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/06 14:43:24 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/09 15:20:19 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../header/philosophers_bonus.h"
+
+static void	*all_meals_eaten(void *arg)
+{
+	t_philo	*philo;
+
+	philo = (t_philo *)arg;
+	sem_wait(philo->lst_rules->sem_meals_eaten);
+	philo->lst_rules->end_dinner = TRUE;
+	return (NULL);
+}
 
 static int	verify_philo_end(t_philo *philo, t_rules *rules)
 {
@@ -26,15 +36,18 @@ static int	verify_philo_end(t_philo *philo, t_rules *rules)
 
 void	*supervise(void *arg)
 {
-	t_philo	*philo;
-	t_rules	*rules;
+	t_philo		*philo;
+	t_rules		*rules;
+	pthread_t	satiated;
 
 	philo = (t_philo *)arg;
 	rules = philo->lst_rules;
+	if (pthread_create(&satiated, NULL, all_meals_eaten, (void *)philo) != 0)
+		error_msg("thread create in supervisor error\n", rules);
 	while (1)
 	{
 		sem_wait(philo->lst_rules->sem_status);
-		if (philo->status == SATIATED)
+		if (rules->end_dinner == TRUE)
 		{
 			sem_post(philo->lst_rules->sem_status);
 			break ;

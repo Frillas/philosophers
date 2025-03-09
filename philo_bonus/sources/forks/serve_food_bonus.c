@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 11:54:18 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/06 04:06:09 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/09 14:37:46 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,25 +34,29 @@ static void	philo_cycle(t_philo *philo)
 		sem_post(rules->sem_fork);
 		return ;
 	}
+	sem_wait(rules->sem_status);
+	if (philo->meals_eaten == rules->meals_per_philo)
+		sem_post(rules->sem_eat);
+	sem_post(rules->sem_status);
 	update_status(philo, SLEEP);
 	sem_post(rules->sem_fork);
 	sem_post(rules->sem_fork);
 	if (wait_with_death_check(rules->time_to_sleep, philo) == DEAD)
 		return ;
 	update_status(philo, THINK);
-	sem_wait(rules->sem_status);
-	if (philo->meals_eaten == rules->meals_per_philo)
-	{
-		philo->status = SATIATED;
-		sem_post(rules->sem_eat);
-	}
-	sem_post(rules->sem_status);
 }
 
 void	start_routine( t_rules *rules, t_philo *philo, pid_t *fork_id)
 {
 	while (1)
 	{
+		sem_wait(rules->sem_status);
+		if (rules->end_dinner == TRUE)
+		{
+			sem_post(rules->sem_status);
+			free_exit(philo, fork_id, 0);
+		}
+		sem_post(rules->sem_status);
 		if (update_status(philo, UNCHANGED) == DEAD)
 			free_exit(philo, fork_id, 0);
 		check_philo_think(philo);

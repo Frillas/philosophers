@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 11:24:18 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/06 14:42:35 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/09 14:30:28 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ t_status	wait_with_death_check(time_t duration, t_philo *philo)
 t_status	update_status(t_philo *philo, t_status status)
 {
 	sem_wait(philo->lst_rules->sem_status);
-	if (philo->status == DEAD || philo->status == SATIATED)
+	if (philo->status == DEAD)
 	{
 		sem_post(philo->lst_rules->sem_status);
 		return (DEAD);

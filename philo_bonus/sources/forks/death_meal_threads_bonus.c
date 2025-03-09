@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 12:36:02 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/02 18:01:55 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/09 14:55:04 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,9 @@ static void	*wait_for_meals(void *arg)
 {
 	t_rules	*rules;
 	long	fed_philo;
+	int		i;
 
+	i = 0;
 	rules = (t_rules *)arg;
 	fed_philo = 0;
 	while (fed_philo < rules->created_philo)
@@ -63,6 +65,13 @@ static void	*wait_for_meals(void *arg)
 			return (NULL);
 		fed_philo++;
 	}
+	sem_wait(rules->sem_status);
+	while (i < rules->created_philo)
+	{
+		sem_post(rules->sem_meals_eaten);
+		i++;
+	}
+	sem_post(rules->sem_status);
 	end_diner(rules);
 	sem_post(rules->sem_die);
 	return (NULL);
