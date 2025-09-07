@@ -1,7 +1,7 @@
 BONUS_NAME = philo_bonus
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror
 RM = rm -f
 OBJ_DIR = ./obj
 
